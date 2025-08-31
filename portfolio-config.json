@@ -1,0 +1,218 @@
+{
+  "personal": {
+    "name": "Edison Xu",
+    "location": "Atlanta, GA, USA",
+    "title": "Software Development Engineer & AI/ML Engineer",
+    "email": "edisonapply@gmail.com",
+    "handle": "@EdisonWhale",
+    "bio": "Hey, I'm Edison 👋\nI'm a Full-stack developer and AI engineer with a passion for integrating AI into everyday objects. By day, I build web applications; by night, I explore machine learning, AI systems, and intelligent technologies. Currently, I work full-time at Highmark Health as a Software Engineer, developing internal AI and ML solutions.\n\nI love exploring how AI can enhance accessibility and help people with disabilities through wearable technology. I've also participated in numerous AI and coding hackathons and projects, constantly pushing the boundaries of what intelligent systems can do. My goal is to make technology smarter, more intuitive, and more human-centric.",
+    "avatar": "/profile.jpeg",
+    "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3"
+  },
+  "education": {
+    "current": {
+      "degree": "Master of Science in Computational Science & Engineering",
+      "institution": "Georgia Institute of Technology",
+      "duration": "2022-2024",
+      "graduationDate": "December 2024"
+    },
+    "previous": {
+      "degree": "Bachelor of Arts in Applied Economics",
+      "institution": "University of California - Santa Barbara",
+      "duration": "2019-2021",
+      "graduationDate": "March 2021"
+    },
+    "achievements": [
+      "Microsoft AI Hackathon Participant",
+      "Multiple AI and coding hackathons participant"
+    ]
+  },
+  "experience": [
+    {
+      "company": "Highmark Inc.",
+      "position": "Software Engineer (Generative AI team)",
+      "type": "Full-time",
+      "duration": "May 2024 - Present",
+      "location": "Pittsburgh, PA",
+      "description": "Architected autonomous AI deep research agent, engineered enterprise knowledge workspace with Vertex AI Search, developed multi-modal chatbot using Vertex AI (Gemini API), built RAG system using Flask, deployed GitOps CI/CD pipelines with Cloud Run and Kubernetes.",
+      "technologies": ["TypeScript", "React", "FastAPI", "Flask", "Python", "AI", "Vertex AI", "Gemini API", "Cloud Run", "Kubernetes", "GitOps"]
+    },
+    {
+      "company": "ChineseInvestors.com Inc.",
+      "position": "Data Analyst",
+      "type": "Full-time",
+      "duration": "Sep 2022 - Nov 2022",
+      "location": "San Gabriel, CA",
+      "description": "Developed market cycle prediction model using machine learning algorithms, optimized PySpark and Azure Databricks data pipeline with data partitioning and caching.",
+      "technologies": ["Python", "Machine Learning", "PySpark", "Azure Databricks", "Data Analysis"]
+    }
+  ],
+  "skills": {
+    "programming": ["Java", "Python", "Go", "JavaScript", "TypeScript", "C", "HTML", "CSS", "R", "SQL"],
+    "ml_ai": ["Machine Learning", "AI Agents", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models"],
+    "web_development": ["React.js", "Vue.js", "Spring Boot", "Django", "Flask", "Node.js", "Express.js", "Selenium"],
+    "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "DynamoDB", "Firebase"],
+    "devops_cloud": ["Docker", "Kubernetes", "Git", "AWS", "GCP", "Azure", "Cloud Run", "GitOps", "CI/CD"],
+    "big_data": ["PySpark", "Azure Databricks", "Data Analysis", "Data Partitioning", "Caching"],
+    "soft_skills": ["Problem Solving", "Team Leadership", "Project Management", "Communication", "Learning Agility", "Innovation"]
+  },
+  "projects": [
+    {
+      "title": "FigBrain: Figma Multi-Agent Plugin",
+      "category": "AI/Plugin Development",
+      "description": "Built a Figma AI agent at the Microsoft AI Hackathon, enabling natural-language prompts to generate and populate FigJam components via the Model Context Protocol (MCP) and automated Figma API/plugin flows. Designed a supervisor multi-agent system using LangGraph, where a master orchestrator routed tasks to planner, executor, and verifier agents with Chain-of-Thought prompts and ReAct loops, validated at ~85% first-try accuracy. Cut API costs ~28% and lowered latency through long/short-term memory mechanism, plan/result caching, and dynamic model switching between lightweight and advanced LLMs.",
+      "techStack": ["Figma API", "LangGraph", "Multi-Agent Systems", "Model Context Protocol", "Chain-of-Thought", "ReAct Loops"],
+      "date": "2025",
+      "status": "Completed",
+      "featured": true,
+      "achievements": ["Microsoft AI Hackathon Participant"],
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/edisonwhale"
+        }
+      ],
+      "images": []
+    },
+    {
+      "title": "Golang-based High-Efficiency Search Engine",
+      "category": "Backend Development",
+      "description": "Developed a Go-based search engine with text and vector search capabilities, using gRPC for microservices architecture. Implemented a distributed web crawler with Kafka cluster integration for efficient data collection and processing. Enhanced search relevance using TF-IDF and BM25 ranking algorithms, with Trie trees for optimized query suggestions.",
+      "techStack": ["Go", "gRPC", "Kafka", "TF-IDF", "BM25", "Trie Trees", "Microservices", "Distributed Systems"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/edisonwhale"
+        }
+      ],
+      "images": []
+    },
+    {
+      "title": "CloudBin: Cloud-Based Distributed File Storage System",
+      "category": "Full-stack Development",
+      "description": "Designed a storage system using Spring Boot, Vue3 and AWS S3, featuring chunk-based file uploads for reliability. Leveraged Redis with a Bloom Filter to prevent cache penetration, boosting cache hit rate and reducing database load. Integrated ElasticSearch for efficient fuzzy file name searches, reducing search time and improving accuracy.",
+      "techStack": ["Spring Boot", "Vue3", "AWS S3", "Redis", "Bloom Filter", "ElasticSearch", "Chunk-based Uploads"],
+      "date": "2023",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/edisonwhale"
+        }
+      ],
+      "images": []
+    },
+    {
+      "title": "Portfolio",
+      "category": "AI/Web Development",
+      "description": "Revolutionary AI-powered portfolio system: edit a single JSON file to get a complete interactive portfolio with an intelligent chatbot. Built with Next.js, React, and TypeScript. Features modern design, dynamic project showcases, and zero code required for updates.",
+      "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI Integration"],
+      "date": "2025",
+      "status": "Completed",
+      "featured": true,
+      "links": [
+        {
+          "name": "Live Site",
+          "url": "https://www.edisonwhale.com"
+        },
+        {
+          "name": "GitHub",
+          "url": "https://github.com/edisonwhale"
+        }
+      ],
+      "images": []
+    }
+  ],
+  "social": {
+    "linkedin": "https://linkedin.com/in/Edisonwhale",
+    "github": "https://github.com/edisonwhale",
+    "twitter": "https://x.com/edisonwhale",
+    "website": "https://www.edisonwhale.com"
+  },
+  "internship": {
+    "seeking": false,
+    "currentStatus": "Currently employed at Highmark Inc. as Software Engineer",
+    "focusAreas": ["AI Development", "Full-stack Development", "Machine Learning", "Cloud Engineering"],
+    "availability": "Open to new opportunities",
+    "workStyle": "Fast learner, team player, problem solver",
+    "goals": "Continue building AI-powered solutions and contribute to innovative projects while growing expertise in enterprise-level development."
+  },
+  "personality": {
+    "traits": ["passionate", "curious", "determined", "collaborative"],
+    "interests": ["AI/ML", "Web Development", "Cloud Engineering", "Open Source", "Hackathons"],
+    "funFacts": [
+      "Microsoft AI Hackathon Participant",
+      "Built enterprise AI systems at Highmark Health",
+      "Love solving complex problems with simple solutions"
+    ],
+    "workingStyle": "I move fast, learn faster, and love tackling challenging problems",
+    "motivation": "Building technology that makes a real impact on people's lives"
+  },
+  "resume": {
+    "title": "Edison Xu - Resume",
+    "description": "Software Development Engineer & AI/ML Engineer | MS CSE Georgia Tech | Highmark Health",
+    "fileType": "PDF",
+    "lastUpdated": "January 2025",
+    "fileSize": "2.1 MB",
+    "downloadUrl": "/resume.pdf"
+  },
+  "chatbot": {
+    "name": "Edison",
+    "personality": "casual, enthusiastic, tech-savvy",
+    "tone": "friendly and conversational",
+    "language": "english",
+    "responseStyle": "short and interactive",
+    "useEmojis": true,
+    "topics": ["projects", "skills", "experience", "contact", "fun_facts"]
+  },
+  "presetQuestions": {
+    "me": [
+      "Who are you?",
+      "Tell me about yourself",
+      "What's your background?",
+      "What are your passions?",
+      "How did you get started in tech?",
+      "Where do you see yourself in 5 years?"
+    ],
+    "professional": [
+      "What are your skills?",
+      "Can I see your resume?",
+      "What's your experience?",
+      "Are you looking for new opportunities?",
+      "What makes you a valuable team member?",
+      "Where are you working now?",
+      "Why should I hire you?",
+      "What's your educational background?",
+      "How was your experience working at Highmark?"
+    ],
+    "projects": [
+      "What projects are you most proud of?",
+      "What are your projects?",
+      "Tell me about your best project",
+      "What are you working on?"
+    ],
+    "contact": [
+      "How can I reach you?",
+      "How can I contact you?",
+      "What's your email?",
+      "Where can I find you online?",
+      "What kind of project would make you say 'yes' immediately?",
+      "Where are you located?"
+    ],
+    "fun": [
+      "What are your hobbies?",
+      "Tell me something interesting about you",
+      "What motivates you?"
+    ]
+  },
+  "meta": {
+    "configVersion": "1.0",
+    "lastUpdated": "2025-01-13",
+    "generatedBy": "Edison Xu",
+    "description": "Complete portfolio configuration for AI-powered portfolio website"
+  }
+}
