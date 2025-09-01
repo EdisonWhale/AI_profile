@@ -4,6 +4,7 @@
     "location": "Atlanta, GA, USA",
     "title": "Software Development Engineer & AI/ML Engineer",
     "email": "edisonapply@gmail.com",
+    "phone": "626-552-1696",
     "handle": "@EdisonWhale",
     "bio": "Hey, I'm Edison 👋\nI'm a Full-stack developer and AI engineer with a passion for integrating AI into everyday objects. By day, I build web applications; by night, I explore machine learning, AI systems, and intelligent technologies. Currently, I work full-time at Highmark Health as a Software Engineer, developing internal AI and ML solutions.\n\nI love exploring how AI can enhance accessibility and help people with disabilities through wearable technology. I've also participated in numerous AI and coding hackathons and projects, constantly pushing the boundaries of what intelligent systems can do. My goal is to make technology smarter, more intuitive, and more human-centric.",
     "avatar": "/profile.jpeg",
@@ -130,10 +131,9 @@
   "social": {
     "linkedin": "https://linkedin.com/in/Edisonwhale",
     "github": "https://github.com/edisonwhale",
-    "twitter": "https://x.com/edisonwhale",
     "website": "https://www.edisonwhale.com"
   },
-  "internship": {
+  "entryLevel": {
     "seeking": false,
     "currentStatus": "Currently employed at Highmark Inc. as Software Engineer",
     "focusAreas": ["AI Development", "Full-stack Development", "Machine Learning", "Cloud Engineering"],
@@ -158,7 +158,7 @@
     "fileType": "PDF",
     "lastUpdated": "January 2025",
     "fileSize": "2.1 MB",
-    "downloadUrl": "/resume.pdf"
+    "downloadUrl": "/Edison-resume-2025.pdf"
   },
   "chatbot": {
     "name": "Edison",

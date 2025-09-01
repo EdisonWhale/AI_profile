@@ -4,7 +4,7 @@ import { DefaultChatTransport, isToolOrDynamicToolUIPart } from 'ai';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 // Component imports
@@ -39,28 +39,137 @@ const ClientOnly = ({ children }) => {
 // Define Avatar component props interface
 interface AvatarProps {
   hasActiveTool: boolean;
+  isScrolled: boolean;
 }
 
 // Dynamic import of Avatar component
 const Avatar = dynamic<AvatarProps>(
   () =>
-    Promise.resolve(({ hasActiveTool }: AvatarProps) => {
-      // Conditional rendering based on detection
+    Promise.resolve(({ hasActiveTool, isScrolled }: AvatarProps) => {
+      // Calculate size based on both hasActiveTool and scroll state
+      const getAvatarSize = () => {
+        if (isScrolled) return 48; // 12×12 -> 48px for smooth scaling
+        return hasActiveTool ? 80 : 112; // 20×20 -> 80px, 28×28 -> 112px
+      };
+
+      // Animation variants for smooth transitions
+      const avatarVariants = {
+        center: {
+          x: 0,
+          y: 0,
+          scale: 1,
+          transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 25,
+            mass: 1
+          }
+        },
+        corner: {
+          x: 0,
+          y: 0, 
+          scale: 0.43, // 48/112 = smooth scale ratio
+          transition: {
+            type: "spring",
+            stiffness: 150,
+            damping: 20,
+            mass: 0.8,
+            // Staged animation: scale first, then move
+            delay: 0.1
+          }
+        }
+      };
+
+      const containerVariants = {
+        center: {
+          scale: 1,
+          transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 25
+          }
+        },
+        corner: {
+          scale: 1,
+          transition: {
+            type: "spring", 
+            stiffness: 150,
+            damping: 20
+          }
+        }
+      };
+
       return (
-        <div
-          className={`flex items-center justify-center rounded-full transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
+        <motion.div
+          variants={containerVariants}
+          animate={isScrolled ? "corner" : "center"}
+          className={`group relative flex items-center justify-center rounded-full`}
+          style={{ 
+            width: getAvatarSize(),
+            height: getAvatarSize()
+          }}
+          title={isScrolled ? 'Back To Home Page' : undefined}
         >
-          <div
+          <motion.div
+            variants={avatarVariants}
+            animate={isScrolled ? "corner" : "center"}
             className="relative cursor-pointer"
             onClick={() => (window.location.href = '/')}
+            whileHover={{ 
+              scale: isScrolled ? 1.2 : 1.05,
+              transition: { 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 15 
+              }
+            }}
+            whileTap={{ 
+              scale: 0.95,
+              transition: { duration: 0.1 }
+            }}
           >
             <img
               src="/avatar.png"
               alt="Avatar"
-              className="h-full w-full object-cover object-[center_top_-5%] scale-95 rounded-full"
+              className="h-full w-full object-cover object-[center_top_-5%] rounded-full apple-avatar-glow"
+              style={{
+                filter: isScrolled 
+                  ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12))' 
+                  : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08))'
+              }}
             />
-          </div>
-        </div>
+            
+            {/* Enhanced tooltip with motion */}
+            <AnimatePresence>
+              {isScrolled && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 5, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 5, scale: 0.9 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25
+                  }}
+                  className="absolute -bottom-12 right-0 avatar-tooltip text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10"
+                >
+                  Back to Home Page
+                  <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-800 rotate-45"></div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Subtle glow effect for corner state */}
+            {isScrolled && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.3 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 rounded-full bg-blue-400/20 blur-sm -z-10 group-hover:bg-blue-400/40 transition-all duration-300"
+              />
+            )}
+          </motion.div>
+        </motion.div>
       );
     }),
   { ssr: false }
@@ -87,6 +196,7 @@ const Chat = () => {
     tool: string;
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Local state for input handling since it's no longer provided by useChat
   const [input, setInput] = useState('');
@@ -136,6 +246,61 @@ const Chat = () => {
   useEffect(() => {
     setIsLoading(status === 'streaming');
   }, [status]);
+
+  // Enhanced scroll detection with debouncing and content height checking
+  const handleScroll = useCallback(() => {
+    const scrollContainer = document.querySelector('.chat-scroll-container');
+    if (scrollContainer) {
+      const scrollTop = scrollContainer.scrollTop;
+      const scrollHeight = scrollContainer.scrollHeight;
+      const clientHeight = scrollContainer.clientHeight;
+      
+      // Only trigger if there's actual scrollable content (prevent homepage flicker)
+      const hasScrollableContent = scrollHeight > clientHeight + 50; // 50px buffer
+      const scrollThreshold = 120; // Increased threshold for smoother behavior
+      const shouldBeScrolled = hasScrollableContent && scrollTop > scrollThreshold;
+      
+      if (shouldBeScrolled !== isScrolled) {
+        setIsScrolled(shouldBeScrolled);
+      }
+    }
+  }, [isScrolled]);
+
+  // Enhanced debouncing with delay for smoother transitions
+  const debouncedHandleScroll = useCallback(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+    let ticking = false;
+    
+    return () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          // Clear existing timeout
+          if (timeoutId) clearTimeout(timeoutId);
+          
+          // Add small delay to prevent rapid state changes
+          timeoutId = setTimeout(() => {
+            handleScroll();
+            ticking = false;
+          }, 50); // 50ms debounce for smoother behavior
+        });
+        ticking = true;
+      }
+    };
+  }, [handleScroll]);
+
+  // Setup scroll listener with enhanced cleanup
+  useEffect(() => {
+    const scrollContainer = document.querySelector('.chat-scroll-container');
+    const debouncedScroll = debouncedHandleScroll();
+    
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', debouncedScroll, { passive: true });
+      
+      return () => {
+        scrollContainer.removeEventListener('scroll', debouncedScroll);
+      };
+    }
+  }, [debouncedHandleScroll]);
 
   const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
     const latestAIMessageIndex = messages.findLastIndex(
@@ -253,26 +418,41 @@ const Chat = () => {
   const isEmptyState =
     !currentAIMessage && !latestUserMessage && !loadingSubmit && !presetReply && !errorMessage;
 
-  // Calculate header height based on hasActiveTool
-  const headerHeight = hasActiveTool ? 100 : 180;
+  // Calculate header height based on hasActiveTool and scroll state
+  const headerHeight = useMemo(() => {
+    if (isScrolled) return 80; // Minimal height when scrolled
+    return hasActiveTool ? 100 : 180;
+  }, [hasActiveTool, isScrolled]);
 
   return (
-    <div className="relative h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden apple-tech-bg">
       {/* Fixed Avatar Header with Gradient */}
       <div
-        className="fixed top-0 right-0 left-0 z-50"
+        className={`fixed top-0 z-50 transition-all duration-500 ease-in-out ${
+          isScrolled 
+            ? 'right-4 left-auto w-auto' // Top-right corner when scrolled
+            : 'right-0 left-0 w-full'    // Full width when not scrolled
+        }`}
         style={{
-          background:
-            'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
+          background: isScrolled 
+            ? 'transparent' // No gradient when in corner
+            : 'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
         }}
       >
         <div
-          className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
+          className={`transition-all duration-500 ease-in-out ${
+            isScrolled 
+              ? 'pt-4 pb-0' // Minimal padding when scrolled
+              : hasActiveTool ? 'pt-6 pb-0' : 'py-6'
+          }`}
         >
-          <div className="flex justify-center">
+          <div className={`flex ${
+            isScrolled ? 'justify-end' : 'justify-center'
+          }`}>
             <ClientOnly>
               <Avatar
                 hasActiveTool={hasActiveTool}
+                isScrolled={isScrolled}
               />
             </ClientOnly>
           </div>
@@ -303,7 +483,7 @@ const Chat = () => {
       <div className="container mx-auto flex h-full max-w-3xl flex-col">
         {/* Scrollable Chat Content */}
         <div
-          className="flex-1 overflow-y-auto px-2 pb-4"
+          className="chat-scroll-container custom-scrollbar flex-1 overflow-y-auto px-2 pb-4"
           style={{ paddingTop: `${headerHeight}px` }}
         >
           <AnimatePresence mode="wait">
@@ -428,7 +608,7 @@ const Chat = () => {
         </div>
 
         {/* Fixed Bottom Bar */}
-        <div className="sticky bottom-0 bg-white px-2 pt-3 md:px-0 md:pb-4">
+        <div className="sticky bottom-0 px-2 pt-3 md:px-0 md:pb-4">
           <div className="relative flex flex-col items-center gap-3">
             <HelperBoost 
               submitQuery={submitQuery} 

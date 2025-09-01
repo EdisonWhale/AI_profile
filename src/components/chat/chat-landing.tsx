@@ -86,13 +86,13 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
       <motion.div className="mb-8" variants={itemVariants}>
         <motion.button
           onClick={() => handleQuestionClick('Am I available for opportunities?')}
-          className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-full px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
+          className="apple-glass apple-glow-hover rounded-full px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 transition-all duration-300 ease-out hover:scale-[1.02] flex items-center gap-2 mx-auto"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{background: 'var(--apple-system-green)'}}></span>
+            <span className="relative inline-flex h-2 w-2 rounded-full apple-status-dot"></span>
           </span>
           Available for Opportunities
         </motion.button>
@@ -106,7 +106,7 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
         {suggestedQuestions.map((question, index) => (
           <motion.button
             key={index}
-            className="bg-accent hover:bg-accent/80 flex w-full items-center rounded-lg px-4 py-3 transition-colors"
+            className="apple-glass apple-glow-hover flex w-full items-center rounded-xl px-4 py-3 transition-all duration-300 ease-out"
             onClick={() => handleQuestionClick(question.text)}
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}

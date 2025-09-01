@@ -12,7 +12,7 @@ const chatBubbleVariant = cva(
     variants: {
       variant: {
         received: "self-start w-full",
-        sent: "self-center flex-row-reverse mx-auto",
+        sent: "self-end flex-row-reverse ml-auto mr-4 mt-8",
       },
       layout: {
         default: "",

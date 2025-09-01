@@ -43,7 +43,17 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem; /* Apple-style 12px radius */
+  
+  /* Apple-inspired gradient background variables */
+  --apple-bg-start: #fafbfd;
+  --apple-bg-end: #f5f7fa;
+  --apple-tech-blue: #007aff;
+  --apple-system-green: #34c759;
+  --apple-glass: rgba(255, 255, 255, 0.8);
+  --apple-shadow: rgba(0, 0, 0, 0.05);
+  --apple-glow: rgba(0, 122, 255, 0.15);
+  
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -117,7 +127,80 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Apple-style gradient background */
+    background: radial-gradient(ellipse at top, var(--apple-bg-start) 0%, var(--apple-bg-end) 100%);
+    background-attachment: fixed;
   }
+}
+
+/* Apple-style glass morphism effects */
+.apple-glass {
+  background: var(--apple-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px var(--apple-shadow);
+}
+
+/* Apple-style subtle tech grid */
+.apple-tech-bg {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%);
+  background-size: 100% 100%, 100% 100%, 60px 60px;
+}
+
+/* Apple-style glow effects */
+.apple-glow {
+  box-shadow: 0 0 20px var(--apple-glow);
+}
+
+.apple-glow-hover:hover {
+  box-shadow: 0 0 30px var(--apple-glow);
+  transform: translateY(-1px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Apple-style button animations */
+.apple-button-press:active {
+  transform: scale(0.95) translateY(1px);
+  transition: transform 0.1s ease;
+}
+
+/* Enhanced chat bubble styling */
+.apple-chat-bubble {
+  background: var(--apple-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px var(--apple-shadow);
+}
+
+/* Apple-style seamless bottom area */
+.apple-seamless-bottom {
+  background-image: 
+    /* 复制主背景的科技渐变 */
+    radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.1) 0%, transparent 50%),
+    /* 复制网格图案 */
+    linear-gradient(135deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%),
+    /* 渐进式透明度，消除硬边界 - 更透明 */
+    linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 20%, rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0) 60%);
+  background-size: 100% 100%, 100% 100%, 60px 60px, 100% 100%;
+  backdrop-filter: blur(25px) saturate(1.2);
+  -webkit-backdrop-filter: blur(25px) saturate(1.2);
+  position: relative;
+}
+
+.apple-seamless-bottom::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%);
+  pointer-events: none;
 }
 
 .custom-scrollbar {
@@ -152,4 +235,128 @@ pre {
   white-space: pre;
   word-wrap: normal;
   overflow-x: auto;
+}
+
+/* Enhanced smooth scrolling for chat container */
+.chat-scroll-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+}
+
+/* Avatar scroll animation enhancements */
+.avatar-scroll-transition {
+  transform-origin: center;
+  backface-visibility: hidden; /* Prevent flickering during transitions */
+  will-change: transform, opacity; /* Optimize for animations */
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing curve */
+}
+
+/* Improved tooltip styling for dark mode */
+.avatar-tooltip {
+  backdrop-filter: blur(8px);
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(55, 65, 81, 0.2);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth corner positioning animation */
+.avatar-corner-position {
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); /* Ultra-smooth spring curve */
+}
+
+/* Enhanced hover effects for scrolled avatar */
+.avatar-scrolled:hover {
+  transform: scale(1.15); /* More noticeable scale on hover */
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy hover effect */
+}
+
+/* Apple-style avatar glow effect */
+.apple-avatar-glow {
+  filter: drop-shadow(0 0 20px var(--apple-glow));
+}
+
+.apple-avatar-glow:hover {
+  filter: drop-shadow(0 0 30px var(--apple-glow));
+  transition: filter 0.3s ease;
+}
+
+/* Apple-style status indicator */
+.apple-status-dot {
+  background: var(--apple-system-green);
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--apple-system-green);
+  animation: apple-pulse 2s infinite;
+}
+
+@keyframes apple-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--apple-system-green);
+  }
+  50% {
+    box-shadow: 0 0 0 2px white, 0 0 0 8px rgba(52, 199, 89, 0.3);
+  }
+}
+
+/* Apple-style seamless bottom integration */
+.apple-seamless-bottom {
+  /* Replicate the exact same background pattern as .apple-tech-bg */
+  background-image: 
+    /* Primary tech gradient overlays */
+    radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.1) 0%, transparent 50%),
+    /* Subtle grid pattern */
+    linear-gradient(135deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%),
+    /* Subtle fade from bottom to create depth without harsh edges */
+    linear-gradient(to top, 
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(255, 255, 255, 0.85) 15%,
+      rgba(255, 255, 255, 0.65) 35%,
+      rgba(255, 255, 255, 0.4) 60%,
+      rgba(255, 255, 255, 0.15) 85%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  
+  background-size: 
+    100% 100%, 
+    100% 100%, 
+    60px 60px, 
+    100% 100%;
+  
+  /* Apple-style glass morphism */
+  backdrop-filter: blur(25px) saturate(1.2);
+  -webkit-backdrop-filter: blur(25px) saturate(1.2);
+  
+  /* Remove any visible borders */
+  border: none;
+  
+  /* Subtle shadow for depth without harsh lines */
+  box-shadow: 
+    0 -2px 8px rgba(255, 255, 255, 0.3),
+    0 -1px 2px rgba(0, 0, 0, 0.02);
+  
+  /* Ensure smooth blending with parent background */
+  position: relative;
+  z-index: 1;
+}
+
+/* Add a subtle overlay mask to further blend edges */
+.apple-seamless-bottom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Ensure child elements maintain proper positioning */
+.apple-seamless-bottom > .relative {
+  position: relative;
+  z-index: 2;
 }

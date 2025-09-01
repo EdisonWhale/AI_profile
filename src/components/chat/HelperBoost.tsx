@@ -213,7 +213,7 @@ export default function HelperBoost({
                     key={key}
                     onClick={() => handleQuestionClick(key)}
                     variant="outline"
-                    className="border-border hover:bg-border/30 h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl border bg-white/80 px-4 py-3 shadow-none backdrop-blur-sm transition-none active:scale-95"
+                    className="h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl apple-glass apple-glow-hover px-4 py-3 transition-all duration-300 ease-out active:scale-95 hover:scale-[1.02]"
                   >
                     <div className="flex items-center gap-3 text-gray-700">
                       <Icon size={18} strokeWidth={2} color={color} />
@@ -228,7 +228,7 @@ export default function HelperBoost({
                     <TooltipTrigger asChild>
                       <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
                         <motion.div
-                          className="hover:bg-border/30 flex h-auto cursor-pointer items-center space-x-1 rounded-xl border border-neutral-200 bg-white/80 px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 dark:border-neutral-800 dark:bg-neutral-900"
+                          className="apple-glass apple-glow-hover flex h-auto cursor-pointer items-center space-x-1 rounded-xl px-4 py-3 text-sm transition-all duration-300 ease-out dark:bg-gray-800/80"
                           whileHover={{ scale: 1 }}
                           whileTap={{ scale: 0.98 }}
                         >
