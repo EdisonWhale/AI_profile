@@ -9,12 +9,12 @@ export function Resume() {
   // Resume details
   const resumeDetails = {
     title: "Anuj's Resume",
-    description: 'Full Stack Python Developer • AI Engineer',
+    description: 'Full Stack Developer • AI/ML Engineer',
     fileType: 'PDF',
     lastUpdated: 'March 2025',
-    fileSize: '0.5 MB',
-    previewImageSrc: '/anuj_resume_preview.png', // You'll need to add this image
-    downloadUrl: 'https://anujjainbatu.github.io/anujjainbatu/Anuj_Jain_Resume.pdf',
+    fileSize: '219 kb',
+    previewImageSrc: '/edison_resume_preview.png', // You'll need to add this image
+    downloadUrl: 'https://EdisonWhale.github.io/Edison-resume-2025.pdf',
   };
 
   const handleDownload = () => {
@@ -85,7 +85,7 @@ export function Resume() {
           </button>
         </div>
         
-        <div className="w-full h-[600px] bg-gray-50">
+        <div className="w-full h-[1000px] bg-gray-50">
           <iframe
             src={resumeDetails.downloadUrl}
             width="100%"

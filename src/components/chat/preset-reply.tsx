@@ -68,7 +68,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
           </div>
         );
       
-      case 'getInternship':
+      case 'getEntryLevel':
         return (
           <div className="w-full rounded-lg mb-4">
             <AvailabilityCard />
@@ -120,7 +120,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Preset Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• I implemented this to save API quota</span>
+                        <span className="text-xs text-gray-500">• Quick access response</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}
@@ -266,7 +266,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Optimized Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• I implemented this to save API quota</span>
+                        <span className="text-xs text-gray-500">• Quick access response</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}

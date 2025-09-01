@@ -53,7 +53,6 @@ MIT License details including:
 
 ### Direct Contact
 - 📧 **Email**: anujjainbatu@gmail.com
-- 🐦 **Twitter**: [@anujjainbatu](https://twitter.com/anujjainbatu)
 
 ## 🔄 Documentation Updates
 

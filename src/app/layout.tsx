@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { getConfig } from "@/lib/config-loader";
 import "./globals.css";
 
 // Load Inter font for non-Apple devices
@@ -12,31 +13,32 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Get configuration
+const config = getConfig();
+
 export const metadata: Metadata = {
   title: {
-    default: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    template: "%s | Anuj Jain Portfolio"
+    default: `${config.personal.name} - ${config.personal.title} | Professional Portfolio`,
+    template: `%s | ${config.personal.name} Portfolio`
   },
-  description: "Professional portfolio of Anuj Jain - Full-stack Python Developer & AI Engineer. SIH 2025 Finalist showcasing 25+ automation projects, IoT systems, and AI-powered solutions. Available for internships.",
+  description: config.personal.bio.split('\n').join(' '),
   keywords: [
-    "Anuj Jain",
+    config.personal.name,
     "Full-stack Developer", 
-    "Python Developer",
-    "AI Engineer",
+    "Software Development Engineer",
+    "AI/ML Engineer",
     "Portfolio",
-    "Software Developer",
     "Machine Learning",
-    "IoT Developer",
     "Web Development",
     "Next.js",
     "React",
-    "FastAPI",
-    "Django",
-    "Automation",
-    "LangChain",
-    "Smart India Hackathon",
-    "Freelancer",
-    "AI Chatbot",
+    "TypeScript",
+    "Python",
+    "Java",
+    "Go",
+    "AI Development",
+    "Vertex AI",
+    "Gemini API",
     "Professional Portfolio",
     "Developer Portfolio",
     "Tech Portfolio",
@@ -47,12 +49,12 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "Anuj Jain",
-      url: "https://portfolio.anujjainbatu.tech/",
+      name: config.personal.name,
+      url: config.social.website || `https://${config.personal.handle.replace('@', '')}.com`,
     },
   ],
-  creator: "Anuj Jain",
-  publisher: "Anuj Jain",
+  creator: config.personal.name,
+  publisher: config.personal.name,
   robots: {
     index: true,
     follow: true,
@@ -67,29 +69,29 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://portfolio.anujjainbatu.tech/",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    description: "Professional portfolio showcasing AI-powered projects, IoT systems, and full-stack development. SIH 2025 Finalist with 25+ automation projects. Available for internships.",
-    siteName: "Anuj Jain Portfolio",
+    url: config.social.website || "https://www.edisonwhale.com",
+    title: `${config.personal.name} - ${config.personal.title} | Professional Portfolio`,
+    description: config.personal.bio.split('\n').join(' '),
+    siteName: `${config.personal.name} Portfolio`,
     images: [
       {
-        url: "https://portfolio.anujjainbatu.tech/portfolio.png",
+        url: `${config.social.website || "https://www.edisonwhale.com"}/portfolio.png`,
         width: 1200,
         height: 630,
-        alt: "Anuj Jain - Professional Portfolio with AI Chatbot",
+        alt: `${config.personal.name} - Professional Portfolio with AI Chatbot`,
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer",
-    description: "Professional portfolio showcasing AI projects, IoT systems, and automation solutions. SIH 2025 Finalist available for internships.",
-    creator: "@anujainbatu",
-    site: "@anujainbatu",
+    title: `${config.personal.name} - ${config.personal.title}`,
+    description: config.personal.bio.split('\n').join(' ').substring(0, 160),
+    creator: config.personal.handle,
+    site: config.personal.handle,
     images: [{
-      url: "https://portfolio.anujjainbatu.tech/portfolio.png",
-      alt: "Anuj Jain Professional Portfolio"
+      url: `${config.social.website || "https://www.edisonwhale.com"}/portfolio.png`,
+      alt: `${config.personal.name} Professional Portfolio`
     }],
   },
   icons: {
@@ -104,7 +106,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   alternates: {
-    canonical: "https://portfolio.anujjainbatu.tech/",
+    canonical: config.social.website || "https://www.edisonwhale.com",
   },
   category: "technology",
   classification: "Portfolio Website",
@@ -123,22 +125,22 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="canonical" href="https://portfolio.anujjainbatu.tech/" />
+        <link rel="canonical" href={config.social.website || "https://www.edisonwhale.com"} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Anuj Jain",
-              "jobTitle": "Full-stack Python Developer & AI Engineer",
-              "url": "https://portfolio.anujjainbatu.tech/",
-              "image": "https://portfolio.anujjainbatu.tech/profile.jpeg",
+              "name": config.personal.name,
+              "jobTitle": config.personal.title,
+              "url": config.social.website || "https://www.edisonwhale.com",
+              "image": `${config.social.website || "https://www.edisonwhale.com"}${config.personal.avatar}`,
               "sameAs": [
-                "https://github.com/anujjainbatu",
-                "https://linkedin.com/in/anujjainbatu",
-                "https://x.com/anujainbatu"
-              ],
+                config.social.github,
+                config.social.linkedin,
+                config.social.twitter
+              ].filter(Boolean),
               "worksFor": {
                 "@type": "Organization",
                 "name": "Freelance"

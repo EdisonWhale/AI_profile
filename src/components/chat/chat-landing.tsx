@@ -38,16 +38,8 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
   ];
 
   const handleQuestionClick = (questionText: string) => {
-    // Check if this question has a preset reply
-    const preset = presetReplies[questionText as keyof typeof presetReplies];
-    
-    if (preset && handlePresetReply) {
-      // Show preset reply first
-      handlePresetReply(questionText, preset.reply, preset.tool);
-    } else {
-      // Fall back to AI query
-      submitQuery(questionText);
-    }
+    // Default to AI response for all questions
+    submitQuery(questionText);
   };
 
   // Animation variants for staggered animation
@@ -83,7 +75,7 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
       {/* Welcome message */}
       <motion.div className="mb-8 text-center" variants={itemVariants}>
         <h2 className="mb-3 text-2xl font-semibold">
-            I'm Anuj's digital twin
+            I'm Edison's digital twin, feel free to ask me anything!
         </h2>
         <p className="text-muted-foreground mx-auto max-w-md">
           Begin your interview with my digital twin.

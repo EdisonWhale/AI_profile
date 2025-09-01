@@ -46,16 +46,10 @@ try {
     social: {
       linkedin: '',
       github: '',
-      twitter: '',
-      kaggle: '',
-      leetcode: '',
-      fiverr: ''
     },
-    internship: {
+    entryLevel: {
       seeking: false,
-      duration: '',
-      startDate: '',
-      preferredLocation: '',
+      currentStatus: '',
       focusAreas: [],
       availability: '',
       workStyle: '',
@@ -116,4 +110,4 @@ export const skillsData = configParser.generateSkillsData();
 export const projectData = configParser.generateProjectData();
 export const presetReplies = configParser.generatePresetReplies();
 export const resumeDetails = configParser.generateResumeDetails();
-export const internshipInfo = configParser.generateInternshipInfo();
+export const entryLevelInfo = configParser.generateEntryLevelInfo();

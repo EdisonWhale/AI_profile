@@ -44,7 +44,7 @@ The `portfolio-config.json` file contains structured data for:
 
 ### AI Chatbot Architecture
 - **System Prompt Generation**: `config-parser.ts` creates AI personality from JSON config
-- **Tool-Based Responses**: 6 specialized tools (`getPresentation`, `getProjects`, `getSkills`, `getContact`, `getResume`, `getInternship`)
+- **Tool-Based Responses**: 6 specialized tools (`getPresentation`, `getProjects`, `getSkills`, `getContact`, `getResume`, `getEntryLevel`)
 - **Interview Simulation**: AI responds as the portfolio owner in professional contexts
 - **Error Handling**: Graceful degradation when API unavailable
 

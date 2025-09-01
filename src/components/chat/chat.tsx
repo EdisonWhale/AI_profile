@@ -1,5 +1,6 @@
 'use client';
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, isToolOrDynamicToolUIPart } from 'ai';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -87,58 +88,37 @@ const Chat = () => {
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Local state for input handling since it's no longer provided by useChat
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Create transport for AI SDK v5
+  const transport = useMemo(() => new DefaultChatTransport({
+    api: '/api/chat',
+  }), []);
+
   const {
     messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
+    sendMessage,
     stop,
     setMessages,
-    setInput,
-    reload,
+    regenerate,
     addToolResult,
-    append,
+    status,
+    error,
   } = useChat({
-    onResponse: (response) => {
-      if (response) {
-        setLoadingSubmit(false);
-      }
-    },
-    onFinish: () => {
+    transport,
+    onFinish: ({ message, messages }) => {
       setLoadingSubmit(false);
+      setIsLoading(false);
     },
     onError: (error) => {
       setLoadingSubmit(false);
+      setIsLoading(false);
       console.error('Chat error:', error.message, error.cause);
       
       // Handle specific error types
-      if (error.message?.includes('quota') || error.message?.includes('exceeded') || error.message?.includes('429')) {
-        // Show a friendly notification for quota issues
-        toast.error('⚠️ API Quota Exhausted! Free Gemini API limit reached. Please contact Anuj directly or use preset questions. Thank you for understanding! 🙏', {
-          duration: 6000, // Show for 6 seconds
-          style: {
-            background: '#fef3c7',
-            border: '1px solid #f59e0b',
-            color: '#92400e',
-            fontSize: '14px',
-            fontWeight: '500',
-          },
-        });
-        
-        // Set error message state for frontend display
-        setErrorMessage('quota_exhausted');
-        
-        // Try to add a chat bubble with the error message
-        try {
-          append({
-            role: 'assistant',
-            content: '⚠️ **API Quota Exhausted**\n\nFree Gemini API limit reached. Please contact Anuj directly or use preset questions below.',
-          });
-        } catch (appendError) {
-          console.error('Failed to append error message:', appendError);
-        }
-      } else if (error.message?.includes('network')) {
+      if (error.message?.includes('network')) {
         toast.error('Network error. Please check your connection and try again.');
         setErrorMessage('Network error. Please check your connection and try again.');
       } else {
@@ -146,11 +126,16 @@ const Chat = () => {
         setErrorMessage(`Error: ${error.message}`);
       }
     },
-    onToolCall: (tool) => {
-      const toolName = tool.toolCall.toolName;
+    onToolCall: ({ toolCall }) => {
+      const toolName = toolCall.toolName;
       console.log('Tool call:', toolName);
     },
   });
+
+  // Update isLoading based on status
+  useEffect(() => {
+    setIsLoading(status === 'streaming');
+  }, [status]);
 
   const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
     const latestAIMessageIndex = messages.findLastIndex(
@@ -172,8 +157,8 @@ const Chat = () => {
       result.hasActiveTool =
         result.currentAIMessage.parts?.some(
           (part) =>
-            part.type === 'tool-invocation' &&
-            part.toolInvocation?.state === 'result'
+            isToolOrDynamicToolUIPart(part) &&
+            part.state === 'output-available'
         ) || false;
     }
 
@@ -184,13 +169,13 @@ const Chat = () => {
     return result;
   }, [messages]);
 
-  const isToolInProgress = messages.some(
+  const isToolInProgress = status === 'streaming' || messages.some(
     (m) =>
       m.role === 'assistant' &&
       m.parts?.some(
         (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state !== 'result'
+          isToolOrDynamicToolUIPart(part) &&
+          part.state !== 'output-available'
       )
   );
 
@@ -201,19 +186,12 @@ const Chat = () => {
     // Clear any previous error message
     setErrorMessage(null);
     
-    // Check if this is a preset question first
-    if (presetReplies[query]) {
-      const preset = presetReplies[query];
-      setPresetReply({ question: query, reply: preset.reply, tool: preset.tool });
-      setLoadingSubmit(false);
-      return;
-    }
-    
+    // Default to AI response - preset checking removed
     setLoadingSubmit(true);
+    setIsLoading(true);
     setPresetReply(null); // Clear any preset reply when submitting new query
-    append({
-      role: 'user',
-      content: query,
+    sendMessage({
+      text: query,
     });
   };
 
@@ -226,10 +204,10 @@ const Chat = () => {
     
     // Force AI response, bypass preset checking
     setLoadingSubmit(true);
+    setIsLoading(true);
     setPresetReply(null);
-    append({
-      role: 'user',
-      content: query,
+    sendMessage({
+      text: query,
     });
   };
 
@@ -253,8 +231,13 @@ const Chat = () => {
     }
   }, [initialQuery, autoSubmitted]);
 
-  //@ts-ignore
-  const onSubmit = (e) => {
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isToolInProgress) return;
     submitQueryToAI(input); // User input should go directly to AI
@@ -306,7 +289,7 @@ const Chat = () => {
                       message={latestUserMessage}
                       isLast={true}
                       isLoading={false}
-                      reload={() => Promise.resolve(null)}
+                      reload={regenerate}
                     />
                   </ChatBubbleMessage>
                 </ChatBubble>
@@ -424,7 +407,7 @@ const Chat = () => {
                 <SimplifiedChatView
                   message={currentAIMessage}
                   isLoading={isLoading}
-                  reload={reload}
+                  reload={regenerate}
                   addToolResult={addToolResult}
                 />
               </div>
@@ -455,7 +438,7 @@ const Chat = () => {
             <ChatBottombar
               input={input}
               handleInputChange={handleInputChange}
-              handleSubmit={onSubmit}
+              handleSubmit={handleSubmit}
               isLoading={isLoading}
               stop={handleStop}
               isToolInProgress={isToolInProgress}

@@ -40,6 +40,21 @@ export function Contact() {
             </div>
           </div>
 
+          {/* Phone Section */}
+          {contactInfo.phone && (
+            <div
+              className="group mb-5 cursor-pointer"
+              onClick={() => openLink(`tel:${contactInfo.phone}`)}
+            >
+              <div className="flex items-center gap-1">
+                <span className="text-base font-medium text-green-500 hover:underline sm:text-lg">
+                  {contactInfo.phone}
+                </span>
+                <ChevronRight className="h-5 w-5 text-green-500 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
+            </div>
+          )}
+
           {/* Social Links */}
           <div className="flex flex-wrap gap-x-6 gap-y-5 sm:gap-x-8">
             {contactInfo.socials.map((social) => (

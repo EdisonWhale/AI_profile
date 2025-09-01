@@ -1,9 +1,9 @@
 export interface PersonalInfo {
   name: string;
-  age: number;
   location: string;
   title: string;
   email: string;
+  phone?: string;
   handle: string;
   bio: string;
   avatar: string;
@@ -67,17 +67,11 @@ export interface Project {
 export interface Social {
   linkedin: string;
   github: string;
-  twitter: string;
-  kaggle: string;
-  leetcode: string;
-  fiverr: string;
 }
 
-export interface Internship {
+export interface EntryLevel {
   seeking: boolean;
-  duration: string;
-  startDate: string;
-  preferredLocation: string;
+  currentStatus: string;
   focusAreas: string[];
   availability: string;
   workStyle: string;
@@ -133,7 +127,7 @@ export interface PortfolioConfig {
   skills: Skills;
   projects: Project[];
   social: Social;
-  internship: Internship;
+  entryLevel: EntryLevel;
   personality: Personality;
   resume: Resume;
   chatbot: Chatbot;
@@ -151,6 +145,7 @@ export interface ProjectContentProps {
 export interface ContactInfo {
   name: string;
   email: string;
+  phone?: string;
   handle: string;
   socials: Array<{
     name: string;
@@ -160,7 +155,6 @@ export interface ContactInfo {
 
 export interface ProfileInfo {
   name: string;
-  age: string;
   location: string;
   description: string;
   src: string;

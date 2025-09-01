@@ -146,20 +146,8 @@ export default function HelperBoost({
   const handleQuestionClick = (questionKey: string) => {
     const question = questions[questionKey as keyof typeof questions];
     
-    // Map question keys to preset replies that match our config exactly
-    const presetMapping: { [key: string]: string } = {
-      'Me': 'Who are you?',
-      'Projects': 'What projects are you most proud of?',
-      'Skills': 'What are your skills?',
-      'Resume': 'Can I see your resume?',
-      'Contact': 'How can I reach you?'
-    };
-    
-    const presetKey = presetMapping[questionKey];
-    if (presetKey && presetReplies[presetKey] && handlePresetReply) {
-      const preset = presetReplies[presetKey];
-      handlePresetReply(presetKey, preset.reply, preset.tool);
-    } else if (submitQuery) {
+    // Default to AI response for all questions
+    if (submitQuery) {
       submitQuery(question);
     }
   };
