@@ -7,7 +7,15 @@ import AllProjects from '../projects/AllProjects';
 import Resume from '../resume';
 import Skills from '../skills';
 import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
-import ChatMessageContent from './chat-message-content';
+
+
+// Type definitions for tool outputs
+interface ToolOutput {
+  summary?: string;
+  professionalSummary?: string;
+  message?: string;
+  professionalMessage?: string;
+}
 
 // Type for the entry-level data
 interface AvailabilityData {
@@ -50,7 +58,6 @@ interface ToolRendererProps {
 
 export default function ToolRenderer({
   toolInvocations,
-  messageId,
 }: ToolRendererProps) {
   return (
     <div className="w-full transition-all duration-300">
@@ -62,7 +69,7 @@ export default function ToolRenderer({
         switch (toolName) {
           case 'getProjects':
             const projectsMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).summary 
+              ? (tool.output as ToolOutput).summary 
               : null;
             
             return (
@@ -84,7 +91,7 @@ export default function ToolRenderer({
 
           case 'getPresentation':
             const presentationMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).professionalSummary 
+              ? (tool.output as ToolOutput).professionalSummary 
               : null;
             
             return (
@@ -106,7 +113,7 @@ export default function ToolRenderer({
 
           case 'getResume':
             const resumeMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).message 
+              ? (tool.output as ToolOutput).message 
               : null;
             
             return (
@@ -128,7 +135,7 @@ export default function ToolRenderer({
 
           case 'getContact':
             const contactMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).message 
+              ? (tool.output as ToolOutput).message 
               : null;
             
             return (
@@ -150,7 +157,7 @@ export default function ToolRenderer({
 
           case 'getSkills':
             const skillsMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).message 
+              ? (tool.output as ToolOutput).message 
               : null;
             
             return (
@@ -172,7 +179,7 @@ export default function ToolRenderer({
 
           case 'getEntryLevel':
             const entryLevelMessage = tool.state === 'output-available' && tool.output 
-              ? (tool.output as any).professionalMessage 
+              ? (tool.output as ToolOutput).professionalMessage 
               : null;
             
             return (

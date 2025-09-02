@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Code, Cpu, PenTool, Users, Database, Cloud, Microchip, Brain } from 'lucide-react';
+import { Code, Cpu, Users, Database, Cloud, Microchip, Brain } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 
 const Skills = () => {

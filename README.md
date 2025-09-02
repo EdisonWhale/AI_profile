@@ -142,7 +142,7 @@ Example config:
 ```json
 {
   "chatbot": {
-    "name": "Your Digital Twin",
+    "name": "Your AI Twin",
     "personality": "Professional yet friendly",
     "tone": "Conversational and helpful"
   }

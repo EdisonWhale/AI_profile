@@ -21,8 +21,11 @@ import {
 import HelperBoost from './HelperBoost';
 
 // ClientOnly component for client-side rendering
-//@ts-ignore
-const ClientOnly = ({ children }) => {
+interface ClientOnlyProps {
+  children: React.ReactNode;
+}
+
+const ClientOnly: React.FC<ClientOnlyProps> = ({ children }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -46,13 +49,13 @@ interface AvatarProps {
 const Avatar = dynamic<AvatarProps>(
   () =>
     Promise.resolve(({ hasActiveTool, isScrolled }: AvatarProps) => {
-      // Calculate size based on both hasActiveTool and scroll state
+      // Calculate size based on both hasActiveTool and scroll state with reduced variation
       const getAvatarSize = () => {
-        if (isScrolled) return 48; // 12×12 -> 48px for smooth scaling
-        return hasActiveTool ? 80 : 112; // 20×20 -> 80px, 28×28 -> 112px
+        if (isScrolled) return 64;
+        return hasActiveTool ? 80 : 112;
       };
 
-      // Animation variants for smooth transitions
+      // Animation variants for smoother transitions
       const avatarVariants = {
         center: {
           x: 0,
@@ -60,22 +63,22 @@ const Avatar = dynamic<AvatarProps>(
           scale: 1,
           transition: {
             type: "spring",
-            stiffness: 200,
-            damping: 25,
-            mass: 1
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8,
+            duration: 0.3
           }
         },
         corner: {
           x: 0,
           y: 0, 
-          scale: 0.43, // 48/112 = smooth scale ratio
+          scale: 0.57,
           transition: {
             type: "spring",
-            stiffness: 150,
-            damping: 20,
+            stiffness: 300,
+            damping: 30,
             mass: 0.8,
-            // Staged animation: scale first, then move
-            delay: 0.1
+            duration: 0.3
           }
         }
       };
@@ -85,16 +88,18 @@ const Avatar = dynamic<AvatarProps>(
           scale: 1,
           transition: {
             type: "spring",
-            stiffness: 200,
-            damping: 25
+            stiffness: 300,
+            damping: 30,
+            duration: 0.3
           }
         },
         corner: {
           scale: 1,
           transition: {
             type: "spring", 
-            stiffness: 150,
-            damping: 20
+            stiffness: 300,
+            damping: 30,
+            duration: 0.3
           }
         }
       };
@@ -185,9 +190,17 @@ const MOTION_CONFIG = {
   },
 };
 
-const Chat = () => {
+/**
+ * Chat Component
+ * 
+ * Main chat interface for AI interaction
+ * Supports initial query from URL parameters (?q=<encoded_query>)
+ * 
+ * @returns Interactive chat interface with AI
+ */
+const Chat: React.FC = () => {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get('query');
+  const initialQuery = searchParams.get('q');
   const [autoSubmitted, setAutoSubmitted] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [presetReply, setPresetReply] = useState<{
@@ -211,14 +224,12 @@ const Chat = () => {
     messages,
     sendMessage,
     stop,
-    setMessages,
     regenerate,
     addToolResult,
     status,
-    error,
   } = useChat({
     transport,
-    onFinish: ({ message, messages }) => {
+    onFinish: () => {
       setLoadingSubmit(false);
       setIsLoading(false);
     },
@@ -247,26 +258,35 @@ const Chat = () => {
     setIsLoading(status === 'streaming');
   }, [status]);
 
-  // Enhanced scroll detection with debouncing and content height checking
+  // Enhanced scroll detection with improved stability for small screens
   const handleScroll = useCallback(() => {
     const scrollContainer = document.querySelector('.chat-scroll-container');
     if (scrollContainer) {
       const scrollTop = scrollContainer.scrollTop;
       const scrollHeight = scrollContainer.scrollHeight;
       const clientHeight = scrollContainer.clientHeight;
+      const viewportHeight = window.innerHeight;
       
-      // Only trigger if there's actual scrollable content (prevent homepage flicker)
-      const hasScrollableContent = scrollHeight > clientHeight + 50; // 50px buffer
-      const scrollThreshold = 120; // Increased threshold for smoother behavior
+      // More stable threshold calculation for small screens
+      const isSmallScreen = viewportHeight < 700;
+      const scrollBuffer = isSmallScreen ? 30 : 50; // Smaller buffer for small screens
+      const scrollThreshold = isSmallScreen ? 80 : 120; // Lower threshold for small screens
+      
+      // Only trigger if there's actual scrollable content
+      const hasScrollableContent = scrollHeight > clientHeight + scrollBuffer;
       const shouldBeScrolled = hasScrollableContent && scrollTop > scrollThreshold;
       
-      if (shouldBeScrolled !== isScrolled) {
-        setIsScrolled(shouldBeScrolled);
+      // Add hysteresis to prevent rapid state changes
+      const currentThreshold = isScrolled ? scrollThreshold - 20 : scrollThreshold;
+      const newShouldBeScrolled = hasScrollableContent && scrollTop > currentThreshold;
+      
+      if (newShouldBeScrolled !== isScrolled) {
+        setIsScrolled(newShouldBeScrolled);
       }
     }
   }, [isScrolled]);
 
-  // Enhanced debouncing with delay for smoother transitions
+  // Enhanced debouncing with better performance
   const debouncedHandleScroll = useCallback(() => {
     let timeoutId: NodeJS.Timeout | null = null;
     let ticking = false;
@@ -274,14 +294,13 @@ const Chat = () => {
     return () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          // Clear existing timeout
           if (timeoutId) clearTimeout(timeoutId);
           
-          // Add small delay to prevent rapid state changes
+          // Shorter debounce for more responsive behavior
           timeoutId = setTimeout(() => {
             handleScroll();
             ticking = false;
-          }, 50); // 50ms debounce for smoother behavior
+          }, 30); // Reduced from 50ms to 30ms
         });
         ticking = true;
       }
@@ -344,8 +363,7 @@ const Chat = () => {
       )
   );
 
-  //@ts-ignore
-  const submitQuery = (query) => {
+  const submitQuery = useCallback((query: string) => {
     if (!query.trim() || isToolInProgress) return;
     
     // Clear any previous error message
@@ -358,10 +376,9 @@ const Chat = () => {
     sendMessage({
       text: query,
     });
-  };
+  }, [isToolInProgress, sendMessage]);
 
-  //@ts-ignore
-  const submitQueryToAI = (query) => {
+  const submitQueryToAI = useCallback((query: string) => {
     if (!query.trim() || isToolInProgress) return;
     
     // Clear any previous error message
@@ -374,19 +391,17 @@ const Chat = () => {
     sendMessage({
       text: query,
     });
-  };
+  }, [isToolInProgress, sendMessage]);
 
-  //@ts-ignore
-  const handlePresetReply = (question, reply, tool) => {
+  const handlePresetReply = (question: string, reply: string, tool: string) => {
     setPresetReply({ question, reply, tool });
     setLoadingSubmit(false);
   };
 
-  //@ts-ignore
-  const handleGetAIResponse = (question, tool) => {
+  const handleGetAIResponse = useCallback((question: string) => {
     setPresetReply(null);
     submitQueryToAI(question); // Use the new function that bypasses presets
-  };
+  }, [submitQueryToAI]);
 
   useEffect(() => {
     if (initialQuery && !autoSubmitted) {
@@ -394,7 +409,7 @@ const Chat = () => {
       setInput('');
       submitQuery(initialQuery);
     }
-  }, [initialQuery, autoSubmitted]);
+  }, [initialQuery, autoSubmitted, submitQuery]);
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -426,9 +441,9 @@ const Chat = () => {
 
   return (
     <div className="relative h-screen overflow-hidden apple-tech-bg">
-      {/* Fixed Avatar Header with Gradient */}
+      {/* Fixed Avatar Header with Gradient and CLS prevention */}
       <div
-        className={`fixed top-0 z-50 transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 z-50 transition-all duration-300 ease-in-out ${
           isScrolled 
             ? 'right-4 left-auto w-auto' // Top-right corner when scrolled
             : 'right-0 left-0 w-full'    // Full width when not scrolled
@@ -437,6 +452,8 @@ const Chat = () => {
           background: isScrolled 
             ? 'transparent' // No gradient when in corner
             : 'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
+          contain: 'layout style', // Prevent layout shifts
+          willChange: 'transform, opacity', // Optimize for animations
         }}
       >
         <div
@@ -495,7 +512,6 @@ const Chat = () => {
               >
                 <ChatLanding 
                   submitQuery={submitQuery} 
-                  handlePresetReply={handlePresetReply}
                 />
               </motion.div>
             ) : presetReply ? (
@@ -533,8 +549,8 @@ const Chat = () => {
                       
                       <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
                         <p>
-                          Hi! I'm currently using the <strong>free version</strong> of Google's Gemini API, 
-                          and today's quota has been reached.
+                          Hi! I&apos;m currently using the <strong>free version</strong> of Google&apos;s Gemini API, 
+                          and today&apos;s quota has been reached.
                         </p>
                         
                         <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg mt-3">
@@ -611,9 +627,7 @@ const Chat = () => {
         <div className="sticky bottom-0 px-2 pt-3 md:px-0 md:pb-4">
           <div className="relative flex flex-col items-center gap-3">
             <HelperBoost 
-              submitQuery={submitQuery} 
-              setInput={setInput} 
-              handlePresetReply={handlePresetReply}
+              submitQuery={submitQuery}
             />
             <ChatBottombar
               input={input}

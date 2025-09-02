@@ -168,6 +168,46 @@
   transition: transform 0.1s ease;
 }
 
+.tech-ai-loading {
+  position: relative;
+}
+
+.tech-ai-loading::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--apple-tech-blue), 
+    var(--apple-system-green), 
+    var(--apple-tech-blue)
+  );
+  border-radius: inherit;
+  opacity: 0.3;
+  animation: tech-scan 2s linear infinite;
+  z-index: -1;
+}
+
+/* 能量脉冲效果 */
+.energy-pulse {
+  position: relative;
+}
+
+.energy-pulse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--apple-tech-blue);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: energy-ripple 2s ease-out infinite;
+}
+
 /* Enhanced chat bubble styling */
 .apple-chat-bubble {
   background: var(--apple-glass);
@@ -237,48 +277,57 @@ pre {
   overflow-x: auto;
 }
 
-/* Enhanced smooth scrolling for chat container */
+/* Enhanced smooth scrolling for chat container with CLS prevention */
 .chat-scroll-container {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Changed from smooth to auto to prevent conflicts */
   -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+  contain: layout style; /* Prevent layout shifts */
+  will-change: scroll-position; /* Optimize for scrolling */
 }
 
-/* Avatar scroll animation enhancements */
+/* Avatar scroll animation enhancements with CLS prevention */
 .avatar-scroll-transition {
   transform-origin: center;
   backface-visibility: hidden; /* Prevent flickering during transitions */
   will-change: transform, opacity; /* Optimize for animations */
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing curve */
+  contain: layout style; /* Prevent layout shifts */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Reduced from 0.6s to 0.3s */
 }
 
-/* Improved tooltip styling for dark mode */
+/* Improved tooltip styling for dark mode with stability */
 .avatar-tooltip {
   backdrop-filter: blur(8px);
   background: rgba(17, 24, 39, 0.9);
   border: 1px solid rgba(55, 65, 81, 0.2);
   box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  contain: layout style; /* Prevent layout shifts */
 }
 
-/* Smooth corner positioning animation */
+/* Smooth corner positioning animation with CLS prevention */
 .avatar-corner-position {
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); /* Ultra-smooth spring curve */
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Reduced from 0.8s to 0.3s */
+  contain: layout style; /* Prevent layout shifts */
 }
 
-/* Enhanced hover effects for scrolled avatar */
+/* Enhanced hover effects for scrolled avatar with stability */
 .avatar-scrolled:hover {
-  transform: scale(1.15); /* More noticeable scale on hover */
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+  transform: scale(1.1); /* Reduced from 1.15 to 1.1 for stability */
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12)); /* Reduced shadow intensity */
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy hover effect */
 }
 
-/* Apple-style avatar glow effect */
+/* Apple-style avatar glow effect with CLS prevention */
 .apple-avatar-glow {
-  filter: drop-shadow(0 0 20px var(--apple-glow));
+  filter: drop-shadow(0 0 15px var(--apple-glow)); /* Reduced glow intensity */
+  animation: tech-breathe 4s ease-in-out infinite;
+  contain: layout style; /* Prevent layout shifts */
 }
 
 .apple-avatar-glow:hover {
-  filter: drop-shadow(0 0 30px var(--apple-glow));
-  transition: filter 0.3s ease;
+  filter: drop-shadow(0 0 25px var(--apple-glow)) brightness(1.05); /* Reduced effects */
+  animation: none;
+  transform: scale(1.03); /* Reduced scale for stability */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Reduced duration */
 }
 
 /* Apple-style status indicator */
@@ -294,6 +343,29 @@ pre {
   }
   50% {
     box-shadow: 0 0 0 2px white, 0 0 0 8px rgba(52, 199, 89, 0.3);
+  }
+}
+
+/* 头像科技感呼吸效果 */
+@keyframes tech-breathe {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px var(--apple-glow));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 35px var(--apple-glow));
+    transform: scale(1.02);
+  }
+}
+
+@keyframes energy-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
@@ -359,4 +431,132 @@ pre {
 .apple-seamless-bottom > .relative {
   position: relative;
   z-index: 2;
+}
+
+/* Landing page specific animations */
+.apple-flash-entrance {
+  animation: appleFlashEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes appleFlashEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: blur(0px) drop-shadow(0 0 30px var(--apple-glow));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px) drop-shadow(0 0 20px var(--apple-glow));
+  }
+}
+
+/* Enhanced button interactions */
+.apple-button-primary {
+  background: linear-gradient(135deg, 
+    rgba(0, 122, 255, 0.1) 0%, 
+    rgba(0, 122, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.apple-button-primary:hover {
+  background: linear-gradient(135deg, 
+    rgba(0, 122, 255, 0.15) 0%, 
+    rgba(0, 122, 255, 0.08) 100%
+  );
+  border-color: rgba(0, 122, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 122, 255, 0.2);
+}
+
+.apple-button-secondary {
+  background: linear-gradient(135deg, 
+    rgba(52, 199, 89, 0.08) 0%, 
+    rgba(52, 199, 89, 0.04) 100%
+  );
+  border: 1px solid rgba(52, 199, 89, 0.15);
+}
+
+.apple-button-secondary:hover {
+  background: linear-gradient(135deg, 
+    rgba(52, 199, 89, 0.12) 0%, 
+    rgba(52, 199, 89, 0.06) 100%
+  );
+  border-color: rgba(52, 199, 89, 0.25);
+  box-shadow: 0 0 25px rgba(52, 199, 89, 0.15);
+}
+
+/* Landing page responsive adjustments */
+@media (max-width: 640px) {
+  .apple-landing-container {
+    padding: 1.5rem;
+  }
+  
+  .apple-landing-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .apple-landing-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Dark mode enhancements for landing page */
+.dark .apple-tech-bg {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.15) 0%, transparent 50%),
+    linear-gradient(135deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%);
+}
+
+.dark .apple-glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive optimizations for small screens to prevent CLS */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on small screens */
+  .avatar-scroll-transition {
+    transition: all 0.2s ease-out; /* Even faster transitions on mobile */
+  }
+  
+  .avatar-corner-position {
+    transition: all 0.2s ease-out; /* Faster transitions on mobile */
+  }
+  
+  /* Reduce hover effects on touch devices */
+  .avatar-scrolled:hover {
+    transform: scale(1.05); /* Minimal scale on mobile */
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1)); /* Reduced shadow */
+  }
+  
+  .apple-avatar-glow:hover {
+    transform: scale(1.02); /* Minimal scale on mobile */
+    filter: drop-shadow(0 0 15px var(--apple-glow)); /* Reduced glow */
+  }
+  
+  /* Optimize scroll behavior for mobile */
+  .chat-scroll-container {
+    scroll-behavior: auto; /* Disable smooth scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Additional optimizations for very small screens */
+@media (max-width: 480px) {
+  .avatar-scroll-transition {
+    transition: all 0.15s ease-out; /* Ultra-fast transitions */
+  }
+  
+  .avatar-corner-position {
+    transition: all 0.15s ease-out; /* Ultra-fast transitions */
+  }
 }

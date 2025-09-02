@@ -1,12 +1,22 @@
 import { PortfolioConfig } from '../types/portfolio';
 import ConfigParser from './config-parser';
 
-// Import the configuration file - using dynamic import for better compatibility
+// Import the configuration file - using JSON import for better compatibility
+import portfolioConfigData from '../../portfolio-config.json';
+
+/**
+ * Portfolio Configuration Loader
+ * 
+ * Provides centralized access to portfolio configuration with error handling
+ * Implements singleton pattern for consistent data access across the application
+ */
+
+// Initialize configuration with fallback error handling
 let portfolioConfig: PortfolioConfig;
 
 try {
-  // Import JSON configuration
-  portfolioConfig = require('../../portfolio-config.json') as PortfolioConfig;
+  // Use imported JSON configuration
+  portfolioConfig = portfolioConfigData as PortfolioConfig;
 } catch (error) {
   console.error('Failed to load portfolio configuration:', error);
   // Provide a fallback minimal config to prevent the app from crashing
@@ -39,7 +49,7 @@ try {
       web_development: [],
       databases: [],
       devops_cloud: [],
-      iot_hardware: [],
+      big_data: [],
       soft_skills: []
     },
     projects: [],
@@ -98,7 +108,13 @@ try {
 // Create a parser instance
 const configParser = new ConfigParser(portfolioConfig);
 
-// Export configuration and parsed data
+/**
+ * Configuration access functions
+ * 
+ * Provides safe access to portfolio configuration with fallback handling
+ * All exports use the singleton pattern for consistent data access
+ */
+
 export const getConfig = (): PortfolioConfig => portfolioConfig;
 export const getConfigParser = (): ConfigParser => configParser;
 

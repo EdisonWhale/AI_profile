@@ -1,17 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Code, GraduationCap, Mail, MessageSquare, Briefcase } from 'lucide-react';
+import { Award, Code, Mail, MessageSquare, Briefcase } from 'lucide-react';
 import React from 'react';
 
-import { presetReplies } from '@/lib/config-loader';
+
 
 interface ChatLandingProps {
   submitQuery: (query: string) => void;
-  handlePresetReply?: (question: string, reply: string, tool: string) => void;
 }
 
-const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetReply }) => {
+const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
 
   // Suggested questions that the user can click on
   const suggestedQuestions = [
@@ -75,10 +74,10 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
       {/* Welcome message */}
       <motion.div className="mb-8 text-center" variants={itemVariants}>
         <h2 className="mb-3 text-2xl font-semibold">
-            I'm Edison's digital twin, feel free to ask me anything!
+            I&apos;m Edison&apos;s AI twin, feel free to ask me anything!
         </h2>
         <p className="text-muted-foreground mx-auto max-w-md">
-          Begin your interview with my digital twin.
+          Begin your interview with my AI twin.
         </p>
       </motion.div>
 
@@ -104,14 +103,14 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
         variants={containerVariants}
       >
         {suggestedQuestions.map((question, index) => (
-          <motion.button
-            key={index}
-            className="apple-glass apple-glow-hover flex w-full items-center rounded-xl px-4 py-3 transition-all duration-300 ease-out"
-            onClick={() => handleQuestionClick(question.text)}
-            variants={itemVariants}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+                  <motion.button
+          key={index}
+          className="apple-glass apple-glow-hover flex w-full items-center rounded-xl px-4 py-3 transition-all duration-300 ease-out"
+          onClick={() => handleQuestionClick(question.text)}
+          variants={itemVariants}
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.98, y: 0 }}
+        >
             <span className="bg-background mr-3 rounded-full p-2">
               {question.icon}
             </span>

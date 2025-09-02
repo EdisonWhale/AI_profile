@@ -15,7 +15,6 @@ export interface Education {
     degree: string;
     institution: string;
     duration: string;
-    cgpa: string;
     graduationDate: string;
   };
   achievements: string[];
@@ -36,7 +35,7 @@ export interface Skills {
   web_development: string[];
   databases: string[];
   devops_cloud: string[];
-  iot_hardware: string[];
+  big_data: string[];
   soft_skills: string[];
 }
 
