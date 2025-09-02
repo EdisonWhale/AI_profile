@@ -172,18 +172,18 @@ export const Carousel = ({
         </div>
         <div className="mr-10 flex justify-end gap-2 md:mr-20">
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50/80 hover:bg-blue-100/90 disabled:opacity-50 backdrop-blur-sm border border-blue-200/30 shadow-md shadow-blue-400/10 transition-all duration-300"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowLeft className="h-6 w-6 text-blue-600" />
           </button>
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50/80 hover:bg-blue-100/90 disabled:opacity-50 backdrop-blur-sm border border-blue-200/30 shadow-md shadow-blue-400/10 transition-all duration-300"
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowRight className="h-6 w-6 text-blue-600" />
           </button>
         </div>
       </div>
@@ -250,15 +250,15 @@ export const Card = ({
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans dark:bg-neutral-900"
+              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
             >
               {/* Sticky close button */}
               <div className="sticky top-4 z-52 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
                 <button
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black/90 shadow-md dark:bg-white/90"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 shadow-md hover:bg-gray-200 transition-colors"
                   onClick={handleClose}
                 >
-                  <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                  <IconX className="h-6 w-6 text-gray-600" />
                 </button>
               </div>
 
@@ -267,13 +267,13 @@ export const Card = ({
                 <div>
                   <motion.p
                     layoutId={layout ? `category-${card.title}` : undefined}
-                    className="text-base font-medium text-black dark:text-white"
+                    className="text-base font-medium text-gray-700"
                   >
                     {card.category}
                   </motion.p>
                   <motion.p
                     layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+                    className="mt-4 text-2xl font-semibold text-gray-800 md:text-5xl"
                   >
                     {card.title}
                   </motion.p>
@@ -289,30 +289,25 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-48 w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 dark:bg-neutral-900"
+        className="group relative z-10 flex h-48 w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50/90 via-cyan-50/80 to-indigo-50/85 backdrop-blur-xl border border-blue-200/40 shadow-xl shadow-blue-400/12 hover:from-blue-50 hover:via-cyan-50 hover:to-indigo-50 hover:shadow-2xl hover:shadow-blue-500/18 hover:scale-[1.02] transition-all duration-500 ease-out"
       >
-        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-black hover:scale-110 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-white/30 group-hover:from-white/40 via-transparent group-hover:via-cyan-50/20 to-blue-50/30 group-hover:to-indigo-50/40 transition-all duration-500 ease-out" />
         {/*<div className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/2" />*/}
         <div className="relative z-40 p-8">
           <motion.p
             layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-left font-sans text-sm font-medium text-white md:text-base"
+            className="text-left font-sans text-sm font-medium text-blue-600 group-hover:text-blue-700 drop-shadow-sm md:text-base transition-colors duration-300"
           >
             {card.category}
           </motion.p>
           <motion.p
             layoutId={layout ? `title-${card.title}` : undefined}
-            className="max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-white md:text-3xl"
+            className="max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-slate-800 group-hover:text-slate-900 drop-shadow-sm md:text-3xl transition-colors duration-300"
           >
             {card.title}
           </motion.p>
         </div>
-        <BlurImage
-          src={card.src}
-          alt={card.title}
-          fill
-          className="absolute inset-0 z-10 object-cover"
-        />
+
       </motion.button>
     </>
   );

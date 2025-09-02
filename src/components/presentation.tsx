@@ -92,11 +92,11 @@ export function Presentation() {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-4 flex flex-wrap gap-2"
           >
-            {['software Engineer', 'AI/ML Engineer','Full-stack web developer', 'algorithm engineer'].map(
+            {['Software Engineer', 'AI/ML Engineer','Full-Stack Web Developer','Backend Developer', 'Algorithm Engineer'].map(
               (tag) => (
                 <span
                   key={tag}
-                  className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm"
+                  className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-white/30 text-foreground/80 rounded-full px-3 py-1 text-sm shadow-sm hover:from-blue-500/15 hover:to-cyan-500/15 transition-all duration-300"
                 >
                   {tag}
                 </span>
