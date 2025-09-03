@@ -1,5 +1,7 @@
 # Edison Xu — AI-Powered Portfolio
 
+![Portfolio Preview](public/portfolio.png?v=2)
+
 Modern, AI-augmented developer portfolio for Edison Xu. The site is fully driven by a single JSON configuration, features an AI chat experience powered by Google Gemini, and uses an Apple-inspired visual design.
 
 This README documents this specific implementation, its configuration, architecture, and how to run and customize it.
