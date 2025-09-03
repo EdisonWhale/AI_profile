@@ -1,5 +1,5 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { streamText, convertToModelMessages } from 'ai';
+import { streamText, convertToModelMessages, stepCountIs } from 'ai';
 
 import { systemPrompt } from '@/lib/config-loader';
 import { getContact } from './tools/getContact';
@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       system: systemPrompt,
       messages: convertToModelMessages(messages),
       tools,
+      stopWhen: stepCountIs(5),
     });
 
     console.log('[CHAT-API] streamText completed successfully');

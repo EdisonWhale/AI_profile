@@ -43,9 +43,9 @@ const Skills = () => {
       color: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
     },
     {
-      category: 'IoT & Hardware',
+      category: 'Big Data',
       icon: <Microchip className="h-5 w-5" />,
-      skills: config.skills.iot_hardware,
+      skills: config.skills.big_data,
       color: 'bg-indigo-50 text-indigo-600 border border-indigo-200',
     },
     {

@@ -55,8 +55,7 @@ export const getEntryLevel = tool({
         traits: config.personality.traits,
         funFacts: config.personality.funFacts,
         workingStyle: config.personality.workingStyle
-      },
-      professionalMessage: "I'm currently working as a Software Engineer at Highmark Health, where I'm developing AI and ML solutions for enterprise applications. I'm always open to new opportunities that offer exciting technical challenges and the chance to work on impactful projects. My experience includes building autonomous AI agents, developing multi-modal chatbots, and architecting enterprise knowledge systems. I'm particularly interested in roles that combine my expertise in AI/ML with full-stack development, especially in environments that value innovation and cutting-edge technology. I'm adaptable, a fast learner, and passionate about creating technology that makes a real impact. What kind of projects or technical challenges is your team currently working on that I might be able to contribute to?"
+      }
     };
   },
 });

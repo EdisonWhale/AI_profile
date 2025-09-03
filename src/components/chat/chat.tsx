@@ -267,16 +267,12 @@ const Chat: React.FC = () => {
       const clientHeight = scrollContainer.clientHeight;
       const viewportHeight = window.innerHeight;
       
-      // More stable threshold calculation for small screens
       const isSmallScreen = viewportHeight < 700;
-      const scrollBuffer = isSmallScreen ? 30 : 50; // Smaller buffer for small screens
-      const scrollThreshold = isSmallScreen ? 80 : 120; // Lower threshold for small screens
+      const scrollBuffer = isSmallScreen ? 30 : 50;
+      const scrollThreshold = isSmallScreen ? 80 : 120;
       
-      // Only trigger if there's actual scrollable content
       const hasScrollableContent = scrollHeight > clientHeight + scrollBuffer;
-      const shouldBeScrolled = hasScrollableContent && scrollTop > scrollThreshold;
       
-      // Add hysteresis to prevent rapid state changes
       const currentThreshold = isScrolled ? scrollThreshold - 20 : scrollThreshold;
       const newShouldBeScrolled = hasScrollableContent && scrollTop > currentThreshold;
       
@@ -296,11 +292,10 @@ const Chat: React.FC = () => {
         requestAnimationFrame(() => {
           if (timeoutId) clearTimeout(timeoutId);
           
-          // Shorter debounce for more responsive behavior
           timeoutId = setTimeout(() => {
             handleScroll();
             ticking = false;
-          }, 30); // Reduced from 50ms to 30ms
+          }, 30);
         });
         ticking = true;
       }
@@ -366,13 +361,11 @@ const Chat: React.FC = () => {
   const submitQuery = useCallback((query: string) => {
     if (!query.trim() || isToolInProgress) return;
     
-    // Clear any previous error message
     setErrorMessage(null);
     
-    // Default to AI response - preset checking removed
     setLoadingSubmit(true);
     setIsLoading(true);
-    setPresetReply(null); // Clear any preset reply when submitting new query
+    setPresetReply(null);
     sendMessage({
       text: query,
     });
@@ -381,10 +374,8 @@ const Chat: React.FC = () => {
   const submitQueryToAI = useCallback((query: string) => {
     if (!query.trim() || isToolInProgress) return;
     
-    // Clear any previous error message
     setErrorMessage(null);
     
-    // Force AI response, bypass preset checking
     setLoadingSubmit(true);
     setIsLoading(true);
     setPresetReply(null);
@@ -393,14 +384,10 @@ const Chat: React.FC = () => {
     });
   }, [isToolInProgress, sendMessage]);
 
-  const handlePresetReply = (question: string, reply: string, tool: string) => {
-    setPresetReply({ question, reply, tool });
-    setLoadingSubmit(false);
-  };
 
   const handleGetAIResponse = useCallback((question: string) => {
     setPresetReply(null);
-    submitQueryToAI(question); // Use the new function that bypasses presets
+    submitQueryToAI(question);
   }, [submitQueryToAI]);
 
   useEffect(() => {
@@ -420,7 +407,7 @@ const Chat: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isToolInProgress) return;
-    submitQueryToAI(input); // User input should go directly to AI
+    submitQueryToAI(input);
     setInput('');
   };
 
@@ -435,7 +422,7 @@ const Chat: React.FC = () => {
 
   // Calculate header height based on hasActiveTool and scroll state
   const headerHeight = useMemo(() => {
-    if (isScrolled) return 80; // Minimal height when scrolled
+    if (isScrolled) return 80;
     return hasActiveTool ? 100 : 180;
   }, [hasActiveTool, isScrolled]);
 
@@ -445,24 +432,24 @@ const Chat: React.FC = () => {
       <div
         className={`fixed top-0 z-50 transition-all duration-300 ease-in-out ${
           isScrolled 
-            ? 'right-4 left-auto w-auto' // Top-right corner when scrolled
-            : 'right-0 left-0 w-full'    // Full width when not scrolled
+            ? 'right-4 left-auto w-auto'
+            : 'right-0 left-0 w-full'
         }`}
         style={{
           background: isScrolled 
-            ? 'transparent' // No gradient when in corner
+            ? 'transparent'
             : 'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
-          contain: 'layout style', // Prevent layout shifts
-          willChange: 'transform, opacity', // Optimize for animations
+          contain: 'layout style',
+          willChange: 'transform, opacity',
         }}
       >
-        <div
-          className={`transition-all duration-500 ease-in-out ${
-            isScrolled 
-              ? 'pt-4 pb-0' // Minimal padding when scrolled
-              : hasActiveTool ? 'pt-6 pb-0' : 'py-6'
-          }`}
-        >
+                  <div
+            className={`transition-all duration-500 ease-in-out ${
+              isScrolled 
+                ? 'pt-4 pb-0'
+                : hasActiveTool ? 'pt-6 pb-0' : 'py-6'
+            }`}
+          >
           <div className={`flex ${
             isScrolled ? 'justify-end' : 'justify-center'
           }`}>
@@ -531,69 +518,160 @@ const Chat: React.FC = () => {
                 className="px-4 pt-4"
               >
                 <ChatBubble variant="received">
-                  <ChatBubbleMessage className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
-                    <div className="space-y-4 p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center">
-                          <span className="text-white text-lg">⚠️</span>
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-amber-800 dark:text-amber-300 text-sm">
-                            API Quota Exhausted
-                          </h3>
-                          <p className="text-xs text-amber-600 dark:text-amber-400">
-                            Free Gemini API limit reached
-                          </p>
-                        </div>
+                  <ChatBubbleMessage className="apple-glass border-0 overflow-hidden">
+                    <div className="relative p-6">
+                      {/* Background subtle pattern with Apple colors */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 blur-3xl"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-gradient-to-tr from-green-400 to-green-600 blur-2xl"></div>
                       </div>
                       
-                      <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
-                        <p>
-                          Hi! I&apos;m currently using the <strong>free version</strong> of Google&apos;s Gemini API, 
-                          and today&apos;s quota has been reached.
-                        </p>
+                      {/* Content */}
+                      <div className="relative space-y-5">
+                        {/* Header with elegant icon */}
+                        <motion.div
+                          className="flex items-center gap-4"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1, duration: 0.4 }}
+                        >
+                          <div className="relative">
+                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                            {/* Subtle glow ring */}
+                            <div className="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 dark:text-white text-base leading-tight">
+                              Service Temporarily Unavailable
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                              AI assistant is currently offline
+                            </p>
+                          </div>
+                        </motion.div>
                         
-                        <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg mt-3">
-                          <p className="font-medium mb-2">What you can do:</p>
-                          <ul className="list-disc list-inside space-y-1 text-xs">
-                            <li>Contact me directly for a live demo</li>
-                            <li>Use the preset questions below for instant responses</li>
-                            <li>Come back tomorrow when the quota resets</li>
-                          </ul>
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-2 mt-4">
-                        <button
-                          onClick={() => {
-                            setErrorMessage(null);
-                            const preset = presetReplies["How can I reach you?"];
-                            if (preset) {
-                              setPresetReply({ 
-                                question: "How can I reach you?", 
-                                reply: preset.reply, 
-                                tool: preset.tool 
-                              });
-                            }
-                          }}
-                          className="px-4 py-2 bg-amber-500 text-white text-sm rounded-md hover:bg-amber-600 transition-colors font-medium"
+                        {/* Professional explanation */}
+                        <motion.div
+                          className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2, duration: 0.4 }}
                         >
-                          Contact me
-                        </button>
-                        <button
-                          onClick={() => {
-                            setErrorMessage(null);
-                            window.location.href = '/';
-                          }}
-                          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                          <p className="mb-3">
+                            My AI assistant is experiencing technical difficulties and is temporarily unavailable. 
+                            I apologize for any inconvenience this may cause.
+                          </p>
+                        </motion.div>
+                        
+                        {/* Enhanced action options */}
+                        <motion.div
+                          className="bg-gray-50/50 dark:bg-gray-800/30 rounded-xl p-4 border border-gray-200/50 dark:border-gray-700/50"
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3, duration: 0.4 }}
                         >
-                          Use Presets
-                        </button>
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-3">
+                            Alternative ways to connect:
+                          </p>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                              <span>Download my resume for detailed information</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                              <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                              <span>Try the preset questions for immediate responses</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+                              <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+                              <span>Contact me directly for live consultation</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                        
+                        {/* Apple-style action buttons */}
+                        <motion.div
+                          className="flex flex-col sm:flex-row gap-3"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4, duration: 0.4 }}
+                        >
+                          <button
+                            onClick={() => {
+                              // Download resume
+                              const link = document.createElement('a');
+                              link.href = '/Edison-resume-2025.pdf';
+                              link.download = 'Edison-Resume.pdf';
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            }}
+                            className="flex-1 group relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-xl font-medium text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:from-blue-600 hover:to-blue-700 apple-button-press"
+                          >
+                            <div className="relative flex items-center justify-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              <span>Download Resume</span>
+                            </div>
+                            {/* Subtle hover glow */}
+                            <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              setErrorMessage(null);
+                              const preset = presetReplies["How can I reach you?"];
+                              if (preset) {
+                                setPresetReply({ 
+                                  question: "How can I reach you?", 
+                                  reply: preset.reply, 
+                                  tool: preset.tool 
+                                });
+                              }
+                            }}
+                            className="flex-1 group relative bg-gray-100/80 dark:bg-gray-800/50 text-gray-800 dark:text-gray-200 px-4 py-3 rounded-xl font-medium text-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-300 apple-button-press backdrop-blur-sm"
+                          >
+                            <div className="relative flex items-center justify-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                              </svg>
+                              <span>Contact Me</span>
+                            </div>
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              setErrorMessage(null);
+                              window.location.href = '/';
+                            }}
+                            className="flex-1 group text-gray-600 dark:text-gray-400 px-4 py-3 rounded-xl font-medium text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 hover:bg-gray-50/50 dark:hover:bg-gray-800/30"
+                          >
+                            <div className="relative flex items-center justify-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                              </svg>
+                              <span>Return Home</span>
+                            </div>
+                          </button>
+                        </motion.div>
+                        
+                        {/* Professional footer note */}
+                        <motion.div
+                          className="text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.6, duration: 0.4 }}
+                        >
+                          <p className="text-xs text-gray-500 dark:text-gray-400 font-light">
+                            Thank you for your understanding. I&apos;ll be back online shortly.
+                          </p>
+                        </motion.div>
                       </div>
-                      
-                      <p className="text-xs text-amber-600 dark:text-amber-400 text-center mt-3">
-                        Thank you for your patience! 🙏
-                      </p>
                     </div>
                   </ChatBubbleMessage>
                 </ChatBubble>
