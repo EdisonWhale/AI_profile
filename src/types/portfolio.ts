@@ -65,8 +65,8 @@ export interface Project {
   featured: boolean;
   achievements?: string[];
   metrics?: string[];
-  links: ProjectLink[];
-  images: ProjectImage[];
+  links?: ProjectLink[];
+  images?: ProjectImage[];
 }
 
 export interface Social {

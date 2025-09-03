@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     siteName: "Edison Xu Portfolio",
     images: [
       {
-        url: "https://portfolio.anujjainbatu.tech/portfolio.png",
+        url: "https://edisonwhale.com/portfolio.png",
         width: 1200,
         height: 630,
         alt: "Edison Xu - Professional Portfolio with AI Chatbot",
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     creator: "@edisonwhale",
     site: "@edisonwhale",
     images: [{
-      url: "https://portfolio.anujjainbatu.tech/portfolio.png",
+      url: "https://edisonwhale.com/portfolio.png",
       alt: "Edison Xu Professional Portfolio"
     }],
   },
@@ -135,7 +135,7 @@ export default function RootLayout({
               "name": "Edison Xu",
               "jobTitle": "Full-stack Python Developer & AI Engineer",
               "url": "https://edisonwhale.com/",
-              "image": "https://portfolio.anujjainbatu.tech/profile.jpeg",
+              "image": "https://edisonwhale.com/profile.jpeg",
               "sameAs": [
                 "https://github.com/edisonwhale",
                 "https://linkedin.com/in/edisonwhale",

@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 // Simple icon components to replace @tabler/icons-react
 const IconArrowNarrowLeft = ({ className }: { className?: string }) => (
@@ -233,59 +234,66 @@ export const Card = ({
   // @ts-expect-error - useOutsideClick hook with ref parameter
   useOutsideClick(containerRef, () => handleClose());
 
+  // Create modal content
+  const modalContent = (
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[9999] h-screen overflow-auto">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
+          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            ref={containerRef}
+            layoutId={layout ? `card-${card.title}` : undefined}
+            className="relative z-[10000] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
+          >
+            {/* Sticky close button */}
+            <div className="sticky top-4 z-[10001] flex justify-end px-8 pt-8 md:px-14 md:pt-8">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 shadow-md hover:bg-gray-200 transition-colors"
+                onClick={handleClose}
+              >
+                <IconX className="h-6 w-6 text-gray-600" />
+              </button>
+            </div>
+
+            {/* Header section with consistent padding */}
+            <div className="relative px-8 pt-2 pb-0 md:px-14">
+              <div>
+                <motion.p
+                  layoutId={layout ? `category-${card.title}` : undefined}
+                  className="text-base font-medium text-gray-700"
+                >
+                  {card.category}
+                </motion.p>
+                <motion.p
+                  layoutId={layout ? `title-${card.title}` : undefined}
+                  className="mt-4 text-2xl font-semibold text-gray-800 md:text-5xl"
+                >
+                  {card.title}
+                </motion.p>
+              </div>
+            </div>
+
+            {/* Content with consistent padding */}
+            <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
-      <AnimatePresence>
-        {open && (
-          <div className="fixed inset-0 z-52 h-screen overflow-auto">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              ref={containerRef}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
-            >
-              {/* Sticky close button */}
-              <div className="sticky top-4 z-52 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
-                <button
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 shadow-md hover:bg-gray-200 transition-colors"
-                  onClick={handleClose}
-                >
-                  <IconX className="h-6 w-6 text-gray-600" />
-                </button>
-              </div>
-
-              {/* Header section with consistent padding */}
-              <div className="relative px-8 pt-2 pb-0 md:px-14">
-                <div>
-                  <motion.p
-                    layoutId={layout ? `category-${card.title}` : undefined}
-                    className="text-base font-medium text-gray-700"
-                  >
-                    {card.category}
-                  </motion.p>
-                  <motion.p
-                    layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-gray-800 md:text-5xl"
-                  >
-                    {card.title}
-                  </motion.p>
-                </div>
-              </div>
-
-              {/* Content with consistent padding */}
-              <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Render modal using portal to escape chat container */}
+      {typeof window !== 'undefined' && createPortal(modalContent, document.body)}
+      
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}

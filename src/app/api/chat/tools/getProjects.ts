@@ -19,7 +19,7 @@ export const getProjects = tool({
         techStack: project.techStack,
         status: project.status,
         featured: project.featured,
-        links: project.links,
+        links: project.links || [],
         highlights: project.achievements || project.metrics || []
       }))
     };
