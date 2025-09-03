@@ -2,7 +2,7 @@
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, isToolOrDynamicToolUIPart } from 'ai';
 import { AnimatePresence, motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
+
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
@@ -20,12 +20,8 @@ import {
 } from '@/components/ui/chat/chat-bubble';
 import HelperBoost from './HelperBoost';
 
-// ClientOnly component for client-side rendering
-interface ClientOnlyProps {
-  children: React.ReactNode;
-}
-
-const ClientOnly: React.FC<ClientOnlyProps> = ({ children }) => {
+// Optimized ClientOnly component
+const ClientOnly: React.FC<{ children: React.ReactNode }> = React.memo(function ClientOnly({ children }) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -37,7 +33,7 @@ const ClientOnly: React.FC<ClientOnlyProps> = ({ children }) => {
   }
 
   return <>{children}</>;
-};
+});
 
 // Define Avatar component props interface
 interface AvatarProps {
@@ -45,140 +41,136 @@ interface AvatarProps {
   isScrolled: boolean;
 }
 
-// Dynamic import of Avatar component
-const Avatar = dynamic<AvatarProps>(
-  () =>
-    Promise.resolve(({ hasActiveTool, isScrolled }: AvatarProps) => {
-      // Calculate size based on both hasActiveTool and scroll state with reduced variation
-      const getAvatarSize = () => {
-        if (isScrolled) return 64;
-        return hasActiveTool ? 80 : 112;
-      };
+// Static Avatar component for better performance
+const Avatar: React.FC<AvatarProps> = React.memo(function Avatar({ hasActiveTool, isScrolled }) {
+  // Calculate size based on both hasActiveTool and scroll state with reduced variation
+  const getAvatarSize = () => {
+    if (isScrolled) return 64;
+    return hasActiveTool ? 80 : 112;
+  };
 
-      // Animation variants for smoother transitions
-      const avatarVariants = {
-        center: {
-          x: 0,
-          y: 0,
-          scale: 1,
-          transition: {
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            mass: 0.8,
-            duration: 0.3
-          }
-        },
-        corner: {
-          x: 0,
-          y: 0, 
-          scale: 0.57,
-          transition: {
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            mass: 0.8,
-            duration: 0.3
-          }
-        }
-      };
+  // Animation variants for smoother transitions
+  const avatarVariants = {
+    center: {
+      x: 0,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3
+      }
+    },
+    corner: {
+      x: 0,
+      y: 0, 
+      scale: 0.57,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
+        duration: 0.3
+      }
+    }
+  };
 
-      const containerVariants = {
-        center: {
-          scale: 1,
-          transition: {
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            duration: 0.3
-          }
-        },
-        corner: {
-          scale: 1,
-          transition: {
+  const containerVariants = {
+    center: {
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        duration: 0.3
+      }
+    },
+    corner: {
+      scale: 1,
+      transition: {
+        type: "spring", 
+        stiffness: 300,
+        damping: 30,
+        duration: 0.3
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      animate={isScrolled ? "corner" : "center"}
+      className={`group relative flex items-center justify-center rounded-full`}
+      style={{ 
+        width: getAvatarSize(),
+        height: getAvatarSize()
+      }}
+      title={isScrolled ? 'Back To Home Page' : undefined}
+    >
+      <motion.div
+        variants={avatarVariants}
+        animate={isScrolled ? "corner" : "center"}
+        className="relative cursor-pointer"
+        onClick={() => (window.location.href = '/')}
+        whileHover={{ 
+          scale: isScrolled ? 1.2 : 1.05,
+          transition: { 
             type: "spring", 
-            stiffness: 300,
-            damping: 30,
-            duration: 0.3
+            stiffness: 400, 
+            damping: 15 
           }
-        }
-      };
-
-      return (
-        <motion.div
-          variants={containerVariants}
-          animate={isScrolled ? "corner" : "center"}
-          className={`group relative flex items-center justify-center rounded-full`}
-          style={{ 
-            width: getAvatarSize(),
-            height: getAvatarSize()
+        }}
+        whileTap={{ 
+          scale: 0.95,
+          transition: { duration: 0.1 }
+        }}
+      >
+        <img
+          src="/avatar.png"
+          alt="Avatar"
+          className="h-full w-full object-cover object-[center_top_-5%] rounded-full apple-avatar-glow"
+          style={{
+            filter: isScrolled 
+              ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12))' 
+              : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08))'
           }}
-          title={isScrolled ? 'Back To Home Page' : undefined}
-        >
-          <motion.div
-            variants={avatarVariants}
-            animate={isScrolled ? "corner" : "center"}
-            className="relative cursor-pointer"
-            onClick={() => (window.location.href = '/')}
-            whileHover={{ 
-              scale: isScrolled ? 1.2 : 1.05,
-              transition: { 
-                type: "spring", 
-                stiffness: 400, 
-                damping: 15 
-              }
-            }}
-            whileTap={{ 
-              scale: 0.95,
-              transition: { duration: 0.1 }
-            }}
-          >
-            <img
-              src="/avatar.png"
-              alt="Avatar"
-              className="h-full w-full object-cover object-[center_top_-5%] rounded-full apple-avatar-glow"
-              style={{
-                filter: isScrolled 
-                  ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12))' 
-                  : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08))'
+        />
+        
+        {/* Enhanced tooltip with motion */}
+        <AnimatePresence>
+          {isScrolled && (
+            <motion.div 
+              initial={{ opacity: 0, y: 5, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 5, scale: 0.9 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 400,
+                damping: 25
               }}
-            />
-            
-            {/* Enhanced tooltip with motion */}
-            <AnimatePresence>
-              {isScrolled && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 5, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 5, scale: 0.9 }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 25
-                  }}
-                  className="absolute -bottom-12 right-0 avatar-tooltip text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10"
-                >
-                  Back to Home Page
-                  <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-800 rotate-45"></div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              className="absolute -bottom-12 right-0 avatar-tooltip text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10"
+            >
+              Back to Home Page
+              <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-800 rotate-45"></div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {/* Subtle glow effect for corner state */}
-            {isScrolled && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.3 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 rounded-full bg-blue-400/20 blur-sm -z-10 group-hover:bg-blue-400/40 transition-all duration-300"
-              />
-            )}
-          </motion.div>
-        </motion.div>
-      );
-    }),
-  { ssr: false }
-);
+        {/* Subtle glow effect for corner state */}
+        {isScrolled && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 rounded-full bg-blue-400/20 blur-sm -z-10 group-hover:bg-blue-400/40 transition-all duration-300"
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+});
 
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
@@ -258,62 +250,47 @@ const Chat: React.FC = () => {
     setIsLoading(status === 'streaming');
   }, [status]);
 
-  // Enhanced scroll detection with improved stability for small screens
+  // Lazy-initialized scroll handler
   const handleScroll = useCallback(() => {
     const scrollContainer = document.querySelector('.chat-scroll-container');
-    if (scrollContainer) {
-      const scrollTop = scrollContainer.scrollTop;
-      const scrollHeight = scrollContainer.scrollHeight;
-      const clientHeight = scrollContainer.clientHeight;
-      const viewportHeight = window.innerHeight;
-      
-      const isSmallScreen = viewportHeight < 700;
-      const scrollBuffer = isSmallScreen ? 30 : 50;
-      const scrollThreshold = isSmallScreen ? 80 : 120;
-      
-      const hasScrollableContent = scrollHeight > clientHeight + scrollBuffer;
-      
-      const currentThreshold = isScrolled ? scrollThreshold - 20 : scrollThreshold;
-      const newShouldBeScrolled = hasScrollableContent && scrollTop > currentThreshold;
-      
-      if (newShouldBeScrolled !== isScrolled) {
-        setIsScrolled(newShouldBeScrolled);
-      }
+    if (!scrollContainer) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const viewportHeight = window.innerHeight;
+    
+    const isSmallScreen = viewportHeight < 700;
+    const scrollThreshold = isSmallScreen ? 80 : 120;
+    const scrollBuffer = isSmallScreen ? 30 : 50;
+    
+    const hasScrollableContent = scrollHeight > clientHeight + scrollBuffer;
+    const newShouldBeScrolled = hasScrollableContent && scrollTop > scrollThreshold;
+    
+    if (newShouldBeScrolled !== isScrolled) {
+      setIsScrolled(newShouldBeScrolled);
     }
   }, [isScrolled]);
 
-  // Enhanced debouncing with better performance
-  const debouncedHandleScroll = useCallback(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-    let ticking = false;
-    
+  // Optimized debounced scroll handler
+  const debouncedHandleScroll = useMemo(() => {
+    let timeoutId: NodeJS.Timeout;
     return () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (timeoutId) clearTimeout(timeoutId);
-          
-          timeoutId = setTimeout(() => {
-            handleScroll();
-            ticking = false;
-          }, 30);
-        });
-        ticking = true;
-      }
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleScroll, 16); // ~60fps
     };
   }, [handleScroll]);
 
-  // Setup scroll listener with enhanced cleanup
+  // Lazy scroll listener setup
   useEffect(() => {
-    const scrollContainer = document.querySelector('.chat-scroll-container');
-    const debouncedScroll = debouncedHandleScroll();
+    // Only setup scroll listener after initial render
+    const timer = setTimeout(() => {
+      const scrollContainer = document.querySelector('.chat-scroll-container');
+      if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', debouncedHandleScroll, { passive: true });
+        return () => scrollContainer.removeEventListener('scroll', debouncedHandleScroll);
+      }
+    }, 100);
     
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', debouncedScroll, { passive: true });
-      
-      return () => {
-        scrollContainer.removeEventListener('scroll', debouncedScroll);
-      };
-    }
+    return () => clearTimeout(timer);
   }, [debouncedHandleScroll]);
 
   const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {

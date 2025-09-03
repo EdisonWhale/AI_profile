@@ -22,7 +22,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.4,
+        duration: 0.3,
         ease: [0.25, 0.46, 0.45, 0.94],
         delay: 1.0, // After input animation
         staggerChildren: 0.1,
@@ -36,7 +36,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.3,
+        duration: 0.2, // Faster button animation
         ease: [0.25, 0.46, 0.45, 0.94],
       },
     },

@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { Portal } from '@/components/ui/portal';
 
 // Simple icon components to replace @tabler/icons-react
 const IconArrowNarrowLeft = ({ className }: { className?: string }) => (
@@ -235,57 +236,72 @@ export const Card = ({
 
   return (
     <>
-      <AnimatePresence>
-        {open && (
-          <div className="fixed inset-0 z-52 h-screen overflow-auto">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              ref={containerRef}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
-            >
-              {/* Sticky close button */}
-              <div className="sticky top-4 z-52 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
-                <button
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 shadow-md hover:bg-gray-200 transition-colors"
-                  onClick={handleClose}
-                >
-                  <IconX className="h-6 w-6 text-gray-600" />
-                </button>
-              </div>
+      <Portal>
+        <AnimatePresence>
+          {open && (
+            <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6">
+              {/* Overlay */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-gray-900/20 via-blue-900/30 to-gray-900/20 backdrop-blur-3xl backdrop-saturate-150"
+                onClick={handleClose}
+                initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
+                exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              />
 
-              {/* Header section with consistent padding */}
-              <div className="relative px-8 pt-2 pb-0 md:px-14">
-                <div>
-                  <motion.p
-                    layoutId={layout ? `category-${card.title}` : undefined}
-                    className="text-base font-medium text-gray-700"
-                  >
-                    {card.category}
-                  </motion.p>
-                  <motion.p
-                    layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-gray-800 md:text-5xl"
-                  >
-                    {card.title}
-                  </motion.p>
+              {/* Modal panel */}
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-title"
+                ref={containerRef}
+                layoutId={layout ? `card-${card.title}` : undefined}
+                className="relative z-[1001] w-full max-w-5xl rounded-3xl bg-gradient-to-br from-white/98 via-white/95 to-blue-50/98 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.7),inset_0_1px_0_rgba(255,255,255,0.8),0_0_200px_rgba(0,122,255,0.03)] border border-white/60 ring-1 ring-blue-200/40 backdrop-blur-xl backdrop-saturate-110"
+                initial={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 20, scale: 0.95, filter: "blur(4px)" }}
+                transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
+              >
+                {/* Scroll container with sticky header */}
+                <div className="max-h-[85vh] overflow-auto">
+                  {/* Header */}
+                  <div className="sticky top-0 z-10 flex items-start justify-between gap-4 rounded-t-3xl bg-gradient-to-r from-white/98 via-blue-50/95 to-white/98 px-8 py-6 backdrop-blur-xl backdrop-saturate-120 border-b border-gradient-to-r shadow-[0_1px_3px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] md:px-12 md:py-8">
+                    <div className="min-w-0">
+                      <motion.p
+                        layoutId={layout ? `category-${card.title}` : undefined}
+                        className="text-sm font-medium uppercase tracking-wide text-blue-600/80"
+                      >
+                        {card.category}
+                      </motion.p>
+                      <motion.h2
+                        id="modal-title"
+                        layoutId={layout ? `title-${card.title}` : undefined}
+                        className="mt-2 text-3xl font-bold text-gray-900 md:text-[48px] leading-tight"
+                      >
+                        {card.title}
+                      </motion.h2>
+                    </div>
+
+                    <button
+                      onClick={handleClose}
+                      aria-label="Close"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 backdrop-blur-md text-gray-500 hover:text-gray-700 hover:bg-white border border-gray-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.04),0_1px_0_rgba(255,255,255,0.8),inset_0_1px_0_rgba(255,255,255,0.9)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08),0_0_20px_rgba(0,122,255,0.1)] active:scale-95 active:shadow-[0_1px_4px_rgba(0,0,0,0.08)] transition-all duration-200 apple-button-press"
+                    >
+                      <IconX className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="px-8 py-8 md:px-12 md:py-10 bg-gradient-to-b from-white/95 via-blue-50/30 to-white/98 rounded-b-3xl shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_0_20px_rgba(0,122,255,0.02)]">
+                    {card.content}
+                  </div>
                 </div>
-              </div>
-
-              {/* Content with consistent padding */}
-              <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+      </Portal>
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
