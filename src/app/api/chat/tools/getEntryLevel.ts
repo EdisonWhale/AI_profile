@@ -18,7 +18,7 @@ export const getEntryLevel = tool({
         roleTypes: config.entryLevel.focusAreas,
         industries: ["Technology", "AI/ML", "Healthcare Technology", "Web Development"],
         workMode: "Remote/Hybrid preferred",
-        location: config.personal.location
+        location: config.personal.location.current
       },
       experience: {
         currentPosition: currentExperience 

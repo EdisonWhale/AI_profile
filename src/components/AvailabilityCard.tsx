@@ -129,8 +129,12 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
           <div>
             <p className="text-foreground text-sm font-medium">Location</p>
             <p className="text-muted-foreground text-sm">
-              {data?.preferences.location || "Based in Atlanta, open to remote and relocation for the right opportunity "}
+              {data?.preferences.location || "Based in Atlanta, open to remote and relocation for the right opportunity"}
             </p>
+            <div className="flex gap-2 mt-1">
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Remote Available</span>
+              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Open to Relocation</span>
+            </div>
           </div>
         </div>
 

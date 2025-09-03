@@ -13,7 +13,7 @@ export const getPresentation = tool({
       presentation: config.personal.bio,
       name: config.personal.name,
       title: config.personal.title,
-      location: config.personal.location,
+      location: config.personal.location.current,
       education: config.education.current,
       traits: config.personality?.traits || [],
       interests: config.personality?.interests || [],

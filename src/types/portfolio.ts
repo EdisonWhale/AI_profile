@@ -1,6 +1,12 @@
 export interface PersonalInfo {
   name: string;
-  location: string;
+  location: {
+    current: string;
+    remote: boolean;
+    relocation: boolean;
+    preferredLocations: string[];
+    timezone: string;
+  };
   title: string;
   email: string;
   phone?: string;
@@ -154,7 +160,13 @@ export interface ContactInfo {
 
 export interface ProfileInfo {
   name: string;
-  location: string;
+  location: {
+    current: string;
+    remote: boolean;
+    relocation: boolean;
+    preferredLocations: string[];
+    timezone: string;
+  };
   description: string;
   src: string;
   fallbackSrc: string;

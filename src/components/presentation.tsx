@@ -72,7 +72,13 @@ export function Presentation() {
               {profile.name}
             </h1>
             <div className="mt-1 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
-              <p className="text-muted-foreground">{profile.location}</p>
+              <p className="text-muted-foreground">{profile.location.current}</p>
+              {profile.location.remote && (
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Remote Available</span>
+              )}
+              {profile.location.relocation && (
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Open to Relocation</span>
+              )}
             </div>
           </motion.div>
 

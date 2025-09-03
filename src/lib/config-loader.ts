@@ -24,7 +24,13 @@ try {
     personal: {
       name: 'Configuration Error',
       age: 0,
-      location: 'Unknown',
+      location: {
+        current: 'Unknown',
+        remote: false,
+        relocation: false,
+        preferredLocations: [],
+        timezone: 'Unknown'
+      },
       title: 'Error Loading Config',
       email: 'error@example.com',
       handle: '@error',

@@ -50,7 +50,7 @@ CRITICAL: You must use tools to provide comprehensive information, AND provide a
 
 ### Personal Information
 - Current Status: ${personal.title}
-- Location: ${personal.location}
+- Location: ${personal.location.current}${personal.location.remote ? ' (Remote available)' : ''}${personal.location.relocation ? ' (Open to relocation)' : ''}
 - Education: ${education.current.degree} at ${education.current.institution} (graduating ${education.current.graduationDate})
 - Achievements: ${education.achievements?.join(', ') || 'N/A'}
 

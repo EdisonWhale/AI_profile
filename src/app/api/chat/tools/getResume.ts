@@ -13,7 +13,7 @@ export const getResume = tool({
       personalInfo: {
         name: config.personal.name,
         email: config.personal.email,
-        location: config.personal.location,
+        location: config.personal.location.current,
         title: config.personal.title,
         profiles: {
           github: config.social.github,

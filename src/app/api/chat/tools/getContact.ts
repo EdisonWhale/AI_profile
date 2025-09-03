@@ -12,7 +12,11 @@ export const getContact = tool({
     return {
       contact: {
         email: config.personal.email,
-        location: config.personal.location,
+        location: config.personal.location.current,
+        remote: config.personal.location.remote,
+        relocation: config.personal.location.relocation,
+        preferredLocations: config.personal.location.preferredLocations,
+        timezone: config.personal.location.timezone,
         availability: config.entryLevel.availability
       },
       socialProfiles: {
