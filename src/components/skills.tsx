@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Code, Cpu, PenTool, Users, Database, Cloud, Microchip, Brain } from 'lucide-react';
+import { Code, Cpu, Users, Database, Cloud, Microchip, Brain } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 
 const Skills = () => {
@@ -43,9 +43,9 @@ const Skills = () => {
       color: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
     },
     {
-      category: 'IoT & Hardware',
+      category: 'Big Data',
       icon: <Microchip className="h-5 w-5" />,
-      skills: config.skills.iot_hardware,
+      skills: config.skills.big_data,
       color: 'bg-indigo-50 text-indigo-600 border border-indigo-200',
     },
     {
@@ -92,14 +92,14 @@ const Skills = () => {
       transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
       className="mx-auto w-full max-w-5xl rounded-4xl px-4 sm:px-6"
     >
-      <Card className="w-full border-none px-0 pb-8 sm:pb-12 shadow-none">
-        <CardHeader className="px-0 pb-1">
+      <Card className="w-full bg-white/50 backdrop-blur-md border border-gray-200/40 shadow-lg shadow-gray-200/25 hover:shadow-xl hover:shadow-gray-200/35 rounded-2xl transition-all duration-300 px-6 pb-8 sm:pb-12">
+        <CardHeader className="px-0 pb-1 pt-2">
           <CardTitle className="text-primary px-0 text-2xl sm:text-3xl lg:text-4xl font-bold">
             Skills & Expertise
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="px-0">
+        <CardContent className="px-0 pt-4">
           <motion.div
             className="space-y-6 sm:space-y-8 px-0"
             variants={containerVariants}
@@ -130,11 +130,16 @@ const Skills = () => {
                       key={idx}
                       variants={badgeVariants}
                       whileHover={{
-                        scale: 1.04,
-                        transition: { duration: 0.2 },
+                        scale: 1.02,
+                        y: -1,
+                        transition: { duration: 0.2, ease: 'easeOut' },
+                      }}
+                      whileTap={{
+                        scale: 0.98,
+                        transition: { duration: 0.1 },
                       }}
                     >
-                      <Badge className={`border px-2 py-1 sm:px-3 sm:py-1.5 font-normal text-xs sm:text-sm`}>
+                      <Badge className={`${section.color} backdrop-blur-sm shadow-sm hover:shadow-md hover:scale-[1.02] px-2 py-1 sm:px-3 sm:py-1.5 font-medium text-xs sm:text-sm transition-all duration-200`}>
                         {skill}
                       </Badge>
                     </motion.div>

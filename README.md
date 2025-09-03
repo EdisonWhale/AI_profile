@@ -1,203 +1,171 @@
-# 🚀 AI-Powered Portfolio – Effortless, Customizable, Professional
+# Edison Xu — AI-Powered Portfolio
 
-**Create a powerful, modern developer portfolio in minutes — fully customizable through a single JSON file and enhanced by AI.**  
-No coding knowledge required. Just configure, deploy, and showcase your best self.
+Modern, AI-augmented developer portfolio for Edison Xu. The site is fully driven by a single JSON configuration, features an AI chat experience powered by Google Gemini, and uses an Apple-inspired visual design.
 
-![Portfolio Preview](https://raw.githubusercontent.com/anujjainbatu/ai-portfolio-system-landing-page/refs/heads/main/assets/portfolio.png)
+This README documents this specific implementation, its configuration, architecture, and how to run and customize it.
 
-<p align="center">
-  <a href="https://portfolio.anujjainbatu.tech/"><img src="https://img.shields.io/badge/Demo-Live%20Site-brightgreen" alt="Live Demo"></a>
-  <a href="docs/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-100%25-blue" alt="TypeScript"></a>
-  <a href="docs/CONTRIBUTING.md"><img src="https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg" alt="Contributions Welcome"></a>
-  <a href="https://github.com/anujjainbatu/portfolio/issues"><img src="https://img.shields.io/github/issues/anujjainbatu/portfolio" alt="GitHub Issues"></a>
-  <a href="https://github.com/anujjainbatu/portfolio/stargazers"><img src="https://img.shields.io/github/stars/anujjainbatu/portfolio" alt="GitHub Stars"></a>
-</p>
+**Live Routes**
+- Home: `/`
+- AI Chat: `/chat` (supports `?q=...` to prefill an initial question)
 
-> 🌟 **NEW**: Looking for the marketing landing page? Check out our [dedicated landing page repository](https://github.com/anujjainbatu/portfolio-builder-landing) with SEO-optimized content designed to showcase this portfolio builder to the world!
+**Highlights**
+- JSON-first content via `portfolio-config.json`
+- AI chat with tool-augmented answers (Gemini + Vercel AI SDK)
+- Apple-style UI with framer-motion animations
+- Strong typing and config helpers for safety and reuse
 
----
+**Screenshot Assets**
+- Replace `public/profile.jpeg` and `public/avatar.png` to customize visuals
 
-## ✨ Why Choose This Portfolio?
-
-| Traditional Portfolios              | **This Portfolio**                                   |
-|-------------------------------------|-----------------------------------------------------|
-| Tedious manual edits                | **Edit 1 JSON file — instant updates**              |
-| Risk of breaking code               | **Zero coding required**                            |
-| Complex, hard-to-customize codebase | **Intuitive configuration, AI-powered assistance**  |
-| Outdated design                     | **Modern, responsive layout**                       |
+**License**
+- MIT (see `docs/LICENSE`)
 
 ---
 
-## 🚦 Quick Start (5 Minutes)
-
-<details>
-<summary><strong>Step-by-step Setup</strong></summary>
-
-1. **Fork & Clone**
-    ```bash
-    git clone https://github.com/your-username/portfolio.git
-    cd portfolio
-    ```
-
-2. **Install Dependencies**
-    ```bash
-    npm install
-    # or
-    pnpm install
-    # or
-    yarn install
-    ```
-
-3. **Get a Google Gemini API Key**
-    - Visit [Google AI Studio](https://aistudio.google.com/)
-    - Sign in, create an API key, and copy it.
-
-4. **Configure Environment**
-    - Copy `.env.example` to `.env.local`
-    - Add your API key:
-      ```
-      GOOGLE_GENERATIVE_AI_API_KEY=your_google_ai_api_key_here
-      ```
-
-5. **Edit Your Info**
-    - Fill `portfolio-config.json` with your information (see below).
-
-6. **Add Images**
-    - Replace images in `/public/` as needed (profile, projects, etc).
-
-7. **Run Locally**
-    ```bash
-    npm run dev
-    ```
-    - Visit [http://localhost:3000](http://localhost:3000)
-
-8. **Deploy**
-    ```bash
-    npm run build
-    ```
-    - Deploy to Vercel, Netlify, or any platform.
-
-</details>
+**What’s Inside**
+- Strongly typed configuration pipeline (TypeScript)
+- Next.js 15 App Router with React 19
+- Tailwind CSS v4 and Radix UI primitives
+- AI chat backed by `ai` SDK and `@ai-sdk/google`
+- Prebuilt sections: Presentation, Skills, Projects, Resume, Contact, Availability
 
 ---
 
-## 🤖 AI-Driven Configuration
-
-**Let AI build your portfolio configuration for you!**
-
-- Upload your resume (PDF/DOC) and the sample `portfolio-config.json` to ChatGPT or Claude.
-- Use this prompt:
-    ```
-    Please generate a portfolio-config.json using my resume and this template. Include my experience, skills, projects, and suggested images.
-    ```
-- Alternatively, manually edit `portfolio-config.json` to customize your info, skills, and projects.
-
----
-
-## 🗂️ Project Structure
-
-<details>
-<summary><strong>View File Structure</strong></summary>
-
-```
-portfolio/
-├── portfolio-config.json   # Main configuration
-├── public/                # Images & assets
-├── src/                   # Source code
-│   ├── app/               # Next.js app structure
-│   ├── components/        # UI Components
-│   ├── lib/               # Config loaders & utilities
-│   ├── types/             # TypeScript types
-│   └── hooks/             # React hooks
-├── docs/                  # Documentation
-├── assets/                # Documentation assets
-├── package.json           # Project metadata
-└── ...
-```
-</details>
+**Project Structure**
+- `portfolio-config.json`: Single source of truth for content (name, bio, skills, projects, resume, chatbot, etc.)
+- `public/`: Static assets (profile image, favicon, resume PDF)
+- `src/app/`: Next.js routes, layout, global styles
+- `src/app/chat`: Dedicated chat page
+- `src/app/api/chat`: AI chat API route and tools
+- `src/components/`: UI components (landing, chat, sections, UI primitives)
+- `src/lib/`: Config loader and parser utilities
+- `src/types/portfolio.ts`: Strongly typed config schema
 
 ---
 
-## 🖼️ Image & Asset Guidelines
+**Configuration System**
+- Loader: `src/lib/config-loader.ts`
+  - Imports `portfolio-config.json` at build time
+  - Exposes helpers like `getConfig()`, `getConfigParser()` and pre-parsed exports
+- Parser: `src/lib/config-parser.ts`
+  - Generates derived data:
+    - `systemPrompt`: AI system prompt personalized to Edison
+    - `contactInfo`, `profileInfo`, `skillsData`, `projectData`
+    - `presetReplies`, `resumeDetails`, `entryLevelInfo`
+- Types: `src/types/portfolio.ts`
+  - Defines `PortfolioConfig` and all nested types (Personal, Education, Experience, Skills, Project, Resume, Chatbot, etc.)
 
-- **Profile Picture**: `public/profile.jpeg` (400x400px+)
-- **Project Screenshots**: `public/project-1.jpg` (1200x800px recommended)
-- **Favicon**: `public/favicon.ico` (32x32px)
-- **Use compressed images** for faster load times (e.g., [TinyPNG](https://tinypng.com/))
-- **External URLs** supported
-
----
-
-## 🧠 AI Chatbot Configuration
-
-- Fully customizable AI chat, driven by your JSON config.
-- Features:
-  - Preset questions & responses
-  - Dynamic AI replies (Google Gemini API)
-  - Mobile optimized
-  - Quota management & graceful fallback
-
-Example config:
-```json
-{
-  "chatbot": {
-    "name": "Your Digital Twin",
-    "personality": "Professional yet friendly",
-    "tone": "Conversational and helpful"
-  }
-}
-```
+Update content by editing `portfolio-config.json`. Example excerpts from this repo:
+- Personal: name, title, location, bio, avatar
+- Skills: programming, ml_ai, web_development, databases, devops_cloud, big_data, soft_skills
+- Projects: title, category, description, techStack, featured, links/images
+- Resume: title, description, lastUpdated, `downloadUrl`
+- Chatbot: name, tone, topics, presetQuestions
 
 ---
 
-## ⚙️ Environment & Validation
+**AI Chatbot**
+- API: `src/app/api/chat/route.ts`
+  - Model: `google('gemini-2.5-flash-lite')` via `@ai-sdk/google`
+  - System prompt: generated from `portfolio-config.json`
+  - Tools: structured data fetchers mapped to UI renderers
+    - `getProjects`, `getPresentation`, `getResume`, `getContact`, `getSkills`, `getEntryLevel`
+  - Streams responses using the `ai` SDK’s `streamText` and UI message stream response
+- Client UI: `src/components/chat/*`
+  - `chat.tsx`: Orchestrates the chat experience with `useChat` and DefaultChatTransport
+  - `simple-chat-view.tsx`: Renders assistant text + active tool output
+  - `tool-renderer.tsx`: Maps tool outputs to rich components:
+    - Presentation → `components/presentation`
+    - Skills → `components/skills`
+    - Projects → `components/projects/*`
+    - Resume → `components/resume`
+    - Availability/Entry-Level → `components/AvailabilityCard`
+    - Contact → `components/contact`
+  - `HelperBoost.tsx`: Quick question launcher with grouped suggestions
 
-- **Environment Variables**:  
-  - `GOOGLE_GENERATIVE_AI_API_KEY=your_key`
-  - `NEXT_PUBLIC_SITE_URL=https://your-site.com` (optional)
-- **Validation**:
-    ```bash
-    node -e "console.log('Valid JSON:', !!JSON.parse(require('fs').readFileSync('portfolio-config.json')))"
-    npm run type-check
-    npm run build
-    ```
-
----
-
-## 🌎 Deployment
-
-**Vercel (Recommended):**  
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fanujjainbatu%2Fportfolio)
-
-**Manual:**
-- Push to GitHub
-- Import to Vercel/Netlify/Railway
-- Set environment variables
-- Deploy!
-
----
-
-## 🎨 Customization & Advanced Usage
-
-- **Themes:** Edit `tailwind.config.ts`
-- **New Sections:** Update JSON, add components/tools/types as needed
-- **Analytics:** Integrate via `layout.tsx`
-- **Image Hosting:** Local, GitHub, CDN
+Behavior:
+- `/chat?q=...` auto-submits the initial query
+- Assistant follows a “use tools + natural reply” pattern enforced by the system prompt
+- Preset replies are generated from config (`presetReplies`) and can be shown as helpers
 
 ---
 
-## 🆘 Troubleshooting & Support
-
-- **AI Chat not working?** Check your API key and quota.
-- **Images missing?** Ensure correct paths and filenames.
-- **Build failing?** Validate JSON and run type checks.
-- **Need help?**
-  - [Open an Issue](https://github.com/anujjainbatu/portfolio/issues)
-  - [Discussions](https://github.com/anujjainbatu/portfolio/discussions)
-  - Email: anujjainbatu@gmail.com
+**Landing Experience**
+- `src/components/landing/landing-page.tsx` renders:
+  - Animated avatar, search input (routes to `/chat?q=...`), primary CTA “Meet AI Edison”, and resume downloader
+  - Status indicator driven by `entryLevel.currentStatus`
+  - Apple-style animated background and glass effects (`src/app/globals.css`)
 
 ---
+
+**Tech Stack**
+- Framework: `next@15`, `react@19`, `typescript`
+- Styling: `tailwindcss@4`, custom Apple-inspired CSS in `globals.css`
+- Motion/UI: `framer-motion`, `radix-ui`, `lucide-react`
+- AI: `ai@^5`, `@ai-sdk/google` (Gemini), `zod` for tool input schemas
+- Analytics: `@vercel/analytics` (optional)
+
+---
+
+**Install & Run**
+- Prereqs: Node 18+ recommended
+- Install: `pnpm install` or `npm install` or `yarn install`
+- Env vars: copy `.env.example` → `.env.local` and set:
+  - `GOOGLE_GENERATIVE_AI_API_KEY` (required for chat)
+  - `NEXT_PUBLIC_SITE_URL` (optional)
+- Dev: `npm run dev` then open `http://localhost:3000`
+- Build: `npm run build`, Start: `npm start`
+
+Security note: never commit `.env.local` with real keys. If a key was committed, rotate it immediately from Google AI Studio and force-push without secrets.
+
+---
+
+**Customization**
+- Content: edit `portfolio-config.json`
+- Images: replace files in `public/` (e.g., `profile.jpeg`, `avatar.png`, `Edison-resume-2025.pdf`)
+- SEO: adjust `src/app/layout.tsx` metadata (OpenGraph, Twitter cards, canonical). Replace any leftover external preview URLs with your own (`public/portfolio.png`).
+- Images from remote hosts: see `next.config.ts` `images.remotePatterns`
+- Styling: tweak `globals.css` or Tailwind utilities; theme is intentionally minimal and Apple-inspired
+
+---
+
+**Notable Features & Details**
+- JSON-only configuration with runtime-safe parsing and typed accessors
+- AI tools return structured data that the UI renders as rich, scannable cards
+- Dedicated `/chat` route with initial-query support and animated avatar header
+- Helper quick-questions with grouped categories and mobile-friendly drawer
+- Resume viewer supports external PDF via iframe or local file
+
+---
+
+**Directory Reference**
+- `src/lib/config-loader.ts`: Imports JSON and exports typed getters and derived data
+- `src/lib/config-parser.ts`: Builds the AI system prompt and UI-friendly slices
+- `src/app/api/chat/tools/*`: Zod-typed tool endpoints sourcing data from config
+- `src/components/chat/*`: Chat UI, tool renderer, presets, input bar
+- `src/components/landing/*`: Home page avatar, search, and CTAs
+- `src/components/*`: Presentation, Skills, Projects carousel, Resume, Contact, Availability
+
+---
+
+**Deployment**
+- Any platform that runs Next.js (Vercel recommended)
+- Set environment variables in your hosting platform
+- Ensure public assets and `portfolio-config.json` are included in the build
+
+---
+
+**Troubleshooting**
+- Chat not responding: verify `GOOGLE_GENERATIVE_AI_API_KEY` and network access
+- Build errors: validate `portfolio-config.json` is valid JSON and matches `src/types/portfolio.ts`
+- Images not loading: confirm paths or allowlist host in `next.config.ts`
+- SEO cards wrong: update image URLs in `layout.tsx`
+
+---
+
+**Credits**
+- Built by and for Edison Xu. Uses the Vercel AI SDK and modern Next.js stack.
+
 
 ## 📚 Documentation
 

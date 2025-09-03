@@ -72,9 +72,13 @@ export function Presentation() {
               {profile.name}
             </h1>
             <div className="mt-1 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
-              <p className="text-muted-foreground">{profile.age}</p>
-              <div className="bg-border hidden h-1.5 w-1.5 rounded-full md:block" />
-              <p className="text-muted-foreground">{profile.location}</p>
+              <p className="text-muted-foreground">{profile.location.current}</p>
+              {profile.location.remote && (
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full text-center">Remote Available</span>
+              )}
+              {profile.location.relocation && (
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-center">Open to Relocation</span>
+              )}
             </div>
           </motion.div>
 
@@ -94,11 +98,11 @@ export function Presentation() {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-4 flex flex-wrap gap-2"
           >
-            {['AI Engineer', 'Python Developer', 'IoT Specialist', 'ML Engineer', 'Freelancer'].map(
+            {['Software Engineer', 'AI/ML Engineer','Full-Stack Web Developer','Backend Developer', 'Algorithm Engineer'].map(
               (tag) => (
                 <span
                   key={tag}
-                  className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm"
+                  className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-white/30 text-foreground/80 rounded-full px-3 py-1 text-sm shadow-sm hover:from-blue-500/15 hover:to-cyan-500/15 transition-all duration-300"
                 >
                   {tag}
                 </span>

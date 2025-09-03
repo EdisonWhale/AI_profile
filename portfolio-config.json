@@ -1,9 +1,16 @@
 {
   "personal": {
     "name": "Edison Xu",
-    "location": "Atlanta, GA, USA",
-    "title": "Software Development Engineer & AI/ML Engineer",
+    "location": {
+      "current": "Atlanta, GA, USA",
+      "remote": true,
+      "relocation": true,
+      "preferredLocations": ["San Francisco, CA", "Seattle, WA", "Atlanta, GA", "Austin, TX", "Remote"],
+      "timezone": "EST (UTC-5)"
+    },
+    "title": "Software Engineer & AI/ML Engineer",
     "email": "edisonapply@gmail.com",
+    "phone": "626-552-1696",
     "handle": "@EdisonWhale",
     "bio": "Hey, I'm Edison 👋\nI'm a Full-stack developer and AI engineer with a passion for integrating AI into everyday objects. By day, I build web applications; by night, I explore machine learning, AI systems, and intelligent technologies. Currently, I work full-time at Highmark Health as a Software Engineer, developing internal AI and ML solutions.\n\nI love exploring how AI can enhance accessibility and help people with disabilities through wearable technology. I've also participated in numerous AI and coding hackathons and projects, constantly pushing the boundaries of what intelligent systems can do. My goal is to make technology smarter, more intuitive, and more human-centric.",
     "avatar": "/profile.jpeg",
@@ -35,7 +42,7 @@
       "duration": "May 2024 - Present",
       "location": "Pittsburgh, PA",
       "description": "Architected autonomous AI deep research agent, engineered enterprise knowledge workspace with Vertex AI Search, developed multi-modal chatbot using Vertex AI (Gemini API), built RAG system using Flask, deployed GitOps CI/CD pipelines with Cloud Run and Kubernetes.",
-      "technologies": ["TypeScript", "React", "FastAPI", "Flask", "Python", "AI", "Vertex AI", "Gemini API", "Cloud Run", "Kubernetes", "GitOps"]
+      "technologies": ["TypeScript", "React", "FastAPI", "Flask", "Python", "AI", "Vertex AI", "Gemini API", "Cloud Run", "Kubernetes", "GitOps","LLMs","Embedding Models","Multi-Agent Systems"]
     },
     {
       "company": "ChineseInvestors.com Inc.",
@@ -44,13 +51,13 @@
       "duration": "Sep 2022 - Nov 2022",
       "location": "San Gabriel, CA",
       "description": "Developed market cycle prediction model using machine learning algorithms, optimized PySpark and Azure Databricks data pipeline with data partitioning and caching.",
-      "technologies": ["Python", "Machine Learning", "PySpark", "Azure Databricks", "Data Analysis"]
+      "technologies": ["Python", "Machine Learning", "PySpark", "Azure Databricks", "Data Analysis","Data Partitioning", "Caching", "Data Analysis"]
     }
   ],
   "skills": {
     "programming": ["Java", "Python", "Go", "JavaScript", "TypeScript", "C", "HTML", "CSS", "R", "SQL"],
-    "ml_ai": ["Machine Learning", "AI Agents", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models"],
-    "web_development": ["React.js", "Vue.js", "Spring Boot", "Django", "Flask", "Node.js", "Express.js", "Selenium"],
+    "ml_ai": ["Machine Learning", "AI Agents", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models","LLMs","Multi-Agent Systems","ReAct Loops"],
+    "web_development": ["React.js", "Vue.js", "Spring Boot", "restful APIs", "Flask", "Node.js", "Express.js", "Selenium","Microservices","Distributed Systems"],
     "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "DynamoDB", "Firebase"],
     "devops_cloud": ["Docker", "Kubernetes", "Git", "AWS", "GCP", "Azure", "Cloud Run", "GitOps", "CI/CD"],
     "big_data": ["PySpark", "Azure Databricks", "Data Analysis", "Data Partitioning", "Caching"],
@@ -65,30 +72,16 @@
       "date": "2025",
       "status": "Completed",
       "featured": true,
-      "achievements": ["Microsoft AI Hackathon Participant"],
-      "links": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/edisonwhale"
-        }
-      ],
-      "images": []
+      "achievements": ["Microsoft AI Hackathon Participant"]
     },
     {
       "title": "Golang-based High-Efficiency Search Engine",
       "category": "Backend Development",
       "description": "Developed a Go-based search engine with text and vector search capabilities, using gRPC for microservices architecture. Implemented a distributed web crawler with Kafka cluster integration for efficient data collection and processing. Enhanced search relevance using TF-IDF and BM25 ranking algorithms, with Trie trees for optimized query suggestions.",
       "techStack": ["Go", "gRPC", "Kafka", "TF-IDF", "BM25", "Trie Trees", "Microservices", "Distributed Systems"],
-      "date": "2023",
+      "date": "2024",
       "status": "Completed",
-      "featured": true,
-      "links": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/edisonwhale"
-        }
-      ],
-      "images": []
+      "featured": true
     },
     {
       "title": "CloudBin: Cloud-Based Distributed File Storage System",
@@ -97,45 +90,62 @@
       "techStack": ["Spring Boot", "Vue3", "AWS S3", "Redis", "Bloom Filter", "ElasticSearch", "Chunk-based Uploads"],
       "date": "2023",
       "status": "Completed",
-      "featured": true,
-      "links": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/edisonwhale"
-        }
-      ],
-      "images": []
+      "featured": true
     },
     {
-      "title": "Portfolio",
-      "category": "AI/Web Development",
-      "description": "Revolutionary AI-powered portfolio system: edit a single JSON file to get a complete interactive portfolio with an intelligent chatbot. Built with Next.js, React, and TypeScript. Features modern design, dynamic project showcases, and zero code required for updates.",
-      "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI Integration"],
-      "date": "2025",
+      "title": "AI Recognition in Edge Computing & Cloud Native",
+      "category": "AI/ML & Edge Computing",
+      "description": "Optimized edge computing AI recognition using KubeEdge, streamlining local computations and decision-making. Devised a Convolutional Neural Networks model in TensorFlow for vegetable recognition, achieving 98.6% accuracy. Built a centralized management system using Django with MQTT, enhancing live oversight in multiple edge modules. Fostered system resilience and prompt updates by integrating a Kubernetes orchestrated CI/CD pipeline.",
+      "techStack": ["KubeEdge", "TensorFlow", "CNN", "Django", "MQTT", "Kubernetes", "CI/CD", "Edge Computing", "Cloud Native"],
+      "date": "May 2023 - July 2023",
       "status": "Completed",
-      "featured": true,
-      "links": [
-        {
-          "name": "Live Site",
-          "url": "https://www.edisonwhale.com"
-        },
-        {
-          "name": "GitHub",
-          "url": "https://github.com/edisonwhale"
-        }
-      ],
-      "images": []
+      "featured": false
+    },
+    {
+      "title": "Interactive Map Visualization for Taxi Trip Analysis",
+      "category": "Data Visualization & Analysis",
+      "description": "Built an interactive web-based tool using the Flask web framework, along with Dash and Plotly for UI design, to analyze the temporal and spatial relationships between taxi trips and city popularity in Manhattan. Processed and cleaned 30.8 million taxi trip records using PySpark and improved regional analysis accuracy by integrating data from the Google Popular Times API. Managed databases interactions using SQL Alchemy, implemented a multi-regression model for estimating missing taxi trip coordinates, and developed a user-friendly interface with customizable filters for data analysis.",
+      "techStack": ["Flask", "Dash", "Plotly", "PySpark", "Google Popular Times API", "SQL Alchemy", "Multi-regression Model", "Data Visualization", "Big Data Processing"],
+      "date": "09/2022-12/2022",
+      "status": "Completed",
+      "featured": false
+    },
+    {
+      "title": "GeekLib: AI-Enhanced Library Management System",
+      "category": "Full-stack Development & AI",
+      "description": "Architected and developed a full-stack library management web application using React and Spring Boot with a RESTful API for seamless frontend-backend communication. Integrated Okta's Authentication API and Stripe's Payment API to provide secure user authentication and reliable processing of credit card payments for book late fees. Utilized Maven for streamlined dependency management and Spring Data JPA to interact with a MySQL database. Created a Books module with CRUD functions and enable features such as rating, commenting, loan/return books. Developed an AI chatbot assistance agent by utilizing OpenAI's GPT-3 API.",
+      "techStack": ["React", "Spring Boot", "RESTful API", "Okta Authentication", "Stripe Payment API", "Maven", "Spring Data JPA", "MySQL", "CRUD Operations", "OpenAI GPT-3 API", "AI Chatbot"],
+      "date": "11/2022-01/2023",
+      "status": "Completed",
+      "featured": false
+    },
+    {
+      "title": "InovicePro: MERN Stack Invoice Management System",
+      "category": "Full-stack Development & DevOps",
+      "description": "Developed a comprehensive invoice management system with MongoDB, Express, React, and Node.js, concentrating on dynamic invoice generation, user administration, and real-time revenue monitoring. Utilized Docker Compose for streamlined, microservices-based deployment, boosting system scalability. Fortified user authentication via a refresh token approach, Google OAuth, and stringent email validation mechanisms. Enhanced system performance under high traffic by integrating NGINX for load balancing and reverse proxying. Applied Winston and Morgan for efficient log monitoring and anomaly detection.",
+      "techStack": ["MongoDB", "Express", "React", "Node.js", "Docker Compose", "Microservices", "Refresh Token", "Google OAuth", "NGINX", "Load Balancing", "Winston", "Morgan", "Log Monitoring"],
+      "date": "03/2023-05/2023",
+      "status": "Completed",
+      "featured": false
+    },
+    {
+      "title": "Whales Chat: An Instant Messaging Mobile App",
+      "category": "Mobile Development & AI",
+      "description": "Build a cross-platform mobile messaging app with React Native, Expo, and Redux, incorporating key features such as instant messaging, user search, group chats, and custom profiles. Designed a scalable, distributed system using Firebase's NoSQL for real-time data synchronization to maintain secure authentication and end-to-end encryption for data integrity. Create a context-sensitive AI voice interface using OpenAI's GPT-3.5 Turbo, Whisper API, and Azure TTS API.",
+      "techStack": ["React Native", "Expo", "Redux", "Firebase", "NoSQL", "Real-time Sync", "End-to-end Encryption", "OpenAI GPT-3.5 Turbo", "Whisper API", "Azure TTS API", "AI Voice Interface"],
+      "date": "12/2022-03/2023",
+      "status": "Completed",
+      "featured": false
     }
   ],
   "social": {
     "linkedin": "https://linkedin.com/in/Edisonwhale",
     "github": "https://github.com/edisonwhale",
-    "twitter": "https://x.com/edisonwhale",
     "website": "https://www.edisonwhale.com"
   },
-  "internship": {
+  "entryLevel": {
     "seeking": false,
-    "currentStatus": "Currently employed at Highmark Inc. as Software Engineer",
+    "currentStatus": "Open to new opportunities and exciting projects",
     "focusAreas": ["AI Development", "Full-stack Development", "Machine Learning", "Cloud Engineering"],
     "availability": "Open to new opportunities",
     "workStyle": "Fast learner, team player, problem solver",
@@ -154,11 +164,11 @@
   },
   "resume": {
     "title": "Edison Xu - Resume",
-    "description": "Software Development Engineer & AI/ML Engineer | MS CSE Georgia Tech | Highmark Health",
+    "description": "Software Engineer & AI/ML Engineer | MS CSE Georgia Tech | Highmark Health",
     "fileType": "PDF",
-    "lastUpdated": "January 2025",
-    "fileSize": "2.1 MB",
-    "downloadUrl": "/resume.pdf"
+    "lastUpdated": "September 2025",
+    "fileSize": "257 KB",
+    "downloadUrl": "/Edison-resume-2025.pdf"
   },
   "chatbot": {
     "name": "Edison",
@@ -211,7 +221,7 @@
   },
   "meta": {
     "configVersion": "1.0",
-    "lastUpdated": "2025-01-13",
+    "lastUpdated": "2025-09-01",
     "generatedBy": "Edison Xu",
     "description": "Complete portfolio configuration for AI-powered portfolio website"
   }

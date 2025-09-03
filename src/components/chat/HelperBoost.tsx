@@ -21,20 +21,17 @@ import {
   Laugh,
   Layers,
   MailIcon,
-  PartyPopper,
+
   Sparkles,
   UserRoundSearch,
   UserSearch,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Drawer } from 'vaul';
-import { PresetReply } from '@/components/chat/preset-reply';
-import { presetReplies } from '@/lib/config-loader';
+
 
 interface HelperBoostProps {
   submitQuery?: (query: string) => void;
-  setInput?: (value: string) => void;
-  handlePresetReply?: (question: string, reply: string, tool: string) => void;
 }
 
 const questions = {
@@ -136,30 +133,15 @@ const AnimatedChevron = () => {
 
 export default function HelperBoost({
   submitQuery,
-  setInput,
-  handlePresetReply,
 }: HelperBoostProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
-  const [showPresetReply, setShowPresetReply] = useState<string | null>(null);
 
   const handleQuestionClick = (questionKey: string) => {
     const question = questions[questionKey as keyof typeof questions];
     
-    // Map question keys to preset replies that match our config exactly
-    const presetMapping: { [key: string]: string } = {
-      'Me': 'Who are you?',
-      'Projects': 'What projects are you most proud of?',
-      'Skills': 'What are your skills?',
-      'Resume': 'Can I see your resume?',
-      'Contact': 'How can I reach you?'
-    };
-    
-    const presetKey = presetMapping[questionKey];
-    if (presetKey && presetReplies[presetKey] && handlePresetReply) {
-      const preset = presetReplies[presetKey];
-      handlePresetReply(presetKey, preset.reply, preset.tool);
-    } else if (submitQuery) {
+    // Default to AI response for all questions
+    if (submitQuery) {
       submitQuery(question);
     }
   };
@@ -172,12 +154,7 @@ export default function HelperBoost({
     setOpen(false);
   };
 
-  const handleGetAiResponse = (question: string) => {
-    setShowPresetReply(null);
-    if (submitQuery) {
-      submitQuery(question);
-    }
-  };
+
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -225,7 +202,7 @@ export default function HelperBoost({
                     key={key}
                     onClick={() => handleQuestionClick(key)}
                     variant="outline"
-                    className="border-border hover:bg-border/30 h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl border bg-white/80 px-4 py-3 shadow-none backdrop-blur-sm transition-none active:scale-95"
+                    className="h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl apple-glass apple-glow-hover apple-button-press px-4 py-3 transition-all duration-300 ease-out active:scale-95 hover:scale-[1.02] hover:-translate-y-0.5"
                   >
                     <div className="flex items-center gap-3 text-gray-700">
                       <Icon size={18} strokeWidth={2} color={color} />
@@ -240,7 +217,7 @@ export default function HelperBoost({
                     <TooltipTrigger asChild>
                       <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
                         <motion.div
-                          className="hover:bg-border/30 flex h-auto cursor-pointer items-center space-x-1 rounded-xl border border-neutral-200 bg-white/80 px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 dark:border-neutral-800 dark:bg-neutral-900"
+                          className="apple-glass apple-glow-hover energy-pulse flex h-auto cursor-pointer items-center space-x-1 rounded-xl px-4 py-3 text-sm transition-all duration-300 ease-out dark:bg-gray-800/80"
                           whileHover={{ scale: 1 }}
                           whileTap={{ scale: 0.98 }}
                         >

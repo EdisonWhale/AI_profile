@@ -14,45 +14,47 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    template: "%s | Anuj Jain Portfolio"
+    default: "Edison Xu - Full-stack Python Developer & AI Engineer | Professional Portfolio",
+    template: "%s | Edison Xu Portfolio"
   },
-  description: "Professional portfolio of Anuj Jain - Full-stack Python Developer & AI Engineer. SIH 2025 Finalist showcasing 25+ automation projects, IoT systems, and AI-powered solutions. Available for internships.",
+  description: "Professional portfolio of Edison Xu - Full-stack Developer & AI Engineer. Available for entry-level/ junior Software Engineering/ AI/ ML Engineering roles.",
   keywords: [
-    "Anuj Jain",
+    "Edison Xu",
     "Full-stack Developer", 
     "Python Developer",
     "AI Engineer",
     "Portfolio",
     "Software Developer",
     "Machine Learning",
-    "IoT Developer",
     "Web Development",
     "Next.js",
     "React",
     "FastAPI",
-    "Django",
+    "LLM",
     "Automation",
     "LangChain",
-    "Smart India Hackathon",
-    "Freelancer",
+    "AI Hackathon",
+    "LangGraph",
     "AI Chatbot",
     "Professional Portfolio",
     "Developer Portfolio",
     "Tech Portfolio",
-    "Internship",
+    "entry-level software engineering",
+    "junior AI/ML engineer",
     "Python Automation",
     "Web Scraping",
-    "API Development"
+    "API Development",
+    "AI/ML Engineer",
+    "AI/ML Developer",
   ],
   authors: [
     {
-      name: "Anuj Jain",
-      url: "https://portfolio.anujjainbatu.tech/",
+      name: "Edison Xu",
+      url: "https://edisonwhale.com/",
     },
   ],
-  creator: "Anuj Jain",
-  publisher: "Anuj Jain",
+  creator: "Edison Xu",
+  publisher: "Edison Xu",
   robots: {
     index: true,
     follow: true,
@@ -67,29 +69,29 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://portfolio.anujjainbatu.tech/",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    description: "Professional portfolio showcasing AI-powered projects, IoT systems, and full-stack development. SIH 2025 Finalist with 25+ automation projects. Available for internships.",
-    siteName: "Anuj Jain Portfolio",
+    url: "https://edisonwhale.com/",
+    title: "Edison Xu - Full-stack Developer & AI Engineer | Professional Portfolio",
+    description: "Professional portfolio showcasing AI-powered projects, and full-stack development. Available for entry-level/ junior Software Engineering/ AI/ ML Engineering roles.",
+    siteName: "Edison Xu Portfolio",
     images: [
       {
-        url: "https://portfolio.anujjainbatu.tech/portfolio.png",
+        url: "https://edisonwhale.com/portfolio.png",
         width: 1200,
         height: 630,
-        alt: "Anuj Jain - Professional Portfolio with AI Chatbot",
+        alt: "Edison Xu - Professional Portfolio with AI Chatbot",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer",
+    title: "Edison Xu - Full-stack Python Developer & AI Engineer",
     description: "Professional portfolio showcasing AI projects, IoT systems, and automation solutions. SIH 2025 Finalist available for internships.",
-    creator: "@anujainbatu",
-    site: "@anujainbatu",
+    creator: "@edisonwhale",
+    site: "@edisonwhale",
     images: [{
-      url: "https://portfolio.anujjainbatu.tech/portfolio.png",
-      alt: "Anuj Jain Professional Portfolio"
+      url: "https://edisonwhale.com/portfolio.png",
+      alt: "Edison Xu Professional Portfolio"
     }],
   },
   icons: {
@@ -104,7 +106,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   alternates: {
-    canonical: "https://portfolio.anujjainbatu.tech/",
+    canonical: "https://edisonwhale.com/",
   },
   category: "technology",
   classification: "Portfolio Website",
@@ -123,21 +125,20 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="canonical" href="https://portfolio.anujjainbatu.tech/" />
+        <link rel="canonical" href="https://edisonwhale.com/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Anuj Jain",
+              "name": "Edison Xu",
               "jobTitle": "Full-stack Python Developer & AI Engineer",
-              "url": "https://portfolio.anujjainbatu.tech/",
-              "image": "https://portfolio.anujjainbatu.tech/profile.jpeg",
+              "url": "https://edisonwhale.com/",
+              "image": "https://edisonwhale.com/profile.jpeg",
               "sameAs": [
-                "https://github.com/anujjainbatu",
-                "https://linkedin.com/in/anujjainbatu",
-                "https://x.com/anujainbatu"
+                "https://github.com/edisonwhale",
+                "https://linkedin.com/in/edisonwhale",
               ],
               "worksFor": {
                 "@type": "Organization",
@@ -151,12 +152,11 @@ export default function RootLayout({
                 "Python Development",
                 "AI Engineering",
                 "Machine Learning",
-                "IoT Systems",
                 "Web Development",
                 "Automation",
                 "Full Stack Development"
               ],
-              "description": "Full-stack Python Developer & AI Engineer with expertise in building AI-powered solutions, IoT systems, and automation tools. SIH 2025 Finalist with 25+ delivered projects."
+              "description": "Full-stack Developer & AI Engineer with expertise in building AI-powered solutions."
             })
           }}
         />

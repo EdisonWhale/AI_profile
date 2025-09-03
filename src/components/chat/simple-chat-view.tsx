@@ -4,19 +4,19 @@ import {
   ChatBubble,
   ChatBubbleMessage,
 } from '@/components/ui/chat/chat-bubble';
-import { ChatRequestOptions } from 'ai';
-import { Message } from 'ai/react';
+import { ChatRequestOptions, isToolOrDynamicToolUIPart } from 'ai';
+import { UIMessage } from '@ai-sdk/react';
 import { motion } from 'framer-motion';
 import ChatMessageContent from './chat-message-content';
 import ToolRenderer from './tool-renderer';
 
 interface SimplifiedChatViewProps {
-  message: Message;
+  message: UIMessage;
   isLoading: boolean;
   reload: (
     chatRequestOptions?: ChatRequestOptions
-  ) => Promise<string | null | undefined>;
-  addToolResult?: (args: { toolCallId: string; result: string }) => void;
+  ) => Promise<void>;
+  addToolResult?: <TOOL extends string>({ tool, toolCallId, output, }: { tool: TOOL; toolCallId: string; output: unknown; }) => Promise<void>;
 }
 
 const MOTION_CONFIG = {
@@ -37,28 +37,30 @@ export function SimplifiedChatView({
 }: SimplifiedChatViewProps) {
   if (message.role !== 'assistant') return null;
 
-  // Extract tool invocations that are in "result" state
+  // Extract tool invocations that are in "output-available" state
   const toolInvocations =
     message.parts
       ?.filter(
         (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state === 'result'
-      )
-      .map((part) =>
-        part.type === 'tool-invocation' ? part.toolInvocation : null
-      )
-      .filter(Boolean) || [];
+          isToolOrDynamicToolUIPart(part) &&
+          part.state === 'output-available'
+      ) || [];
 
   // Only display the first tool (if any)
   const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
 
+  // Extract text content from parts
+  const textContent = message.parts
+    ?.filter((part) => part.type === 'text')
+    .map((part) => part.type === 'text' ? part.text : '')
+    .join(' ') || '';
+  
   // Check if we have meaningful text content (more than just confirmations)
-  const hasTextContent = message.content.trim().length > 0;
+  const hasTextContent = textContent.trim().length > 0;
   const hasTools = currentTool.length > 0;
   
-  // If we have tools, minimize text content to avoid redundancy
-  const showTextContent = hasTextContent && (!hasTools || message.content.trim().length > 50);
+  // Show text content if we have meaningful content, even with tools present
+  const showTextContent = hasTextContent;
 
   console.log('currentTool', currentTool);
 
