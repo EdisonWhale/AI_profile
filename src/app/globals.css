@@ -321,6 +321,9 @@ pre {
   filter: drop-shadow(0 0 15px var(--apple-glow)); /* Reduced glow intensity */
   animation: tech-breathe 4s ease-in-out infinite;
   contain: layout style; /* Prevent layout shifts */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  image-rendering: crisp-edges;
 }
 
 .apple-avatar-glow:hover {

@@ -1,5 +1,5 @@
 # Use official Node.js image as base
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Install dependencies stage
 FROM base AS deps
@@ -18,13 +18,16 @@ RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
 
 # Build stage
-FROM base AS builder
+FROM deps AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Disable telemetry
 ENV NEXT_TELEMETRY_DISABLED 1
+
+# Add API key environment variable for build time
+ARG GOOGLE_GENERATIVE_AI_API_KEY
+ENV GOOGLE_GENERATIVE_AI_API_KEY=$GOOGLE_GENERATIVE_AI_API_KEY
 
 # Build app
 RUN pnpm build

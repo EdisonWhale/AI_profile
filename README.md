@@ -12,7 +12,7 @@ This README documents this specific implementation, its configuration, architect
 
 **Highlights**
 - JSON-first content via `portfolio-config.json`
-- AI chat with tool-augmented answers (Gemini + Vercel AI SDK)
+- AI chat with tool-augmented answers (Gemini + AI SDK)
 - Apple-style UI with framer-motion animations
 - Strong typing and config helpers for safety and reuse
 
@@ -105,7 +105,6 @@ Behavior:
 - Styling: `tailwindcss@4`, custom Apple-inspired CSS in `globals.css`
 - Motion/UI: `framer-motion`, `radix-ui`, `lucide-react`
 - AI: `ai@^5`, `@ai-sdk/google` (Gemini), `zod` for tool input schemas
-- Analytics: `@vercel/analytics` (optional)
 
 ---
 
@@ -151,7 +150,7 @@ Security note: never commit `.env.local` with real keys. If a key was committed,
 ---
 
 **Deployment**
-- Any platform that runs Next.js (Vercel recommended)
+- Any platform that runs Next.js (Docker, VPS, cloud providers)
 - Set environment variables in your hosting platform
 - Ensure public assets and `portfolio-config.json` are included in the build
 
@@ -166,7 +165,7 @@ Security note: never commit `.env.local` with real keys. If a key was committed,
 ---
 
 **Credits**
-- Built by and for Edison Xu. Uses the Vercel AI SDK and modern Next.js stack.
+- Built by and for Edison Xu. Uses the AI SDK and modern Next.js stack.
 
 
 ## 📚 Documentation

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface AnimatedAvatarProps {
   src: string;
@@ -79,9 +80,9 @@ const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
         variants={flashVariants}
         className="relative"
       >
-        <Avatar 
+        <div 
           className={cn(
-            "apple-avatar-glow border-2 border-white/20",
+            "relative overflow-hidden rounded-full apple-avatar-glow border-2 border-white/20",
             showGlow && "apple-glow"
           )}
           style={{
@@ -89,17 +90,37 @@ const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
             height: size,
           }}
         >
-          <AvatarImage 
-            src={src} 
+          <Image
+            src={src}
             alt="Edison Xu"
+            width={size * 3} 
+            height={size * 3}
             className="object-cover"
+            style={{ 
+              width: size, 
+              height: size,
+              imageRendering: 'auto' as const
+            } as React.CSSProperties}
+            priority={true} 
+            quality={95} 
+            sizes={`${size}px`}
+            onError={(e) => {
+              // Fallback to Avatar component if Image fails
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
           />
-          <AvatarFallback 
-            className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold"
+          {/* Fallback Avatar for error cases */}
+          <Avatar 
+            className="absolute inset-0 opacity-0"
+            style={{ width: size, height: size }}
           >
-            EX
-          </AvatarFallback>
-        </Avatar>
+            <AvatarImage src={src} alt="Edison Xu" className="object-cover" />
+            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold">
+              EX
+            </AvatarFallback>
+          </Avatar>
+        </div>
         
         {showGlow && (
           <motion.div

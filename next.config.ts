@@ -16,6 +16,21 @@ const nextConfig = {
     // Ne bloque PAS le build en cas d'erreurs eslint
     ignoreDuringBuilds: true,
   },
+  output: 'standalone',
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  compress: true,
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  },
 };
 
 module.exports = nextConfig;
