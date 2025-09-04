@@ -25,6 +25,10 @@ COPY . .
 # Disable telemetry
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Add API key environment variable for build time
+ARG GOOGLE_GENERATIVE_AI_API_KEY
+ENV GOOGLE_GENERATIVE_AI_API_KEY=$GOOGLE_GENERATIVE_AI_API_KEY
+
 # Build app
 RUN pnpm build
 
