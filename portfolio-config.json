@@ -12,9 +12,14 @@
     "email": "edisonapply@gmail.com",
     "phone": "626-552-1696",
     "handle": "@EdisonWhale",
-    "bio": "Hey, I'm Edison 👋\nI'm a Full-stack developer and AI engineer with a passion for integrating AI into everyday objects. By day, I build web applications; by night, I explore machine learning, AI systems, and intelligent technologies. Currently, I work full-time at Highmark Health as a Software Engineer, developing internal AI and ML solutions.\n\nI love exploring how AI can enhance accessibility and help people with disabilities through wearable technology. I've also participated in numerous AI and coding hackathons and projects, constantly pushing the boundaries of what intelligent systems can do. My goal is to make technology smarter, more intuitive, and more human-centric.",
+    "bio": "Hey, I'm Edison 👋\nI'm a software engineer focused on Generative AI systems, full-stack applications, and production-ready ML workflows. I currently work at Highmark Health, where I build internal AI products across React/FastAPI platforms, retrieval systems, and multi-agent architectures.\n\nI'm a US Citizen and I do not require visa sponsorship. I enjoy turning complex AI ideas into practical tools that improve everyday workflows and make technology more useful for people.",
     "avatar": "/profile.jpeg",
-    "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3"
+    "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "workAuthorization": {
+      "status": "US Citizen",
+      "requiresSponsorship": false,
+      "notes": "No visa sponsorship required."
+    }
   },
   "education": {
     "current": {
@@ -39,28 +44,28 @@
       "company": "Highmark Inc.",
       "position": "Software Engineer (Generative AI team)",
       "type": "Full-time",
-      "duration": "May 2024 - Present",
+      "duration": "Feb 2025 - Present",
       "location": "Pittsburgh, PA",
-      "description": "Architected autonomous AI deep research agent, engineered enterprise knowledge workspace with Vertex AI Search, developed multi-modal chatbot using Vertex AI (Gemini API), built RAG system using Flask, deployed GitOps CI/CD pipelines with Cloud Run and Kubernetes.",
-      "technologies": ["TypeScript", "React", "FastAPI", "Flask", "Python", "AI", "Vertex AI", "Gemini API", "Cloud Run", "Kubernetes", "GitOps","LLMs","Embedding Models","Multi-Agent Systems"]
+      "description": "Built a real-time AI call-center training platform with React + FastAPI + WebSockets, architected a Planner-Executor-Critic multi-agent deep research system with citation-backed outputs, engineered an enterprise document Q&A workspace on Vertex AI Search with grounded retrieval and reranking, and deployed GitOps CI/CD pipelines on Cloud Run with logging and alerting.",
+      "technologies": ["React", "TypeScript", "FastAPI", "Python", "WebSockets", "Vertex AI Search", "Gemini API", "RAG", "Multi-Agent Systems", "Cloud Run", "GitOps", "CI/CD"]
     },
     {
-      "company": "ChineseInvestors.com Inc.",
-      "position": "Data Analyst",
-      "type": "Full-time",
-      "duration": "Sep 2022 - Nov 2022",
-      "location": "San Gabriel, CA",
-      "description": "Developed market cycle prediction model using machine learning algorithms, optimized PySpark and Azure Databricks data pipeline with data partitioning and caching.",
-      "technologies": ["Python", "Machine Learning", "PySpark", "Azure Databricks", "Data Analysis","Data Partitioning", "Caching", "Data Analysis"]
+      "company": "Highmark Inc.",
+      "position": "Software Engineer Intern (Generative AI team)",
+      "type": "Internship",
+      "duration": "May 2024 - Dec 2024",
+      "location": "Pittsburgh, PA",
+      "description": "Developed an internal multi-modal AI platform on Vertex AI with React/TypeScript and FastAPI, built a Flask-based RAG system for policy Q&A and source-grounded summarization, designed a secure centralized AI Proxy Service for Gemini integration, and improved service quality with Pytest coverage above 90%.",
+      "technologies": ["React", "TypeScript", "FastAPI", "Flask", "Vertex AI", "Gemini API", "RAG", "Embedding Models", "REST API", "Pytest"]
     }
   ],
   "skills": {
-    "programming": ["Java", "Python", "Go", "JavaScript", "TypeScript", "C", "HTML", "CSS", "R", "SQL"],
-    "ml_ai": ["Machine Learning", "AI Agents", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models","LLMs","Multi-Agent Systems","ReAct Loops"],
-    "web_development": ["React.js", "Vue.js", "Spring Boot", "restful APIs", "Flask", "Node.js", "Express.js", "Selenium","Microservices","Distributed Systems"],
+    "programming": ["Python", "Go", "TypeScript", "JavaScript", "Java", "SQL"],
+    "ml_ai": ["LLMs", "Multi-Agent Systems", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models"],
+    "web_development": ["React.js", "Next.js", "Vue.js", "Spring Boot", "Django", "Node.js", "Express.js", "Selenium", "FastAPI", "Flask"],
     "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "DynamoDB", "Firebase"],
-    "devops_cloud": ["Docker", "Kubernetes", "Git", "AWS", "GCP", "Azure", "Cloud Run", "GitOps", "CI/CD"],
-    "big_data": ["PySpark", "Azure Databricks", "Data Analysis", "Data Partitioning", "Caching"],
+    "devops_cloud": ["Docker", "Kubernetes", "Git", "AWS", "GCP", "Cloud Run", "GitOps", "CI/CD", "Postman", "Nginx", "Linux", "Jira"],
+    "big_data": ["PySpark"],
     "soft_skills": ["Problem Solving", "Team Leadership", "Project Management", "Communication", "Learning Agility", "Innovation"]
   },
   "projects": [
@@ -164,10 +169,10 @@
   },
   "resume": {
     "title": "Edison Xu - Resume",
-    "description": "Software Engineer & AI/ML Engineer | MS CSE Georgia Tech | Highmark Health",
+    "description": "Software Engineer (Generative AI) | MS CSE Georgia Tech | Highmark Health",
     "fileType": "PDF",
-    "lastUpdated": "September 2025",
-    "fileSize": "257 KB",
+    "lastUpdated": "February 2026",
+    "fileSize": "149 KB",
     "downloadUrl": "/Edison-resume-2025.pdf"
   },
   "chatbot": {
@@ -197,7 +202,8 @@
       "Where are you working now?",
       "Why should I hire you?",
       "What's your educational background?",
-      "How was your experience working at Highmark?"
+      "How was your experience working at Highmark?",
+      "Do you require visa sponsorship?"
     ],
     "projects": [
       "What projects are you most proud of?",
@@ -221,7 +227,7 @@
   },
   "meta": {
     "configVersion": "1.0",
-    "lastUpdated": "2025-09-01",
+    "lastUpdated": "2026-02-26",
     "generatedBy": "Edison Xu",
     "description": "Complete portfolio configuration for AI-powered portfolio website"
   }

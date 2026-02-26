@@ -15,6 +15,7 @@ export const getResume = tool({
         email: config.personal.email,
         location: config.personal.location.current,
         title: config.personal.title,
+        workAuthorization: config.personal.workAuthorization,
         profiles: {
           github: config.social.github,
           linkedin: config.social.linkedin,

@@ -3,18 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Download, File, ExternalLink } from 'lucide-react';
+import { getConfig } from '@/lib/config-loader';
 
 export function Resume() {
-  // Resume details
-  const resumeDetails = {
-    title: "Edison's Resume",
-    description: 'Full Stack Developer • AI/ML Engineer',
-    fileType: 'PDF',
-    lastUpdated: 'March 2025',
-    fileSize: '219 kb',
-    previewImageSrc: '/edison_resume_preview.png', // You'll need to add this image
-    downloadUrl: 'https://EdisonWhale.github.io/Edison-resume-2025.pdf',
-  };
+  const config = getConfig();
+  const resumeDetails = config.resume;
 
   const handleDownload = () => {
     // For external URLs, open in a new tab

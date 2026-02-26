@@ -1,5 +1,10 @@
 export interface PersonalInfo {
   name: string;
+  workAuthorization?: {
+    status: string;
+    requiresSponsorship: boolean;
+    notes?: string;
+  };
   location: {
     current: string;
     remote: boolean;
