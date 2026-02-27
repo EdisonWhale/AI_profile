@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Environment Setup
 - Copy `.env.example` to `.env.local`
-- Add `GOOGLE_GENERATIVE_AI_API_KEY` for AI chatbot functionality
+- Add `OPENROUTER_API_KEY` for AI chatbot functionality
 - Optional: `NEXT_PUBLIC_SITE_URL` for custom domain
 
 ## Architecture Overview
@@ -21,7 +21,7 @@ This is an AI-powered portfolio website built with Next.js 15 that operates thro
 
 ### Core Architecture Concept
 - **Configuration-Driven**: Everything is defined in `portfolio-config.json` - no code changes needed for content updates
-- **AI Integration**: Google Gemini API powers an intelligent chatbot that responds as the portfolio owner
+- **AI Integration**: OpenRouter powers an intelligent chatbot that responds as the portfolio owner
 - **Type-Safe**: Full TypeScript implementation with comprehensive type definitions
 
 ### Key Directories

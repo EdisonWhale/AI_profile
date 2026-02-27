@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { createOpenAI } from '@ai-sdk/openai';
 import { streamText, convertToModelMessages, stepCountIs } from 'ai';
 
 import { systemPrompt } from '@/lib/config-loader';
@@ -11,24 +11,26 @@ import { getSkills } from './tools/getSkills';
 
 export const maxDuration = 30;
 
-// Create Google AI provider with explicit API key
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+const openrouter = createOpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
+  headers: {
+    'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+    'X-Title': 'Edison AI Portfolio',
+  },
 });
 
+const openrouterModel = process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash-lite';
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
     console.log('[CHAT-API] Incoming messages:', messages);
-    
-    // Check if API key is available
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-      console.error('[CHAT-API] Missing GOOGLE_GENERATIVE_AI_API_KEY environment variable');
+
+    if (!process.env.OPENROUTER_API_KEY) {
+      console.error('[CHAT-API] Missing OPENROUTER_API_KEY environment variable');
       return new Response('Missing API key', { status: 500 });
     }
-    
-    console.log('[CHAT-API] API key available:', process.env.GOOGLE_GENERATIVE_AI_API_KEY?.slice(0, 10) + '...');
 
     // Add tools
     const tools = {
@@ -40,23 +42,20 @@ export async function POST(req: Request) {
       getEntryLevel,
     };
 
-    console.log('[CHAT-API] About to call streamText');
-    
-    const result = streamText({
-      model: google('gemini-2.5-flash-lite'),
+    const baseConfig = {
       system: systemPrompt,
       messages: convertToModelMessages(messages),
       tools,
       stopWhen: stepCountIs(5),
+    };
+
+    console.log('[CHAT-API] Provider decision: OpenRouter');
+    const result = streamText({
+      model: openrouter(openrouterModel),
+      ...baseConfig,
     });
 
-    console.log('[CHAT-API] streamText completed successfully');
-    console.log('[CHAT-API] Result object keys:', Object.keys(result));
-    
-    const response = result.toUIMessageStreamResponse();
-    console.log('[CHAT-API] UIMessageStreamResponse created');
-    
-    return response;
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Chat API error:', error);
     console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');

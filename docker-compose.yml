@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
     container_name: portfolio-app
     ports:
       - "3000:3000"

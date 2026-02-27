@@ -2,7 +2,7 @@
 
 ![Portfolio Preview](public/portfolio.png?v=2)
 
-Modern, AI-augmented developer portfolio for Edison Xu. The site is fully driven by a single JSON configuration, features an AI chat experience powered by Google Gemini, and uses an Apple-inspired visual design.
+Modern, AI-augmented developer portfolio for Edison Xu. The site is fully driven by a single JSON configuration, features an AI chat experience powered by OpenRouter, and uses an Apple-inspired visual design.
 
 This README documents this specific implementation, its configuration, architecture, and how to run and customize it.
 
@@ -12,7 +12,7 @@ This README documents this specific implementation, its configuration, architect
 
 **Highlights**
 - JSON-first content via `portfolio-config.json`
-- AI chat with tool-augmented answers (Gemini + AI SDK)
+- AI chat with tool-augmented answers (OpenRouter + AI SDK)
 - Apple-style UI with framer-motion animations
 - Strong typing and config helpers for safety and reuse
 
@@ -28,7 +28,7 @@ This README documents this specific implementation, its configuration, architect
 - Strongly typed configuration pipeline (TypeScript)
 - Next.js 15 App Router with React 19
 - Tailwind CSS v4 and Radix UI primitives
-- AI chat backed by `ai` SDK and `@ai-sdk/google`
+- AI chat backed by `ai` SDK and `@ai-sdk/openai`
 - Prebuilt sections: Presentation, Skills, Projects, Resume, Contact, Availability
 
 ---
@@ -68,7 +68,7 @@ Update content by editing `portfolio-config.json`. Example excerpts from this re
 
 **AI Chatbot**
 - API: `src/app/api/chat/route.ts`
-  - Model: `google('gemini-2.5-flash-lite')` via `@ai-sdk/google`
+  - Model: `openrouter('google/gemini-2.5-flash-lite')` via `@ai-sdk/openai`
   - System prompt: generated from `portfolio-config.json`
   - Tools: structured data fetchers mapped to UI renderers
     - `getProjects`, `getPresentation`, `getResume`, `getContact`, `getSkills`, `getEntryLevel`
@@ -104,7 +104,7 @@ Behavior:
 - Framework: `next@15`, `react@19`, `typescript`
 - Styling: `tailwindcss@4`, custom Apple-inspired CSS in `globals.css`
 - Motion/UI: `framer-motion`, `radix-ui`, `lucide-react`
-- AI: `ai@^5`, `@ai-sdk/google` (Gemini), `zod` for tool input schemas
+- AI: `ai@^5`, `@ai-sdk/openai` (OpenRouter), `zod` for tool input schemas
 
 ---
 
@@ -112,12 +112,13 @@ Behavior:
 - Prereqs: Node 18+ recommended
 - Install: `pnpm install` or `npm install` or `yarn install`
 - Env vars: copy `.env.example` → `.env.local` and set:
-  - `GOOGLE_GENERATIVE_AI_API_KEY` (required for chat)
+  - `OPENROUTER_API_KEY` (required for chat)
+  - `OPENROUTER_MODEL` (optional, defaults to `google/gemini-2.5-flash-lite`)
   - `NEXT_PUBLIC_SITE_URL` (optional)
 - Dev: `npm run dev` then open `http://localhost:3000`
 - Build: `npm run build`, Start: `npm start`
 
-Security note: never commit `.env.local` with real keys. If a key was committed, rotate it immediately from Google AI Studio and force-push without secrets.
+Security note: never commit `.env.local` with real keys. If a key was committed, rotate it immediately from OpenRouter dashboard and remove secrets from git history.
 
 ---
 
@@ -157,7 +158,7 @@ Security note: never commit `.env.local` with real keys. If a key was committed,
 ---
 
 **Troubleshooting**
-- Chat not responding: verify `GOOGLE_GENERATIVE_AI_API_KEY` and network access
+- Chat not responding: verify `OPENROUTER_API_KEY` and network access
 - Build errors: validate `portfolio-config.json` is valid JSON and matches `src/types/portfolio.ts`
 - Images not loading: confirm paths or allowlist host in `next.config.ts`
 - SEO cards wrong: update image URLs in `layout.tsx`
