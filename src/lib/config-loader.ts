@@ -1,5 +1,6 @@
 import { PortfolioConfig } from '../types/portfolio';
 import ConfigParser from './config-parser';
+import { portfolioConfigSchema } from './config-schema';
 
 // Import the configuration file - using JSON import for better compatibility
 import portfolioConfigData from '../../portfolio-config.json';
@@ -15,8 +16,17 @@ import portfolioConfigData from '../../portfolio-config.json';
 let portfolioConfig: PortfolioConfig;
 
 try {
-  // Use imported JSON configuration
-  portfolioConfig = portfolioConfigData as PortfolioConfig;
+  const parsedConfig = portfolioConfigSchema.safeParse(portfolioConfigData);
+
+  if (!parsedConfig.success) {
+    console.error(
+      'Invalid portfolio configuration:',
+      parsedConfig.error.flatten()
+    );
+    throw new Error('Invalid portfolio configuration');
+  }
+
+  portfolioConfig = parsedConfig.data as PortfolioConfig;
 } catch (error) {
   console.error('Failed to load portfolio configuration:', error);
   // Provide a fallback minimal config to prevent the app from crashing
@@ -35,8 +45,8 @@ try {
       email: 'error@example.com',
       handle: '@error',
       bio: 'Configuration file could not be loaded',
-      avatar: '/placeholder.jpg',
-      fallbackAvatar: '/placeholder.jpg'
+      avatar: '/profile.svg',
+      fallbackAvatar: '/profile.svg'
     },
     education: {
       current: {

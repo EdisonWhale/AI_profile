@@ -1,6 +1,6 @@
 # Edison Xu — AI-Powered Portfolio
 
-![Portfolio Preview](public/portfolio.png?v=2)
+![Portfolio Preview](public/portfolio.svg)
 
 Modern, AI-augmented developer portfolio for Edison Xu. The site is fully driven by a single JSON configuration, features an AI chat experience powered by OpenRouter, and uses an Apple-inspired visual design.
 
@@ -17,7 +17,7 @@ This README documents this specific implementation, its configuration, architect
 - Strong typing and config helpers for safety and reuse
 
 **Screenshot Assets**
-- Replace `public/profile.jpeg` and `public/avatar.png` to customize visuals
+- Replace `public/profile.svg`, `public/portfolio.svg`, and the resume route or file to customize visuals
 
 **License**
 - MIT (see `docs/LICENSE`)
@@ -68,7 +68,7 @@ Update content by editing `portfolio-config.json`. Example excerpts from this re
 
 **AI Chatbot**
 - API: `src/app/api/chat/route.ts`
-  - Model: `openrouter('google/gemini-2.5-flash-lite')` via `@ai-sdk/openai`
+  - Model: `openrouter('minimax/minimax-m2.5')` via `@ai-sdk/openai`
   - System prompt: generated from `portfolio-config.json`
   - Tools: structured data fetchers mapped to UI renderers
     - `getProjects`, `getPresentation`, `getResume`, `getContact`, `getSkills`, `getEntryLevel`
@@ -113,8 +113,9 @@ Behavior:
 - Install: `pnpm install` or `npm install` or `yarn install`
 - Env vars: copy `.env.example` → `.env.local` and set:
   - `OPENROUTER_API_KEY` (required for chat)
-  - `OPENROUTER_MODEL` (optional, defaults to `google/gemini-2.5-flash-lite`)
+  - `OPENROUTER_MODEL` (optional, defaults to `minimax/minimax-m2.5`)
   - `NEXT_PUBLIC_SITE_URL` (optional)
+- Docker env: copy `.env.docker.example` → `.env.docker` on the server and set real values there
 - Dev: `npm run dev` then open `http://localhost:3000`
 - Build: `npm run build`, Start: `npm start`
 
@@ -124,8 +125,9 @@ Security note: never commit `.env.local` with real keys. If a key was committed,
 
 **Customization**
 - Content: edit `portfolio-config.json`
-- Images: replace files in `public/` (e.g., `profile.jpeg`, `avatar.png`, `Edison-resume-2025.pdf`)
-- SEO: adjust `src/app/layout.tsx` metadata (OpenGraph, Twitter cards, canonical). Replace any leftover external preview URLs with your own (`public/portfolio.png`).
+- Images: replace files in `public/` (e.g., `profile.svg`, `portfolio.svg`) or update the config to use your own hosted assets
+- Resume: replace the `/resume` route with your own PDF URL or restore a local PDF file if you prefer direct downloads
+- SEO: adjust `src/app/layout.tsx` metadata (OpenGraph, Twitter cards, canonical). Replace preview assets with your own.
 - Images from remote hosts: see `next.config.ts` `images.remotePatterns`
 - Styling: tweak `globals.css` or Tailwind utilities; theme is intentionally minimal and Apple-inspired
 

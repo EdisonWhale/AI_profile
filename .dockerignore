@@ -4,6 +4,8 @@ node_modules
 npm-debug.log
 README.md
 .env
+.env.docker
+.env.docker.*
 .env.local
 .env.production.local
 .env.local
