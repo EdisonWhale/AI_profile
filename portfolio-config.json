@@ -13,7 +13,7 @@
     "phone": "626-552-1696",
     "handle": "@EdisonWhale",
     "bio": "Hey, I'm Edison 👋\nI'm a software engineer focused on Generative AI systems, full-stack applications, and production-ready ML workflows. I currently work at Highmark Health, where I build internal AI products across React/FastAPI platforms, retrieval systems, and multi-agent architectures.\n\nI'm a US Citizen and I do not require visa sponsorship. I enjoy turning complex AI ideas into practical tools that improve everyday workflows and make technology more useful for people.",
-    "avatar": "/profile.jpeg",
+    "avatar": "/profile.svg",
     "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3",
     "workAuthorization": {
       "status": "US Citizen",
@@ -173,7 +173,7 @@
     "fileType": "PDF",
     "lastUpdated": "February 2026",
     "fileSize": "149 KB",
-    "downloadUrl": "/Edison-resume-2025.pdf"
+    "downloadUrl": "/resume"
   },
   "chatbot": {
     "name": "Edison",

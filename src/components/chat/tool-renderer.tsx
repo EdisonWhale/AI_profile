@@ -27,8 +27,8 @@ interface AvailabilityData {
     location: string;
   };
   experience: {
-    entryLevelCompleted: string;
-    freelanceWork: string;
+    currentPosition: string;
+    currentResponsibilities: string;
     projectExperience: string;
   };
   skills: {

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface AnimatedAvatarProps {
   src: string;
@@ -15,11 +16,14 @@ interface AnimatedAvatarProps {
 
 const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
   src,
+  fallbackSrc,
 
   size = 120,
   className,
   showGlow = true,
 }) => {
+  const [hasImageError, setHasImageError] = useState(false);
+
   // Flash animation variants
   const flashVariants = {
     hidden: {
@@ -90,33 +94,36 @@ const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
             height: size,
           }}
         >
-          <Image
-            src={src}
-            alt="Edison Xu"
-            width={size * 3} 
-            height={size * 3}
-            className="object-cover"
-            style={{ 
-              width: size, 
-              height: size,
-              imageRendering: 'auto' as const
-            } as React.CSSProperties}
-            priority={true} 
-            quality={95} 
-            sizes={`${size}px`}
-            onError={(e) => {
-              // Fallback to Avatar component if Image fails
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-          />
+          {!hasImageError ? (
+            <Image
+              src={src}
+              alt="Edison Xu"
+              width={size * 3}
+              height={size * 3}
+              className="object-cover"
+              style={{
+                width: size,
+                height: size,
+                imageRendering: 'auto' as const
+              } as React.CSSProperties}
+              priority={true}
+              quality={95}
+              sizes={`${size}px`}
+              onError={() => setHasImageError(true)}
+            />
+          ) : null}
           {/* Fallback Avatar for error cases */}
           <Avatar 
-            className="absolute inset-0 opacity-0"
+            className={cn(
+              'absolute inset-0 transition-opacity duration-200',
+              hasImageError ? 'opacity-100' : 'opacity-0'
+            )}
             style={{ width: size, height: size }}
           >
-            <AvatarImage src={src} alt="Edison Xu" className="object-cover" />
-            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold">
+            {fallbackSrc ? (
+              <AvatarImage src={fallbackSrc} alt="Edison Xu" className="object-cover" />
+            ) : null}
+            <AvatarFallback className="bg-linear-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold">
               EX
             </AvatarFallback>
           </Avatar>

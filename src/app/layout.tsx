@@ -67,11 +67,11 @@ export const metadata: Metadata = {
     siteName: "Edison Xu Portfolio",
     images: [
       {
-        url: "https://edisonwhale.com/portfolio.png",
+        url: "https://edisonwhale.com/portfolio.svg",
         width: 1200,
         height: 630,
         alt: "Edison Xu - Professional Portfolio with AI Chatbot",
-        type: "image/png",
+        type: "image/svg+xml",
       },
     ],
   },
@@ -82,19 +82,19 @@ export const metadata: Metadata = {
     creator: "@edisonwhale",
     site: "@edisonwhale",
     images: [{
-      url: "https://edisonwhale.com/portfolio.png",
+      url: "https://edisonwhale.com/portfolio.svg",
       alt: "Edison Xu Professional Portfolio"
     }],
   },
   icons: {
     icon: [
       {
-        url: "/favicon.ico",
-        sizes: "any",
+        url: "/favicon.svg",
+        type: "image/svg+xml",
       }
     ],
-    shortcut: "/favicon.ico?v=2",
-    apple: "/apple-touch-icon.svg?v=2",
+    shortcut: "/favicon.svg",
+    apple: "/apple-touch-icon.svg",
   },
   manifest: "/manifest.json",
   alternates: {
@@ -115,8 +115,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="canonical" href="https://edisonwhale.com/" />
         <script
           type="application/ld+json"
@@ -127,7 +127,7 @@ export default function RootLayout({
               "name": "Edison Xu",
               "jobTitle": "Full-stack Python Developer & AI Engineer",
               "url": "https://edisonwhale.com/",
-              "image": "https://edisonwhale.com/profile.jpeg",
+              "image": "https://edisonwhale.com/profile.svg",
               "sameAs": [
                 "https://github.com/edisonwhale",
                 "https://linkedin.com/in/edisonwhale",

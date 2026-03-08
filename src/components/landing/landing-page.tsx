@@ -35,14 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
   };
 
   const handleResumeDownload = () => {
-    // Create download link for resume
-    const resumeUrl = config.resume.downloadUrl || '/Edison-resume-2025.pdf';
-    const link = document.createElement('a');
-    link.href = resumeUrl;
-    link.download = `${config.personal.name}-Resume.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.open(config.resume.downloadUrl, '_blank', 'noopener,noreferrer');
   };
 
   const pageVariants = {
@@ -89,6 +82,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
           {/* Animated Avatar */}
           <AnimatedAvatar
             src={config.personal.avatar}
+            fallbackSrc={config.personal.fallbackAvatar}
             size={120}
             showGlow={true}
           />

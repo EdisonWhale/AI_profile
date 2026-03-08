@@ -2,12 +2,13 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { profileInfo } from '@/lib/config-loader';
 
 export function Presentation() {
   // Personal information now loaded from configuration
   const profile = profileInfo;
+  const [imageSrc, setImageSrc] = useState(profile.src);
 
   // Animation variants for text elements
   const textVariants = {
@@ -46,16 +47,12 @@ export function Presentation() {
               className="h-full w-full"
             >
               <Image
-                src={profile.src}
+                src={imageSrc}
                 alt={profile.name}
                 width={500}
                 height={500}
                 className="h-full w-full object-cover object-center"
-                onError={(e) => {
-                  // Fallback to placeholder if image fails to load
-                  const target = e.target as HTMLImageElement;
-                  target.src = profile.fallbackSrc;
-                }}
+                onError={() => setImageSrc(profile.fallbackSrc)}
               />
             </motion.div>
           </div>
@@ -68,7 +65,7 @@ export function Presentation() {
             animate="visible"
             variants={textVariants}
           >
-            <h1 className="from-foreground to-muted-foreground bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent md:text-3xl">
+            <h1 className="from-foreground to-muted-foreground bg-linear-to-r bg-clip-text text-xl font-semibold text-transparent md:text-3xl">
               {profile.name}
             </h1>
             <div className="mt-1 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
@@ -102,7 +99,7 @@ export function Presentation() {
               (tag) => (
                 <span
                   key={tag}
-                  className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-white/30 text-foreground/80 rounded-full px-3 py-1 text-sm shadow-sm hover:from-blue-500/15 hover:to-cyan-500/15 transition-all duration-300"
+                  className="bg-linear-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-white/30 text-foreground/80 rounded-full px-3 py-1 text-sm shadow-sm hover:from-blue-500/15 hover:to-cyan-500/15 transition-all duration-300"
                 >
                   {tag}
                 </span>

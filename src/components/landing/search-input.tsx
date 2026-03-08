@@ -105,7 +105,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
               className={cn(
                 "absolute right-2 top-1/2 -translate-y-1/2",
                 "p-2 rounded-xl",
-                "bg-gradient-to-r from-blue-500 to-blue-600 text-white",
+                "bg-linear-to-r from-blue-500 to-blue-600 text-white",
                 "shadow-lg shadow-blue-500/25",
                 "transition-all duration-200",
                 "disabled:opacity-50 disabled:cursor-not-allowed",

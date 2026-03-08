@@ -126,7 +126,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                         onClick={handleGetAIResponse}
                         variant="outline"
                         size="sm"
-                        className="text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
+                        className="text-xs bg-linear-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
                       >
                         <Sparkles className="w-3 h-3 mr-1.5 flex-shrink-0" />
                         Get AI Response
@@ -140,7 +140,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
         </div>
       ) : (        // Fallback to text-based preset for tools without components
         <ChatBubble variant="received">
-          <ChatBubbleMessage className="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-100/50 dark:border-blue-800/50 w-full">
+          <ChatBubbleMessage className="bg-linear-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-100/50 dark:border-blue-800/50 w-full">
             <div className="space-y-4 p-6 w-full">
               {/* Close button */}
               {onClose && (
@@ -166,7 +166,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                     const urlMatch = line.match(/(https?:\/\/[^\s]+)/);
                     if (urlMatch) {
                       return (
-                        <div key={index} className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200 shadow-sm">
+                        <div key={index} className="mb-4 p-4 bg-linear-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200 shadow-sm">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
@@ -272,7 +272,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                         onClick={handleGetAIResponse}
                         variant="outline"
                         size="sm"
-                        className="text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
+                        className="text-xs bg-linear-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
                       >
                         <Sparkles className="w-3 h-3 mr-1.5 flex-shrink-0" />
                         Get AI Response

@@ -46,9 +46,6 @@ export function SimplifiedChatView({
           part.state === 'output-available'
       ) || [];
 
-  // Only display the first tool (if any)
-  const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
-
   // Extract text content from parts
   const textContent = message.parts
     ?.filter((part) => part.type === 'text')
@@ -57,12 +54,10 @@ export function SimplifiedChatView({
   
   // Check if we have meaningful text content (more than just confirmations)
   const hasTextContent = textContent.trim().length > 0;
-  const hasTools = currentTool.length > 0;
+  const hasTools = toolInvocations.length > 0;
   
   // Show text content if we have meaningful content, even with tools present
   const showTextContent = hasTextContent;
-
-  console.log('currentTool', currentTool);
 
   return (
     <motion.div {...MOTION_CONFIG} className="flex h-full w-full flex-col px-4">
@@ -72,7 +67,7 @@ export function SimplifiedChatView({
         {hasTools && (
           <div className="mb-4 w-full">
             <ToolRenderer
-              toolInvocations={currentTool}
+              toolInvocations={toolInvocations}
               messageId={message.id || 'current-msg'}
             />
           </div>

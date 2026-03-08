@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Edison Xu portfolio preview</title>
+  <desc id="desc">Portfolio preview card for Edison Xu.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="50%" stop-color="#dbeafe" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect x="72" y="72" width="1056" height="486" rx="36" fill="#ffffff" opacity="0.9" />
+  <circle cx="240" cy="315" r="96" fill="url(#accent)" />
+  <text x="240" y="346" text-anchor="middle" fill="#ffffff" font-size="96" font-family="Arial, Helvetica, sans-serif" font-weight="700">EX</text>
+  <text x="390" y="245" fill="#0f172a" font-size="58" font-family="Arial, Helvetica, sans-serif" font-weight="700">Edison Xu</text>
+  <text x="390" y="310" fill="#334155" font-size="32" font-family="Arial, Helvetica, sans-serif">Software Engineer &amp; AI/ML Engineer</text>
+  <text x="390" y="360" fill="#475569" font-size="28" font-family="Arial, Helvetica, sans-serif">AI-powered portfolio with chat, projects, and resume</text>
+  <rect x="390" y="415" width="255" height="56" rx="28" fill="url(#accent)" />
+  <text x="518" y="451" text-anchor="middle" fill="#ffffff" font-size="24" font-family="Arial, Helvetica, sans-serif" font-weight="700">edisonwhale.com</text>
+</svg>

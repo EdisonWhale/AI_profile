@@ -1,18 +1,9 @@
 'use client';
 
-import React from 'react';
-
 import { ChevronRight } from 'lucide-react';
 import { contactInfo } from '@/lib/config-loader';
 
 export function Contact() {
-  // Contact information now loaded from configuration
-
-  // Function to handle opening links
-  const openLink = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
   return (
     <div className="mx-auto mt-8 w-full">
       <div className="bg-white/70 backdrop-blur-xl border border-white/30 shadow-lg shadow-black/5 w-full overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12 hover:bg-white/80 transition-all duration-300">
@@ -28,9 +19,9 @@ export function Contact() {
 
         {/* Email Section */}
         <div className="mt-8 flex flex-col md:mt-10">
-          <div
-            className="group mb-5 cursor-pointer"
-            onClick={() => openLink(`mailto:${contactInfo.email}`)}
+          <a
+            className="group mb-5 inline-block"
+            href={`mailto:${contactInfo.email}`}
           >
             <div className="flex items-center gap-1">
               <span className="text-base font-medium text-blue-500 hover:underline sm:text-lg">
@@ -38,13 +29,13 @@ export function Contact() {
               </span>
               <ChevronRight className="h-5 w-5 text-blue-500 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
-          </div>
+          </a>
 
           {/* Phone Section */}
           {contactInfo.phone && (
-            <div
-              className="group mb-5 cursor-pointer"
-              onClick={() => openLink(`tel:${contactInfo.phone}`)}
+            <a
+              className="group mb-5 inline-block"
+              href={`tel:${contactInfo.phone}`}
             >
               <div className="flex items-center gap-1">
                 <span className="text-base font-medium text-green-500 hover:underline sm:text-lg">
@@ -52,20 +43,22 @@ export function Contact() {
                 </span>
                 <ChevronRight className="h-5 w-5 text-green-500 transition-transform duration-300 group-hover:translate-x-1" />
               </div>
-            </div>
+            </a>
           )}
 
           {/* Social Links */}
           <div className="flex flex-wrap gap-x-6 gap-y-5 sm:gap-x-8">
             {contactInfo.socials.map((social) => (
-              <button
+              <a
                 key={social.name}
                 className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition-colors"
-                onClick={() => openLink(social.url)}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 title={social.name}
               >
                 {social.name}
-              </button>
+              </a>
             ))}
           </div>
         </div>

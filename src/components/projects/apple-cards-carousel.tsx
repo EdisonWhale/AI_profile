@@ -137,7 +137,7 @@ export const Carousel = ({
         >
           <div
             className={cn(
-              'absolute right-0 z-[10] h-auto w-[5%] overflow-hidden bg-gradient-to-l'
+              'absolute right-0 z-10 h-auto w-[5%] overflow-hidden bg-linear-to-l'
             )}
           ></div>
 
@@ -203,6 +203,8 @@ export const Card = ({
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerButtonRef = useRef<HTMLButtonElement>(null);
   const { onCardClose } = useContext(CarouselContext);
 
   const handleOpen = () => {
@@ -212,6 +214,7 @@ export const Card = ({
   const handleClose = () => {
     setOpen(false);
     onCardClose(index);
+    triggerButtonRef.current?.focus();
   };
 
   useEffect(() => {
@@ -221,14 +224,17 @@ export const Card = ({
       }
     }
 
+    document.body.style.overflow = open ? 'hidden' : 'auto';
+
     if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
+      closeButtonRef.current?.focus();
     }
 
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('keydown', onKeyDown);
+    };
   }, [open, handleClose]);
 
   // @ts-expect-error - useOutsideClick hook with ref parameter
@@ -238,7 +244,7 @@ export const Card = ({
   const modalContent = (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[9999] h-screen overflow-auto">
+        <div className="fixed inset-0 z-9999 h-screen overflow-auto">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -250,14 +256,19 @@ export const Card = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             ref={containerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`project-dialog-title-${index}`}
             layoutId={layout ? `card-${card.title}` : undefined}
-            className="relative z-[10000] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
+            className="relative z-10000 mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans"
           >
             {/* Sticky close button */}
-            <div className="sticky top-4 z-[10001] flex justify-end px-8 pt-8 md:px-14 md:pt-8">
+            <div className="sticky top-4 z-10001 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
               <button
+                ref={closeButtonRef}
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 shadow-md hover:bg-gray-200 transition-colors"
                 onClick={handleClose}
+                aria-label={`Close ${card.title}`}
               >
                 <IconX className="h-6 w-6 text-gray-600" />
               </button>
@@ -273,6 +284,7 @@ export const Card = ({
                   {card.category}
                 </motion.p>
                 <motion.p
+                  id={`project-dialog-title-${index}`}
                   layoutId={layout ? `title-${card.title}` : undefined}
                   className="mt-4 text-2xl font-semibold text-gray-800 md:text-5xl"
                 >
@@ -295,11 +307,15 @@ export const Card = ({
       {typeof window !== 'undefined' && createPortal(modalContent, document.body)}
       
       <motion.button
+        ref={triggerButtonRef}
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="group relative z-10 flex h-48 w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50/90 via-cyan-50/80 to-indigo-50/85 backdrop-blur-xl border border-blue-200/40 shadow-xl shadow-blue-400/12 hover:from-blue-50 hover:via-cyan-50 hover:to-indigo-50 hover:shadow-2xl hover:shadow-blue-500/18 hover:scale-[1.02] transition-all duration-500 ease-out"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls={`project-dialog-title-${index}`}
+        className="group relative z-10 flex h-48 w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-linear-to-br from-blue-50/90 via-cyan-50/80 to-indigo-50/85 backdrop-blur-xl border border-blue-200/40 shadow-xl shadow-blue-400/12 hover:from-blue-50 hover:via-cyan-50 hover:to-indigo-50 hover:shadow-2xl hover:shadow-blue-500/18 hover:scale-[1.02] transition-all duration-500 ease-out"
       >
-        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-white/30 group-hover:from-white/40 via-transparent group-hover:via-cyan-50/20 to-blue-50/30 group-hover:to-indigo-50/40 transition-all duration-500 ease-out" />
+        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-linear-to-b from-white/30 group-hover:from-white/40 via-transparent group-hover:via-cyan-50/20 to-blue-50/30 group-hover:to-indigo-50/40 transition-all duration-500 ease-out" />
         {/*<div className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/2" />*/}
         <div className="relative z-40 p-8">
           <motion.p
@@ -310,7 +326,7 @@ export const Card = ({
           </motion.p>
           <motion.p
             layoutId={layout ? `title-${card.title}` : undefined}
-            className="max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-slate-800 group-hover:text-slate-900 drop-shadow-sm md:text-3xl transition-colors duration-300"
+            className="max-w-xs text-left font-sans text-xl font-semibold text-balance text-slate-800 group-hover:text-slate-900 drop-shadow-sm md:text-3xl transition-colors duration-300"
           >
             {card.title}
           </motion.p>

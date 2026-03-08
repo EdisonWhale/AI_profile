@@ -48,7 +48,7 @@ export function Resume() {
               className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              title="Download PDF"
+              title="Open resume"
             >
               <Download className="h-5 w-5" />
             </motion.button>

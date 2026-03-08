@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { CalendarDays, Code2, Globe, Briefcase } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { getConfig } from '@/lib/config-loader';
 
 interface AvailabilityData {
   availability: string;
@@ -13,8 +14,8 @@ interface AvailabilityData {
     location: string;
   };
   experience: {
-    entryLevelCompleted: string;
-    freelanceWork: string;
+    currentPosition: string;
+    currentResponsibilities: string;
     projectExperience: string;
   };
   skills: {
@@ -43,6 +44,7 @@ interface AvailabilityCardProps {
 
 const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
   const router = useRouter();
+  const config = getConfig();
 
   const handleContactClick = () => {
     // Navigate to chat page with contact preset question
@@ -62,9 +64,12 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
           {/* Avatar placeholder */}
           <div className="apple-avatar-glow h-16 w-16 overflow-hidden rounded-full shadow-md">
             <img
-              src="/profile.jpeg"
+              src={config.personal.avatar}
               alt="Edison's avatar"
               className="h-full w-full object-cover object-[center_top_-5%] scale-95"
+              onError={(event) => {
+                event.currentTarget.src = config.personal.fallbackAvatar;
+              }}
             />
           </div>
           <div>
@@ -92,7 +97,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       {/* Availability Highlight Section */}
       <div className="mb-8 rounded-2xl apple-glass p-6 border border-[rgba(59,130,246,0.2)] apple-glow">
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-sky-400 to-blue-400 flex items-center justify-center shadow-lg">
+          <div className="h-8 w-8 rounded-full bg-linear-to-br from-sky-400 to-blue-400 flex items-center justify-center shadow-lg">
             <Briefcase className="h-4 w-4 text-white" />
           </div>
           <h3 className="text-lg font-semibold text-foreground">Current Availability Status</h3>
@@ -145,9 +150,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
             <p className="text-foreground text-sm font-medium">Tech stack</p>
             <div className="text-muted-foreground grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
               <ul className="decoration-none list-disc pl-4">
-                {data?.skills.technical.slice(0, 4).map((skill, index) => (
+                {(data?.skills.technical.slice(0, 4) ?? []).map((skill, index) => (
                   <li key={index}>{skill}</li>
-                )) || (
+                ))}
+                {!data?.skills.technical?.length && (
                   <>
                     <li>Python, SQL, JavaScript, HTML/CSS</li>
                     <li>FastAPI, Flask, Django, React.js</li>
@@ -157,9 +163,10 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
                 )}
               </ul>
               <ul className="list-disc pl-4">
-                {data?.skills.technical.slice(4, 8).map((skill, index) => (
+                {(data?.skills.technical.slice(4, 8) ?? []).map((skill, index) => (
                   <li key={index}>{skill}</li>
-                )) || (
+                ))}
+                {!data?.skills.technical?.length && (
                   <>
                     <li>Docker, Git, GitHub Actions, AWS</li>
                     <li>Firebase, Heroku, ESP32, IoT</li>
@@ -187,9 +194,9 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
           What I bring
         </p>
         <p className="text-foreground text-sm">
-          {data?.experience.entryLevelCompleted || "Real-world ML experience from MookMati (Genre classification, FastAPI deployment, AWS)."} <br /> 
+          {data?.experience.currentPosition || "Real-world AI engineering experience delivering production-ready systems in enterprise environments."} <br />
           {data?.achievements[0] || "2nd position in Smart India Hackathon 2025 among 88,221 teams with hideFlare cybersecurity tool."} <br /> 
-          {data?.experience.freelanceWork || "25+ freelance automation projects delivered on Fiverr, cutting manual work by 60%."}
+          {data?.experience.currentResponsibilities || "Built AI products, retrieval systems, and full-stack applications with measurable impact."}
         </p>
       </div>
 
@@ -205,7 +212,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       <div className="mt-10 flex justify-center">
         <button
           onClick={handleContactClick}
-          className="cursor-pointer rounded-full bg-gradient-to-r from-sky-400 to-blue-400 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-sky-500 hover:to-blue-500 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 apple-button-press"
+          className="cursor-pointer rounded-full bg-linear-to-r from-sky-400 to-blue-400 px-6 py-3 font-semibold text-white transition-all duration-300 hover:from-sky-500 hover:to-blue-500 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 apple-button-press"
         >
           Contact me
         </button>

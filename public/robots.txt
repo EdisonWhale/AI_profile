@@ -21,6 +21,6 @@ Disallow: /admin/
 Disallow: /private/
 
 # Allow important files
-Allow: /favicon.ico
+Allow: /favicon.svg
 Allow: /robots.txt
 Allow: /sitemap.xml
