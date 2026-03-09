@@ -5,16 +5,22 @@
       "current": "Atlanta, GA, USA",
       "remote": true,
       "relocation": true,
-      "preferredLocations": ["San Francisco, CA", "Seattle, WA", "Atlanta, GA", "Austin, TX", "Remote"],
+      "preferredLocations": [
+        "San Francisco, CA",
+        "Seattle, WA",
+        "Atlanta, GA",
+        "Austin, TX",
+        "Remote"
+      ],
       "timezone": "EST (UTC-5)"
     },
     "title": "Software Engineer & AI/ML Engineer",
     "email": "edisonapply@gmail.com",
     "phone": "626-552-1696",
     "handle": "@EdisonWhale",
-    "bio": "Hey, I'm Edison 👋\nI'm a software engineer focused on Generative AI systems, full-stack applications, and production-ready ML workflows. I currently work at Highmark Health, where I build internal AI products across React/FastAPI platforms, retrieval systems, and multi-agent architectures.\n\nI'm a US Citizen and I do not require visa sponsorship. I enjoy turning complex AI ideas into practical tools that improve everyday workflows and make technology more useful for people.",
-    "avatar": "/profile.svg",
-    "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "bio": "I'm Edison, a software engineer building AI-powered products at the intersection of full-stack engineering, retrieval, and agent systems.\n\nAt Highmark Health, I've worked on real-time AI training platforms, planner–executor–critic multi-agent research workflows, and document intelligence tools on top of Vertex AI Search. My focus is designing systems where LLMs, retrieval, and infrastructure work together to produce grounded, auditable, and reliable behavior in production.",
+    "avatar": "/avatar.png",
+    "fallbackAvatar": "/avatar.png",
     "workAuthorization": {
       "status": "US Citizen",
       "requiresSponsorship": false,
@@ -41,49 +47,124 @@
   },
   "experience": [
     {
-      "company": "Highmark Inc.",
+      "company": "Highmark Health",
       "position": "Software Engineer (Generative AI team)",
       "type": "Full-time",
       "duration": "Feb 2025 - Present",
       "location": "Pittsburgh, PA",
-      "description": "Built a real-time AI call-center training platform with React + FastAPI + WebSockets, architected a Planner-Executor-Critic multi-agent deep research system with citation-backed outputs, engineered an enterprise document Q&A workspace on Vertex AI Search with grounded retrieval and reranking, and deployed GitOps CI/CD pipelines on Cloud Run with logging and alerting.",
-      "technologies": ["React", "TypeScript", "FastAPI", "Python", "WebSockets", "Vertex AI Search", "Gemini API", "RAG", "Multi-Agent Systems", "Cloud Run", "GitOps", "CI/CD"]
+      "description": "Built production-grade internal AI systems spanning real-time interaction, multi-agent research, and enterprise retrieval workflows. Shipped a real-time call-center training platform, a citation-backed Planner–Executor–Critic deep research system, and an enterprise document Q&A workspace using grounded retrieval, reranking, and Vertex AI Search—while contributing to CI/CD, Cloud Run deployments, and observability for reliability at scale.",
+      "technologies": [
+        "Real-time AI",
+        "Multi-Agent Systems",
+        "Retrieval / RAG",
+        "Vertex AI Search",
+        "Cloud Run",
+        "CI/CD"
+      ]
     },
     {
-      "company": "Highmark Inc.",
+      "company": "Highmark Health",
       "position": "Software Engineer Intern (Generative AI team)",
       "type": "Internship",
       "duration": "May 2024 - Dec 2024",
       "location": "Pittsburgh, PA",
-      "description": "Developed an internal multi-modal AI platform on Vertex AI with React/TypeScript and FastAPI, built a Flask-based RAG system for policy Q&A and source-grounded summarization, designed a secure centralized AI Proxy Service for Gemini integration, and improved service quality with Pytest coverage above 90%.",
-      "technologies": ["React", "TypeScript", "FastAPI", "Flask", "Vertex AI", "Gemini API", "RAG", "Embedding Models", "REST API", "Pytest"]
+      "description": "Contributed to core AI platform and retrieval capabilities across internal tools, model integrations, and source-grounded workflows. Built a multi-modal platform on Vertex AI, a RAG-based policy assistant for grounded summarization, and a centralized Gemini proxy service—while improving reliability with Pytest coverage above 90%.",
+      "technologies": [
+        "Vertex AI",
+        "Retrieval / RAG",
+        "Gemini API",
+        "AI Platform",
+        "Policy Q&A",
+        "Testing"
+      ]
     }
   ],
   "skills": {
     "programming": ["Python", "Go", "TypeScript", "JavaScript", "Java", "SQL"],
-    "ml_ai": ["LLMs", "Multi-Agent Systems", "LangGraph", "Vertex AI", "Gemini API", "RAG Systems", "Embedding Models"],
-    "web_development": ["React.js", "Next.js", "Vue.js", "Spring Boot", "Django", "Node.js", "Express.js", "Selenium", "FastAPI", "Flask"],
-    "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "DynamoDB", "Firebase"],
-    "devops_cloud": ["Docker", "Kubernetes", "Git", "AWS", "GCP", "Cloud Run", "GitOps", "CI/CD", "Postman", "Nginx", "Linux", "Jira"],
+    "ml_ai": [
+      "LLMs",
+      "Multi-Agent Systems",
+      "LangGraph",
+      "Vertex AI",
+      "Gemini API",
+      "RAG Systems",
+      "Embedding Models"
+    ],
+    "web_development": [
+      "React.js",
+      "Next.js",
+      "Vue.js",
+      "Spring Boot",
+      "Django",
+      "Node.js",
+      "Express.js",
+      "Selenium",
+      "FastAPI",
+      "Flask"
+    ],
+    "databases": [
+      "MySQL",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "DynamoDB",
+      "Firebase"
+    ],
+    "devops_cloud": [
+      "Docker",
+      "Kubernetes",
+      "Git",
+      "AWS",
+      "GCP",
+      "Cloud Run",
+      "GitOps",
+      "CI/CD",
+      "Postman",
+      "Nginx",
+      "Linux",
+      "Jira"
+    ],
     "big_data": ["PySpark"],
-    "soft_skills": ["Problem Solving", "Team Leadership", "Project Management", "Communication", "Learning Agility", "Innovation"]
+    "soft_skills": [
+      "Problem Solving",
+      "Team Leadership",
+      "Project Management",
+      "Communication",
+      "Learning Agility",
+      "Innovation"
+    ]
   },
   "projects": [
     {
       "title": "FigBrain: Figma Multi-Agent Plugin",
       "category": "AI/Plugin Development",
       "description": "Built a Figma AI agent at the Microsoft AI Hackathon, enabling natural-language prompts to generate and populate FigJam components via the Model Context Protocol (MCP) and automated Figma API/plugin flows. Designed a supervisor multi-agent system using LangGraph, where a master orchestrator routed tasks to planner, executor, and verifier agents with Chain-of-Thought prompts and ReAct loops, validated at ~85% first-try accuracy. Cut API costs ~28% and lowered latency through long/short-term memory mechanism, plan/result caching, and dynamic model switching between lightweight and advanced LLMs.",
-      "techStack": ["Figma API", "LangGraph", "Multi-Agent Systems", "Model Context Protocol", "Chain-of-Thought", "ReAct Loops"],
+      "techStack": [
+        "Figma API",
+        "LangGraph",
+        "Multi-Agent Systems",
+        "Model Context Protocol",
+        "Chain-of-Thought",
+        "ReAct Loops"
+      ],
       "date": "2025",
       "status": "Completed",
-      "featured": true,
-      "achievements": ["Microsoft AI Hackathon Participant"]
+      "featured": true
     },
     {
       "title": "Golang-based High-Efficiency Search Engine",
       "category": "Backend Development",
       "description": "Developed a Go-based search engine with text and vector search capabilities, using gRPC for microservices architecture. Implemented a distributed web crawler with Kafka cluster integration for efficient data collection and processing. Enhanced search relevance using TF-IDF and BM25 ranking algorithms, with Trie trees for optimized query suggestions.",
-      "techStack": ["Go", "gRPC", "Kafka", "TF-IDF", "BM25", "Trie Trees", "Microservices", "Distributed Systems"],
+      "techStack": [
+        "Go",
+        "gRPC",
+        "Kafka",
+        "TF-IDF",
+        "BM25",
+        "Trie Trees",
+        "Microservices",
+        "Distributed Systems"
+      ],
       "date": "2024",
       "status": "Completed",
       "featured": true
@@ -92,7 +173,15 @@
       "title": "CloudBin: Cloud-Based Distributed File Storage System",
       "category": "Full-stack Development",
       "description": "Designed a storage system using Spring Boot, Vue3 and AWS S3, featuring chunk-based file uploads for reliability. Leveraged Redis with a Bloom Filter to prevent cache penetration, boosting cache hit rate and reducing database load. Integrated ElasticSearch for efficient fuzzy file name searches, reducing search time and improving accuracy.",
-      "techStack": ["Spring Boot", "Vue3", "AWS S3", "Redis", "Bloom Filter", "ElasticSearch", "Chunk-based Uploads"],
+      "techStack": [
+        "Spring Boot",
+        "Vue3",
+        "AWS S3",
+        "Redis",
+        "Bloom Filter",
+        "ElasticSearch",
+        "Chunk-based Uploads"
+      ],
       "date": "2023",
       "status": "Completed",
       "featured": true
@@ -101,7 +190,17 @@
       "title": "AI Recognition in Edge Computing & Cloud Native",
       "category": "AI/ML & Edge Computing",
       "description": "Optimized edge computing AI recognition using KubeEdge, streamlining local computations and decision-making. Devised a Convolutional Neural Networks model in TensorFlow for vegetable recognition, achieving 98.6% accuracy. Built a centralized management system using Django with MQTT, enhancing live oversight in multiple edge modules. Fostered system resilience and prompt updates by integrating a Kubernetes orchestrated CI/CD pipeline.",
-      "techStack": ["KubeEdge", "TensorFlow", "CNN", "Django", "MQTT", "Kubernetes", "CI/CD", "Edge Computing", "Cloud Native"],
+      "techStack": [
+        "KubeEdge",
+        "TensorFlow",
+        "CNN",
+        "Django",
+        "MQTT",
+        "Kubernetes",
+        "CI/CD",
+        "Edge Computing",
+        "Cloud Native"
+      ],
       "date": "May 2023 - July 2023",
       "status": "Completed",
       "featured": false
@@ -110,7 +209,17 @@
       "title": "Interactive Map Visualization for Taxi Trip Analysis",
       "category": "Data Visualization & Analysis",
       "description": "Built an interactive web-based tool using the Flask web framework, along with Dash and Plotly for UI design, to analyze the temporal and spatial relationships between taxi trips and city popularity in Manhattan. Processed and cleaned 30.8 million taxi trip records using PySpark and improved regional analysis accuracy by integrating data from the Google Popular Times API. Managed databases interactions using SQL Alchemy, implemented a multi-regression model for estimating missing taxi trip coordinates, and developed a user-friendly interface with customizable filters for data analysis.",
-      "techStack": ["Flask", "Dash", "Plotly", "PySpark", "Google Popular Times API", "SQL Alchemy", "Multi-regression Model", "Data Visualization", "Big Data Processing"],
+      "techStack": [
+        "Flask",
+        "Dash",
+        "Plotly",
+        "PySpark",
+        "Google Popular Times API",
+        "SQL Alchemy",
+        "Multi-regression Model",
+        "Data Visualization",
+        "Big Data Processing"
+      ],
       "date": "09/2022-12/2022",
       "status": "Completed",
       "featured": false
@@ -119,7 +228,19 @@
       "title": "GeekLib: AI-Enhanced Library Management System",
       "category": "Full-stack Development & AI",
       "description": "Architected and developed a full-stack library management web application using React and Spring Boot with a RESTful API for seamless frontend-backend communication. Integrated Okta's Authentication API and Stripe's Payment API to provide secure user authentication and reliable processing of credit card payments for book late fees. Utilized Maven for streamlined dependency management and Spring Data JPA to interact with a MySQL database. Created a Books module with CRUD functions and enable features such as rating, commenting, loan/return books. Developed an AI chatbot assistance agent by utilizing OpenAI's GPT-3 API.",
-      "techStack": ["React", "Spring Boot", "RESTful API", "Okta Authentication", "Stripe Payment API", "Maven", "Spring Data JPA", "MySQL", "CRUD Operations", "OpenAI GPT-3 API", "AI Chatbot"],
+      "techStack": [
+        "React",
+        "Spring Boot",
+        "RESTful API",
+        "Okta Authentication",
+        "Stripe Payment API",
+        "Maven",
+        "Spring Data JPA",
+        "MySQL",
+        "CRUD Operations",
+        "OpenAI GPT-3 API",
+        "AI Chatbot"
+      ],
       "date": "11/2022-01/2023",
       "status": "Completed",
       "featured": false
@@ -128,7 +249,21 @@
       "title": "InovicePro: MERN Stack Invoice Management System",
       "category": "Full-stack Development & DevOps",
       "description": "Developed a comprehensive invoice management system with MongoDB, Express, React, and Node.js, concentrating on dynamic invoice generation, user administration, and real-time revenue monitoring. Utilized Docker Compose for streamlined, microservices-based deployment, boosting system scalability. Fortified user authentication via a refresh token approach, Google OAuth, and stringent email validation mechanisms. Enhanced system performance under high traffic by integrating NGINX for load balancing and reverse proxying. Applied Winston and Morgan for efficient log monitoring and anomaly detection.",
-      "techStack": ["MongoDB", "Express", "React", "Node.js", "Docker Compose", "Microservices", "Refresh Token", "Google OAuth", "NGINX", "Load Balancing", "Winston", "Morgan", "Log Monitoring"],
+      "techStack": [
+        "MongoDB",
+        "Express",
+        "React",
+        "Node.js",
+        "Docker Compose",
+        "Microservices",
+        "Refresh Token",
+        "Google OAuth",
+        "NGINX",
+        "Load Balancing",
+        "Winston",
+        "Morgan",
+        "Log Monitoring"
+      ],
       "date": "03/2023-05/2023",
       "status": "Completed",
       "featured": false
@@ -137,7 +272,19 @@
       "title": "Whales Chat: An Instant Messaging Mobile App",
       "category": "Mobile Development & AI",
       "description": "Build a cross-platform mobile messaging app with React Native, Expo, and Redux, incorporating key features such as instant messaging, user search, group chats, and custom profiles. Designed a scalable, distributed system using Firebase's NoSQL for real-time data synchronization to maintain secure authentication and end-to-end encryption for data integrity. Create a context-sensitive AI voice interface using OpenAI's GPT-3.5 Turbo, Whisper API, and Azure TTS API.",
-      "techStack": ["React Native", "Expo", "Redux", "Firebase", "NoSQL", "Real-time Sync", "End-to-end Encryption", "OpenAI GPT-3.5 Turbo", "Whisper API", "Azure TTS API", "AI Voice Interface"],
+      "techStack": [
+        "React Native",
+        "Expo",
+        "Redux",
+        "Firebase",
+        "NoSQL",
+        "Real-time Sync",
+        "End-to-end Encryption",
+        "OpenAI GPT-3.5 Turbo",
+        "Whisper API",
+        "Azure TTS API",
+        "AI Voice Interface"
+      ],
       "date": "12/2022-03/2023",
       "status": "Completed",
       "featured": false
@@ -151,14 +298,25 @@
   "entryLevel": {
     "seeking": false,
     "currentStatus": "Open to new opportunities and exciting projects",
-    "focusAreas": ["AI Development", "Full-stack Development", "Machine Learning", "Cloud Engineering"],
+    "focusAreas": [
+      "AI Development",
+      "Full-stack Development",
+      "Machine Learning",
+      "Cloud Engineering"
+    ],
     "availability": "Open to new opportunities",
     "workStyle": "Fast learner, team player, problem solver",
     "goals": "Continue building AI-powered solutions and contribute to innovative projects while growing expertise in enterprise-level development."
   },
   "personality": {
     "traits": ["passionate", "curious", "determined", "collaborative"],
-    "interests": ["AI/ML", "Web Development", "Cloud Engineering", "Open Source", "Hackathons"],
+    "interests": [
+      "AI/ML",
+      "Web Development",
+      "Cloud Engineering",
+      "Open Source",
+      "Hackathons"
+    ],
     "funFacts": [
       "Microsoft AI Hackathon Participant",
       "Built enterprise AI systems at Highmark Health",
@@ -173,7 +331,8 @@
     "fileType": "PDF",
     "lastUpdated": "February 2026",
     "fileSize": "149 KB",
-    "downloadUrl": "/resume"
+    "downloadUrl": "/resume",
+    "pdfUrl": "/Edison-resume-2026.pdf"
   },
   "chatbot": {
     "name": "Edison",

@@ -1,113 +1,119 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { profileInfo } from '@/lib/config-loader';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { profileInfo } from "@/lib/config-loader";
+import { getConfig } from "@/lib/config-loader";
 
-export function Presentation() {
-  // Personal information now loaded from configuration
+interface PresentationProps {
+  embedded?: boolean;
+}
+
+export function Presentation({ embedded = false }: PresentationProps) {
   const profile = profileInfo;
+  const config = getConfig();
   const [imageSrc, setImageSrc] = useState(profile.src);
+  const bioParagraphs = profile.description.split("\n\n").filter(Boolean);
+  const workPreferenceParts = [];
+  if (profile.location.remote && profile.location.relocation) {
+    workPreferenceParts.push("Open to remote roles and relocation");
+  } else if (profile.location.remote) {
+    workPreferenceParts.push("Open to remote roles");
+  } else if (profile.location.relocation) {
+    workPreferenceParts.push("Open to relocation");
+  }
+  if (config.personal.workAuthorization?.requiresSponsorship === false) {
+    workPreferenceParts.push("U.S. work authorized");
+  }
+  const workPreference =
+    workPreferenceParts.length > 0 ? workPreferenceParts.join(" · ") : null;
 
-  // Animation variants for text elements
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
-    },
-  };
-
-  // Animation for the entire paragraph rather than word-by-word
-  const paragraphAnimation = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-        delay: 0.2,
-      },
-    },
-  };
+  const details: { label: string; value: string }[] = [
+    { label: "Based in", value: profile.location.current },
+    ...(workPreference
+      ? [{ label: "Work preference", value: workPreference }]
+      : []),
+  ];
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-6 font-sans">
-      <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-        {/* Image section */}
-        <div className="relative mx-auto aspect-square w-full max-w-sm">
-          <div className="relative h-full w-full overflow-hidden rounded-2xl">
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-              className="h-full w-full"
-            >
-              <Image
-                src={imageSrc}
-                alt={profile.name}
-                width={500}
-                height={500}
-                className="h-full w-full object-cover object-center"
-                onError={() => setImageSrc(profile.fallbackSrc)}
-              />
-            </motion.div>
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.35 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="surface-panel card-hover relative mx-auto aspect-4/5 w-full max-w-md overflow-hidden"
+      >
+        <Image
+          src={imageSrc}
+          alt={profile.name}
+          width={900}
+          height={1125}
+          className="h-full w-full object-cover object-center"
+          onError={() => setImageSrc(profile.fallbackSrc)}
+        />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.45, ease: "easeOut", delay: 0.05 }}
+        className="space-y-8"
+      >
+        <div className="space-y-4">
+          {!embedded ? (
+            <>
+              <p className="section-eyebrow">About</p>
+              <h3 className="section-heading text-2xl tracking-[-0.02em] md:text-3xl">
+                I build production-grade AI products people actually use.
+              </h3>
+            </>
+          ) : null}
+          <div className="section-body space-y-4 text-base leading-7">
+            {bioParagraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         </div>
 
-        {/* Text content section */}
-        <div className="flex flex-col space-y">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={textVariants}
-          >
-            <h1 className="from-foreground to-muted-foreground bg-linear-to-r bg-clip-text text-xl font-semibold text-transparent md:text-3xl">
-              {profile.name}
-            </h1>
-            <div className="mt-1 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
-              <p className="text-muted-foreground">{profile.location.current}</p>
-              {profile.location.remote && (
-                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full text-center">Remote Available</span>
-              )}
-              {profile.location.relocation && (
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-center">Open to Relocation</span>
-              )}
+        <div className="section-divider grid gap-4 border-t pt-6 text-sm sm:grid-cols-2">
+          {details.map((detail) => (
+            <div key={detail.label} className="space-y-1">
+              <p className="section-eyebrow">{detail.label}</p>
+              <p className="text-(--panel-body-strong) text-sm">{detail.value}</p>
             </div>
-          </motion.div>
-
-          <motion.p
-            initial="hidden"
-            animate="visible"
-            variants={paragraphAnimation}
-            className="text-foreground mt-6 leading-relaxed whitespace-pre-line"
-          >
-            {profile.description}
-          </motion.p>
-
-          {/* Tags/Keywords */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="mt-4 flex flex-wrap gap-2"
-          >
-            {['Software Engineer', 'AI/ML Engineer','Full-Stack Web Developer','Backend Developer', 'Algorithm Engineer'].map(
-              (tag) => (
-                <span
-                  key={tag}
-                  className="bg-linear-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-white/30 text-foreground/80 rounded-full px-3 py-1 text-sm shadow-sm hover:from-blue-500/15 hover:to-cyan-500/15 transition-all duration-300"
-                >
-                  {tag}
-                </span>
-              )
-            )}
-          </motion.div>
+          ))}
         </div>
-      </div>
+
+        <div className="section-divider grid gap-4 border-t pt-6 sm:grid-cols-3">
+          {[
+            {
+              label: "Current focus",
+              value:
+                "AI products, agent workflows, retrieval systems, and production engineering",
+            },
+            {
+              label: "How I work",
+              value:
+                "Product-minded, highly ownership-driven, and comfortable shipping end-to-end",
+            },
+            {
+              label: "Looking for",
+              value:
+                "Software engineering roles focused on AI products, intelligent workflows, and user-facing platforms",
+            },
+          ].map((item) => (
+            <div key={item.label} className="space-y-2">
+              <p className="section-eyebrow">{item.label}</p>
+              <p className="text-(--panel-body-strong) text-sm leading-6">
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }

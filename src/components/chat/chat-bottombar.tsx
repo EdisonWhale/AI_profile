@@ -53,7 +53,7 @@ export default function ChatBottombar({
       className="w-full pb-2 md:pb-8"
     >
       <form onSubmit={handleSubmit} className="relative w-full md:px-4">
-        <div className="mx-auto flex items-center rounded-full border border-white/20 bg-white/70 backdrop-blur-xl shadow-lg shadow-black/5 hover:bg-white/80 transition-all duration-300 py-2 pr-2 pl-6">
+        <div className="chat-glass-input mx-auto flex items-center py-2 pl-5 pr-2 max-w-2xl w-full rounded-2xl">
           <input
             ref={inputRef}
             type="text"
@@ -63,7 +63,7 @@ export default function ChatBottombar({
             placeholder={
               isToolInProgress ? 'Tool is in progress...' : 'Ask me anything'
             }
-            className="text-md w-full border-none bg-transparent text-black placeholder:text-gray-500 focus:outline-none"
+            className="text-md w-full border-none bg-transparent text-(--hero-text) placeholder:text-(--hero-muted) focus:outline-none"
             disabled={isToolInProgress || isLoading}
           />
 
@@ -71,7 +71,7 @@ export default function ChatBottombar({
             type={isLoading ? 'button' : 'submit'}
             disabled={!isLoading && (!input.trim() || isToolInProgress)}
             aria-label={isLoading ? 'Stop generating response' : 'Send message'}
-            className="flex items-center justify-center rounded-full bg-[#0171E3] p-2 text-white disabled:opacity-50"
+            className="flex items-center justify-center rounded-full bg-primary p-2 text-primary-foreground transition-colors hover:bg-primary/90 disabled:bg-primary/50 disabled:opacity-50"
             onClick={(e) => {
               if (isLoading) {
                 e.preventDefault();

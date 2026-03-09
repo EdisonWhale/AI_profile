@@ -134,6 +134,7 @@ export const portfolioConfigSchema = z
         lastUpdated: z.string(),
         fileSize: z.string(),
         downloadUrl: z.string(),
+        pdfUrl: z.string().optional(),
       })
       .passthrough(),
     chatbot: z

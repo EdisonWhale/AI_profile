@@ -20,10 +20,10 @@ function ChatPageContent() {
 export default function ChatPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen apple-tech-bg flex items-center justify-center">
+      <div className="chat-page flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm text-muted-foreground">Loading chat interface...</p>
+          <div className="h-8 w-8 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin"></div>
+          <p className="text-(--hero-muted) text-sm">Loading chat interface...</p>
         </div>
       </div>
     }>

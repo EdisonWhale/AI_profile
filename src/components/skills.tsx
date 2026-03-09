@@ -1,156 +1,206 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Code, Cpu, Users, Database, Cloud, Microchip, Brain } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
+import { Brain, Code2, Cloud, type LucideIcon, Users } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+type CapabilityTone = 'ai' | 'fullstack' | 'backend' | 'soft';
+
+interface CapabilityCardProps {
+  title: string;
+  description: string;
+  signal: string;
+  highlights: string[];
+  supportingSkills: string[];
+  icon: LucideIcon;
+  tone: CapabilityTone;
+  index: number;
+}
+
+function CapabilityCard({
+  title,
+  description,
+  signal,
+  highlights,
+  supportingSkills,
+  icon: Icon,
+  tone,
+  index,
+}: CapabilityCardProps) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.45, ease: 'easeOut', delay: index * 0.07 }}
+      className={cn('capability-card p-6 md:p-7', `capability-tone-${tone}`)}
+    >
+      <div className="relative z-1 space-y-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <p className="section-eyebrow">Capability</p>
+              <span className="capability-signal text-xs font-medium">
+                {signal}
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="section-heading text-xl tracking-[-0.02em] md:text-2xl">
+                {title}
+              </h3>
+              <p className="section-body max-w-xl text-sm leading-7 md:text-[0.96rem]">
+                {description}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="capability-icon shrink-0"
+            aria-hidden="true"
+          >
+            <Icon className="h-5 w-5" />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <p className="capability-section-label">Best at</p>
+          <div className="flex flex-wrap gap-2.5">
+            {highlights.map((skill) => (
+              <span
+                key={`${title}-${skill}`}
+                className="capability-highlight-chip text-sm font-medium"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="section-divider space-y-3 border-t pt-5">
+          <p className="capability-section-label">Commonly use</p>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {supportingSkills.map((skill) => (
+              <li
+                key={`${title}-support-${skill}`}
+                className="capability-support-item"
+              >
+                <span className="capability-support-dot" aria-hidden="true" />
+                <span className="text-(--panel-body-strong) text-sm leading-6">
+                  {skill}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
 
 const Skills = () => {
-  // Get skills from configuration
   const config = getConfig();
-  
-  // Transform skills data with icons
-  const skillsData = [
-    {
-      category: 'Programming Languages',
-      icon: <Code className="h-5 w-5" />,
-      skills: config.skills.programming,
-      color: 'bg-blue-50 text-blue-600 border border-blue-200',
-    },
-    {
-      category: 'ML/AI Technologies',
-      icon: <Brain className="h-5 w-5" />,
-      skills: config.skills.ml_ai,
-      color: 'bg-purple-50 text-purple-600 border border-purple-200',
-    },
-    {
-      category: 'Web Development',
-      icon: <Cpu className="h-5 w-5" />,
-      skills: config.skills.web_development,
-      color: 'bg-green-50 text-green-600 border border-green-200',
-    },
-    {
-      category: 'Databases',
-      icon: <Database className="h-5 w-5" />,
-      skills: config.skills.databases,
-      color: 'bg-orange-50 text-orange-600 border border-orange-200',
-    },
-    {
-      category: 'DevOps & Cloud',
-      icon: <Cloud className="h-5 w-5" />,
-      skills: config.skills.devops_cloud,
-      color: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
-    },
-    {
-      category: 'Big Data',
-      icon: <Microchip className="h-5 w-5" />,
-      skills: config.skills.big_data,
-      color: 'bg-indigo-50 text-indigo-600 border border-indigo-200',
-    },
-    {
-      category: 'Soft Skills',
-      icon: <Users className="h-5 w-5" />,
-      skills: config.skills.soft_skills,
-      color: 'bg-amber-50 text-amber-600 border border-amber-200',
-    },
-  ].filter(category => category.skills && category.skills.length > 0);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+  const groups = [
+    {
+      title: 'AI Product Systems',
+      description:
+        'LLM-powered products, retrieval workflows, and orchestration patterns designed for grounded outputs, reliable behavior, and production use.',
+      signal: 'AI product systems',
+      highlights: [
+        'Retrieval / RAG',
+        'Multi-agent workflows',
+        'LLM application architecture',
+        'Evaluation & iteration',
+      ],
+      supportingSkills: [
+        'Vertex AI',
+        'Gemini API',
+        'LangGraph',
+        'Embedding models',
+        'Search / reranking',
+      ],
+      icon: Brain,
+      tone: 'ai' as const,
     },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+    {
+      title: 'Full-Stack Product Engineering',
+      description:
+        'User-facing product development across frontend, backend, and the details that make systems feel clear, polished, and easy to use.',
+      signal: 'Product execution',
+      highlights: [
+        'React / TypeScript',
+        'Python / Go services',
+        'System architecture',
+        'API design & implementation',
+      ],
+      supportingSkills: [
+        'Next.js',
+        'Vue.js',
+        'REST APIs',
+        'State management',
+        'Design systems',
+      ],
+      icon: Code2,
+      tone: 'fullstack' as const,
     },
-  };
-
-  const badgeVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3, ease: 'easeOut' },
+    {
+      title: 'Backend, Cloud & Reliability',
+      description:
+        'APIs, infrastructure, deployment, and data foundations built to be observable, scalable, and production-ready.',
+      signal: 'Platform reliability',
+      highlights: ['Service architecture', 'API design', 'Deployment pipelines', 'Observability'],
+      supportingSkills: [
+        'Docker',
+        'Kubernetes',
+        'GCP / Cloud Run',
+        'Redis',
+        'SQL / PostgreSQL',
+      ],
+      icon: Cloud,
+      tone: 'backend' as const,
     },
-  };
+    {
+      title: 'Engineering Approach',
+      description:
+        'I move quickly, communicate clearly, and care about building systems that are technically sound, useful to users, and maintainable over time.',
+      signal: 'How I work',
+      highlights: [
+        'End-to-end ownership',
+        'Product thinking',
+        'Fast iteration',
+        'Clear communication',
+      ],
+      supportingSkills: [
+        'Cross-functional collaboration',
+        'Structured problem solving',
+        'Pragmatic decision-making',
+        'Learning agility',
+      ],
+      icon: Users,
+      tone: 'soft' as const,
+    },
+  ];
 
   return (
-    <motion.div
-      initial={{ scale: 0.98, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-      className="mx-auto w-full max-w-5xl rounded-4xl px-4 sm:px-6"
-    >
-      <Card className="w-full bg-white/50 backdrop-blur-md border border-gray-200/40 shadow-lg shadow-gray-200/25 hover:shadow-xl hover:shadow-gray-200/35 rounded-2xl transition-all duration-300 px-6 pb-8 sm:pb-12">
-        <CardHeader className="px-0 pb-1 pt-2">
-          <CardTitle className="text-primary px-0 text-2xl sm:text-3xl lg:text-4xl font-bold">
-            Skills & Expertise
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent className="px-0 pt-4">
-          <motion.div
-            className="space-y-6 sm:space-y-8 px-0"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {skillsData.map((section, index) => (
-              <motion.div
-                key={index}
-                className="space-y-3 px-0"
-                variants={itemVariants}
-              >
-                <div className="flex items-center gap-2">
-                  {section.icon}
-                  <h3 className="text-accent-foreground text-base sm:text-lg font-semibold">
-                    {section.category}
-                  </h3>
-                </div>
-
-                <motion.div
-                  className="flex flex-wrap gap-1.5 sm:gap-2"
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {section.skills.map((skill, idx) => (
-                    <motion.div
-                      key={idx}
-                      variants={badgeVariants}
-                      whileHover={{
-                        scale: 1.02,
-                        y: -1,
-                        transition: { duration: 0.2, ease: 'easeOut' },
-                      }}
-                      whileTap={{
-                        scale: 0.98,
-                        transition: { duration: 0.1 },
-                      }}
-                    >
-                      <Badge className={`${section.color} backdrop-blur-sm shadow-sm hover:shadow-md hover:scale-[1.02] px-2 py-1 sm:px-3 sm:py-1.5 font-medium text-xs sm:text-sm transition-all duration-200`}>
-                        {skill}
-                      </Badge>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </CardContent>
-      </Card>
-    </motion.div>
+    <div className="grid gap-6 lg:grid-cols-2">
+      {groups.map((group, index) => {
+        return (
+          <CapabilityCard
+            key={group.title}
+            index={index}
+            title={group.title}
+            description={group.description}
+            signal={group.signal}
+            highlights={group.highlights}
+            supportingSkills={group.supportingSkills}
+            icon={group.icon}
+            tone={group.tone}
+          />
+        );
+      })}
+    </div>
   );
 };
 

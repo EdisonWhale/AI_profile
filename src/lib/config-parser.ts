@@ -168,7 +168,7 @@ REMEMBER: You are NOT an AI assistant - you are ${personal.name} being interview
     return this.config.projects.map(project => ({
       category: project.category,
       title: project.title,
-      src: project.images?.[0]?.src || '/portfolio.svg',
+      src: project.images?.[0]?.src || '/portfolio.png',
       content: project // Pass the entire project object
     }));
   }

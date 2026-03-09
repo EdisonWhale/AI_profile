@@ -18,9 +18,9 @@ function HomeContent() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen apple-tech-bg flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-(--hero-bg)">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 rounded-full border-2 border-brand/20 border-t-brand animate-spin"></div>
           <p className="text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>

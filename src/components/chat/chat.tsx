@@ -1,10 +1,11 @@
 'use client';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, isToolOrDynamicToolUIPart } from 'ai';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 // Component imports
@@ -13,6 +14,7 @@ import ChatLanding from '@/components/chat/chat-landing';
 import ChatMessageContent from '@/components/chat/chat-message-content';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import { PresetReply } from '@/components/chat/preset-reply';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { getConfig, presetReplies } from '@/lib/config-loader';
 import {
   ChatBubble,
@@ -58,13 +60,13 @@ const Avatar = dynamic<AvatarProps>(
       };
 
       // Animation variants for smoother transitions
-      const avatarVariants = {
+      const avatarVariants: Variants = {
         center: {
           x: 0,
           y: 0,
           scale: 1,
           transition: {
-            type: "spring",
+            type: "spring" as const,
             stiffness: 300,
             damping: 30,
             mass: 0.8,
@@ -76,7 +78,7 @@ const Avatar = dynamic<AvatarProps>(
           y: 0, 
           scale: 0.57,
           transition: {
-            type: "spring",
+            type: "spring" as const,
             stiffness: 300,
             damping: 30,
             mass: 0.8,
@@ -85,11 +87,11 @@ const Avatar = dynamic<AvatarProps>(
         }
       };
 
-      const containerVariants = {
+      const containerVariants: Variants = {
         center: {
           scale: 1,
           transition: {
-            type: "spring",
+            type: "spring" as const,
             stiffness: 300,
             damping: 30,
             duration: 0.3
@@ -98,7 +100,7 @@ const Avatar = dynamic<AvatarProps>(
         corner: {
           scale: 1,
           transition: {
-            type: "spring", 
+            type: "spring" as const, 
             stiffness: 300,
             damping: 30,
             duration: 0.3
@@ -137,9 +139,11 @@ const Avatar = dynamic<AvatarProps>(
               transition: { duration: 0.1 }
             }}
           >
-            <img
+            <Image
               src={avatarSrc}
               alt="Avatar"
+              width={getAvatarSize()}
+              height={getAvatarSize()}
               className="h-full w-full object-cover object-[center_top_-5%] rounded-full apple-avatar-glow"
               style={{
                 filter: isScrolled 
@@ -163,10 +167,10 @@ const Avatar = dynamic<AvatarProps>(
                     stiffness: 400,
                     damping: 25
                   }}
-                  className="absolute -bottom-12 right-0 avatar-tooltip text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10"
+                  className="avatar-tooltip pointer-events-none absolute -bottom-12 right-0 z-10 rounded-lg px-3 py-2 text-(--panel-body-strong) text-xs opacity-0 transition-opacity duration-200 whitespace-nowrap group-hover:opacity-100"
                 >
                   Back to Home Page
-                  <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-800 rotate-45"></div>
+                  <div className="absolute -top-1 right-4 h-2 w-2 rotate-45 bg-surface"></div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -193,7 +197,7 @@ const MOTION_CONFIG = {
   exit: { opacity: 0, y: 20 },
   transition: {
     duration: 0.3,
-    ease: 'easeOut',
+    ease: 'easeOut' as const,
   },
 };
 
@@ -218,6 +222,7 @@ const Chat: React.FC = () => {
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const requestInFlightRef = useRef(false);
 
   // Local state for input handling since it's no longer provided by useChat
   const [input, setInput] = useState('');
@@ -238,10 +243,12 @@ const Chat: React.FC = () => {
   } = useChat({
     transport,
     onFinish: () => {
+      requestInFlightRef.current = false;
       setLoadingSubmit(false);
       setIsLoading(false);
     },
     onError: (error) => {
+      requestInFlightRef.current = false;
       setLoadingSubmit(false);
       setIsLoading(false);
       
@@ -335,41 +342,74 @@ const Chat: React.FC = () => {
     };
   }, [messages]);
 
-  const isToolInProgress = status === 'streaming' || messages.some(
-    (m) =>
-      m.role === 'assistant' &&
-      m.parts?.some(
-        (part) =>
-          isToolOrDynamicToolUIPart(part) &&
-          part.state !== 'output-available'
+  // Block sends when: streaming, submitted (waiting for stream), or tools still running.
+  // requestInFlightRef (checked in callbacks) guards against AI SDK "Cannot read properties of undefined (reading 'state')" when sendMessage is called before previous request finishes.
+  const isRequestInFlight =
+    status === 'streaming' ||
+    status === 'submitted' ||
+    messages.some(
+      (m) =>
+        m.role === 'assistant' &&
+        m.parts?.some(
+          (part) =>
+            isToolOrDynamicToolUIPart(part) &&
+            part.state !== 'output-available'
+        )
+    );
+
+  const submitQuery = useCallback(
+    (query: string) => {
+      if (!query.trim()) return;
+      if (requestInFlightRef.current || status === 'streaming' || status === 'submitted') return;
+      if (
+        messages.some(
+          (m) =>
+            m.role === 'assistant' &&
+            m.parts?.some(
+              (part) =>
+                isToolOrDynamicToolUIPart(part) &&
+                part.state !== 'output-available'
+            )
+        )
       )
+        return;
+
+      setErrorMessage(null);
+      setLoadingSubmit(true);
+      setIsLoading(true);
+      setPresetReply(null);
+      requestInFlightRef.current = true;
+      sendMessage({ text: query });
+    },
+    [status, messages, sendMessage]
   );
 
-  const submitQuery = useCallback((query: string) => {
-    if (!query.trim() || isToolInProgress) return;
-    
-    setErrorMessage(null);
-    
-    setLoadingSubmit(true);
-    setIsLoading(true);
-    setPresetReply(null);
-    sendMessage({
-      text: query,
-    });
-  }, [isToolInProgress, sendMessage]);
+  const submitQueryToAI = useCallback(
+    (query: string) => {
+      if (!query.trim()) return;
+      if (requestInFlightRef.current || status === 'streaming' || status === 'submitted') return;
+      if (
+        messages.some(
+          (m) =>
+            m.role === 'assistant' &&
+            m.parts?.some(
+              (part) =>
+                isToolOrDynamicToolUIPart(part) &&
+                part.state !== 'output-available'
+            )
+        )
+      )
+        return;
 
-  const submitQueryToAI = useCallback((query: string) => {
-    if (!query.trim() || isToolInProgress) return;
-    
-    setErrorMessage(null);
-    
-    setLoadingSubmit(true);
-    setIsLoading(true);
-    setPresetReply(null);
-    sendMessage({
-      text: query,
-    });
-  }, [isToolInProgress, sendMessage]);
+      setErrorMessage(null);
+      setLoadingSubmit(true);
+      setIsLoading(true);
+      setPresetReply(null);
+      requestInFlightRef.current = true;
+      sendMessage({ text: query });
+    },
+    [status, messages, sendMessage]
+  );
 
 
   const handleGetAIResponse = useCallback((question: string) => {
@@ -393,12 +433,13 @@ const Chat: React.FC = () => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isToolInProgress) return;
+    if (!input.trim() || isRequestInFlight) return;
     submitQueryToAI(input);
     setInput('');
   };
 
   const handleStop = () => {
+    requestInFlightRef.current = false;
     stop();
     setLoadingSubmit(false);
     setIsLoading(false);
@@ -415,26 +456,30 @@ const Chat: React.FC = () => {
   }, [hasActiveTool, isScrolled]);
 
   return (
-    <div className="relative h-screen overflow-hidden apple-tech-bg">
+    <div className="chat-page relative h-screen overflow-hidden">
+      <div className="pointer-events-none fixed top-4 right-4 z-60">
+        <ThemeToggle className="pointer-events-auto chat-theme-toggle" />
+      </div>
+
       {/* Fixed Avatar Header with Gradient and CLS prevention */}
       <div
-        className={`fixed top-0 z-50 transition-all duration-300 ease-in-out ${
-          isScrolled 
-            ? 'right-4 left-auto w-auto'
-            : 'right-0 left-0 w-full'
+        className={`fixed z-50 transition-all duration-300 ease-in-out ${
+          isScrolled
+            ? 'top-[4.75rem] right-4 left-auto w-auto'
+            : 'top-0 right-0 left-0 w-full chat-header-gradient'
         }`}
         style={{
           background: isScrolled 
             ? 'transparent'
-            : 'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
+            : undefined,
           contain: 'layout style',
           willChange: 'transform, opacity',
         }}
       >
-                  <div
+          <div
             className={`transition-all duration-500 ease-in-out ${
-              isScrolled 
-                ? 'pt-4 pb-0'
+              isScrolled
+                ? 'pt-0 pb-0'
                 : hasActiveTool ? 'pt-6 pb-0' : 'py-6'
             }`}
           >
@@ -487,7 +532,7 @@ const Chat: React.FC = () => {
                 {messages.map((message, index) =>
                   message.role === 'user' ? (
                     <motion.div
-                      key={message.id ?? `user-${index}`}
+                      key={`${message.role}-${message.id ?? index}`}
                       {...MOTION_CONFIG}
                       className="mx-auto flex max-w-3xl px-4"
                     >
@@ -503,7 +548,7 @@ const Chat: React.FC = () => {
                       </ChatBubble>
                     </motion.div>
                   ) : message.role === 'assistant' ? (
-                    <div key={message.id ?? `assistant-${index}`}>
+                    <div key={`${message.role}-${message.id ?? index}`}>
                       <SimplifiedChatView
                         message={message}
                         isLoading={isLoading && index === lastAssistantMessageIndex}
@@ -533,11 +578,11 @@ const Chat: React.FC = () => {
                     className="px-4 pt-4"
                   >
                     <ChatBubble variant="received">
-                      <ChatBubbleMessage className="apple-glass border-0 overflow-hidden">
+                      <ChatBubbleMessage className="surface-card overflow-hidden backdrop-blur-md">
                         <div className="relative p-6">
                           <div className="absolute inset-0 opacity-10">
-                            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-linear-to-br from-blue-400 to-blue-600 blur-3xl"></div>
-                            <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-linear-to-tr from-green-400 to-green-600 blur-2xl"></div>
+                            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-linear-to-br from-brand-blue to-purple-600 blur-3xl"></div>
+                            <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-linear-to-tr from-brand-purple to-purple-400 blur-2xl"></div>
                           </div>
                           <div className="relative space-y-5">
                             <motion.div
@@ -547,24 +592,24 @@ const Chat: React.FC = () => {
                               transition={{ delay: 0.1, duration: 0.4 }}
                             >
                               <div className="relative">
-                                <div className="h-12 w-12 rounded-full bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
-                                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-violet-200/80 bg-linear-to-br from-violet-100 via-white to-indigo-100 text-violet-700 shadow-[0_8px_22px_rgba(139,92,246,0.16)] dark:border-white/10 dark:bg-linear-to-br dark:from-violet-500/24 dark:via-indigo-500/14 dark:to-slate-900 dark:text-violet-100 dark:shadow-[0_0_15px_rgba(168,85,247,0.28)]">
+                                  <svg className="h-6 w-6 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                   </svg>
                                 </div>
-                                <div className="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
+                                <div className="absolute inset-0 rounded-full bg-violet-300/30 blur-[1px] animate-pulse dark:bg-violet-400/16"></div>
                               </div>
                               <div className="flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-white text-base leading-tight">
+                                <h3 className="section-heading text-base leading-tight">
                                   Service Temporarily Unavailable
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                <p className="section-body mt-1 text-sm">
                                   AI assistant is currently offline
                                 </p>
                               </div>
                             </motion.div>
                             <motion.div
-                              className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed"
+                              className="section-body text-sm leading-relaxed"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.2, duration: 0.4 }}
@@ -575,25 +620,25 @@ const Chat: React.FC = () => {
                               </p>
                             </motion.div>
                             <motion.div
-                              className="bg-gray-50/50 dark:bg-gray-800/30 rounded-xl p-4 border border-gray-200/50 dark:border-gray-700/50"
+                              className="surface-panel rounded-xl p-4"
                               initial={{ opacity: 0, y: 15 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.3, duration: 0.4 }}
                             >
-                              <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-3">
+                              <p className="text-(--panel-body-strong) mb-3 text-sm font-medium">
                                 Alternative ways to connect:
                               </p>
                               <div className="space-y-2">
-                                <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                <div className="section-body flex items-center gap-3 text-xs">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-brand-blue"></div>
                                   <span>Open my resume preview for detailed information</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                <div className="section-body flex items-center gap-3 text-xs">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-brand-purple"></div>
                                   <span>Try the preset questions for immediate responses</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+                                <div className="section-body flex items-center gap-3 text-xs">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
                                   <span>Contact me directly for live consultation</span>
                                 </div>
                               </div>
@@ -608,7 +653,7 @@ const Chat: React.FC = () => {
                                 onClick={() => {
                                   window.open(config.resume.downloadUrl, '_blank', 'noopener,noreferrer');
                                 }}
-                                className="flex-1 group relative overflow-hidden bg-linear-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-xl font-medium text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:from-blue-600 hover:to-blue-700 apple-button-press"
+                                className="flex-1 group relative overflow-hidden bg-linear-to-r from-brand-blue to-purple-600 text-white px-4 py-3 rounded-xl font-medium text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all duration-300 hover:scale-[1.02] apple-button-press"
                               >
                                 <div className="relative flex items-center justify-center gap-2">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -630,7 +675,7 @@ const Chat: React.FC = () => {
                                     });
                                   }
                                 }}
-                                className="flex-1 group relative bg-gray-100/80 dark:bg-gray-800/50 text-gray-800 dark:text-gray-200 px-4 py-3 rounded-xl font-medium text-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-300 apple-button-press backdrop-blur-sm"
+                                className="glass-btn apple-button-press text-(--panel-body-strong) relative flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 backdrop-blur-sm"
                               >
                                 <div className="relative flex items-center justify-center gap-2">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -644,7 +689,7 @@ const Chat: React.FC = () => {
                                   setErrorMessage(null);
                                   window.location.href = '/';
                                 }}
-                                className="flex-1 group text-gray-600 dark:text-gray-400 px-4 py-3 rounded-xl font-medium text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 hover:bg-gray-50/50 dark:hover:bg-gray-800/30"
+                                className="text-(--panel-body) hover:text-(--panel-body-strong) group flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 hover:bg-surface-subtle"
                               >
                                 <div className="relative flex items-center justify-center gap-2">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -660,7 +705,7 @@ const Chat: React.FC = () => {
                               animate={{ opacity: 1 }}
                               transition={{ delay: 0.6, duration: 0.4 }}
                             >
-                              <p className="text-xs text-gray-500 dark:text-gray-400 font-light">
+                              <p className="section-body text-xs font-light">
                                 Thank you for your understanding. I&apos;ll be back online shortly.
                               </p>
                             </motion.div>
@@ -687,7 +732,7 @@ const Chat: React.FC = () => {
               handleSubmit={handleSubmit}
               isLoading={isLoading}
               stop={handleStop}
-              isToolInProgress={isToolInProgress}
+              isToolInProgress={isRequestInFlight}
             />
           </div>
         </div>

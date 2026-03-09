@@ -98,15 +98,15 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
           {/* Only show AI option when there's a major component - no text needed */}
           {showAIOption && (
             <ChatBubble variant="received">
-              <ChatBubbleMessage className="bg-gray-50/80 dark:bg-gray-800/80 w-full">
-                <div className="space-y-3 p-6 w-full">
+              <ChatBubbleMessage className="surface-card w-full">
+                <div className="w-full space-y-3 p-4">
                   {onClose && (
                     <div className="flex justify-end">
                       <Button
                         onClick={onClose}
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0 hover:bg-gray-200/50 rounded-full"
+                        className="h-6 w-6 rounded-full p-0 text-(--panel-body) hover:bg-surface-subtle hover:text-(--panel-body-strong)"
                       >
                         <X className="w-4 h-4" />
                       </Button>
@@ -116,19 +116,19 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                   <div className="flex flex-col gap-3 px-2">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <div className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
-                          <Zap className="w-3 h-3 flex-shrink-0" />
+                        <div className="flex items-center gap-1.5 text-xs text-brand-purple-light">
+                          <Zap className="h-3 w-3 shrink-0" />
                           <span className="font-medium">Preset Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• Quick access response</span>
+                        <span className="section-body text-xs">• Quick access response</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}
                         variant="outline"
                         size="sm"
-                        className="text-xs bg-linear-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
+                        className="text-xs bg-linear-to-r from-brand-purple to-brand-blue text-white border-0 hover:from-brand-purple-light hover:to-brand-blue-light hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all duration-300 self-start sm:self-auto"
                       >
-                        <Sparkles className="w-3 h-3 mr-1.5 flex-shrink-0" />
+                        <Sparkles className="mr-1.5 h-3 w-3 shrink-0" />
                         Get AI Response
                       </Button>
                     </div>
@@ -140,8 +140,8 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
         </div>
       ) : (        // Fallback to text-based preset for tools without components
         <ChatBubble variant="received">
-          <ChatBubbleMessage className="bg-linear-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-100/50 dark:border-blue-800/50 w-full">
-            <div className="space-y-4 p-6 w-full">
+          <ChatBubbleMessage className="surface-card w-full">
+            <div className="w-full space-y-4 p-4">
               {/* Close button */}
               {onClose && (
                 <div className="flex justify-end">
@@ -149,7 +149,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                     onClick={onClose}
                     variant="ghost"
                     size="sm"
-                    className="h-6 w-6 p-0 hover:bg-gray-200/50 rounded-full"
+                    className="h-6 w-6 rounded-full p-0 text-(--panel-body) hover:bg-surface-subtle hover:text-(--panel-body-strong)"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -157,7 +157,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
               )}
               
               {/* Reply content with enhanced formatting */}
-              <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 px-2">
+              <div className="prose prose-sm max-w-none px-2 text-(--panel-body-strong)">
                 {reply.split('\n').map((line, index) => {
                   if (line.trim() === '') return <br key={index} />;
                   
@@ -166,20 +166,20 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                     const urlMatch = line.match(/(https?:\/\/[^\s]+)/);
                     if (urlMatch) {
                       return (
-                        <div key={index} className="mb-4 p-4 bg-linear-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200 shadow-sm">
+                        <div key={index} className="surface-panel mb-4 rounded-xl p-4 shadow-sm backdrop-blur-sm">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                <Download className="w-4 h-4 text-white" />
+                              <div className="w-8 h-8 bg-brand-blue/30 text-brand-blue rounded-full flex items-center justify-center border border-brand-blue/50">
+                                <Download className="w-4 h-4" />
                               </div>
                               <div>
-                                <span className="font-semibold text-blue-900 block">Resume Available</span>
-                                <span className="text-xs text-blue-700">Click to download PDF</span>
+                                <span className="section-heading block font-semibold">Resume Available</span>
+                                <span className="section-body text-xs">Click to download PDF</span>
                               </div>
                             </div>
                             <Button
                               onClick={() => window.open(urlMatch[1], '_blank')}
-                              className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
+                              className="bg-brand-blue hover:bg-brand-blue-light text-white shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all duration-300"
                               size="sm"
                             >
                               <Download className="w-4 h-4 mr-2" />
@@ -204,7 +204,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                                 href={part}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800 underline decoration-2 underline-offset-2 font-medium"
+                                className="font-medium text-brand transition-colors underline decoration-2 underline-offset-2 hover:text-brand-purple"
                               >
                                 {part}
                               </a>
@@ -223,7 +223,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                       <p key={index} className="mb-3 last:mb-0 leading-relaxed">
                         {parts.map((part, partIndex) => 
                           partIndex % 2 === 1 ? 
-                            <strong key={partIndex} className="font-semibold text-gray-800 dark:text-gray-200">{part}</strong> : 
+                            <strong key={partIndex} className="section-heading font-semibold">{part}</strong> : 
                             part
                         )}
                       </p>
@@ -233,7 +233,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                   // Handle emoji lines (headers)
                   if (/^[🎯🚀💼🏆📊🔧🌟💡🎓📍🌍⚡🤝]/u.test(line)) {
                     return (
-                      <p key={index} className="mb-2 last:mb-0 font-medium text-gray-800 dark:text-gray-200 text-base">
+                      <p key={index} className="section-heading mb-2 text-base font-medium last:mb-0">
                         {line}
                       </p>
                     );
@@ -242,14 +242,14 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                   // Handle bullet points
                   if (line.startsWith('• ') || line.startsWith('- ')) {
                     return (
-                      <p key={index} className="mb-1 last:mb-0 ml-4 text-gray-600 dark:text-gray-400">
+                      <p key={index} className="section-body mb-1 ml-4 last:mb-0">
                         {line}
                       </p>
                     );
                   }
                   
                   return (
-                    <p key={index} className="mb-2 last:mb-0 leading-relaxed">
+                    <p key={index} className="section-body mb-2 leading-relaxed last:mb-0">
                       {line}
                     </p>
                   );
@@ -258,23 +258,23 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
               
               {/* Enhanced AI option */}
               {showAIOption && (
-                <div className="border-t border-gray-200/60 pt-4 mt-4">
+                <div className="border-t border-[rgba(99,102,241,0.08)] pt-4 mt-4">
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <div className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
-                          <Zap className="w-3 h-3 flex-shrink-0" />
+                        <div className="flex items-center gap-1.5 text-xs text-brand-purple-light">
+                          <Zap className="h-3 w-3 shrink-0" />
                           <span className="font-medium">Optimized Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• Quick access response</span>
+                        <span className="section-body text-xs">• Quick access response</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}
                         variant="outline"
                         size="sm"
-                        className="text-xs bg-linear-to-r from-purple-500 to-blue-500 text-white border-0 hover:from-purple-600 hover:to-blue-600 hover:text-white shadow-sm transition-all duration-200 hover:shadow-md self-start sm:self-auto"
+                        className="text-xs bg-linear-to-r from-brand-purple to-brand-blue text-white border-0 hover:from-brand-purple-light hover:to-brand-blue-light hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all duration-300 self-start sm:self-auto"
                       >
-                        <Sparkles className="w-3 h-3 mr-1.5 flex-shrink-0" />
+                        <Sparkles className="mr-1.5 h-3 w-3 shrink-0" />
                         Get AI Response
                       </Button>
                     </div>
@@ -282,8 +282,8 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                 </div>
               )}
             </div>
-        </ChatBubbleMessage>
-      </ChatBubble>
+          </ChatBubbleMessage>
+        </ChatBubble>
       )}
     </motion.div>
   );

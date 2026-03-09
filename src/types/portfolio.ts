@@ -103,6 +103,7 @@ export interface Resume {
   lastUpdated: string;
   fileSize: string;
   downloadUrl: string;
+  pdfUrl?: string;
 }
 
 export interface Chatbot {

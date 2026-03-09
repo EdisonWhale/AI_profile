@@ -1,9 +1,5 @@
 'use client';
 
-import {
-  ChatBubble,
-  ChatBubbleMessage,
-} from '@/components/ui/chat/chat-bubble';
 import { ChatRequestOptions, isToolOrDynamicToolUIPart } from 'ai';
 import { UIMessage } from '@ai-sdk/react';
 import { motion } from 'framer-motion';
@@ -75,19 +71,15 @@ export function SimplifiedChatView({
 
         {/* Text content - only show if meaningful and not redundant with tools */}
         {showTextContent && (
-          <div className="w-full">
-            <ChatBubble variant="received" className="w-full">
-              <ChatBubbleMessage className="w-full">
-                <ChatMessageContent
-                  message={message}
-                  isLast={true}
-                  isLoading={isLoading}
-                  reload={reload}
-                  addToolResult={addToolResult}
-                  skipToolRendering={true}
-                />
-              </ChatBubbleMessage>
-            </ChatBubble>
+          <div className="w-full text-(--hero-text)">
+            <ChatMessageContent
+              message={message}
+              isLast={true}
+              isLoading={isLoading}
+              reload={reload}
+              addToolResult={addToolResult}
+              skipToolRendering={true}
+            />
           </div>
         )}
 

@@ -75,13 +75,13 @@ export default function ToolRenderer({
             return (
               <div key={toolCallId} className="w-full space-y-4">
                 <div className="w-full overflow-hidden rounded-lg">
-                  <AllProjects />
+                  <AllProjects layout="chat-rail" />
                 </div>
                 {projectsMessage && (
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{projectsMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{projectsMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>
@@ -103,7 +103,7 @@ export default function ToolRenderer({
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{presentationMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{presentationMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>
@@ -125,7 +125,7 @@ export default function ToolRenderer({
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{resumeMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{resumeMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>
@@ -147,7 +147,7 @@ export default function ToolRenderer({
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{contactMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{contactMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>
@@ -169,7 +169,7 @@ export default function ToolRenderer({
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{skillsMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{skillsMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>
@@ -191,7 +191,7 @@ export default function ToolRenderer({
                   <ChatBubble variant="received">
                     <ChatBubbleMessage>
                       <div className="w-full">
-                        <p className="break-words whitespace-pre-wrap">{entryLevelMessage}</p>
+                        <p className="wrap-break-word whitespace-pre-wrap">{entryLevelMessage}</p>
                       </div>
                     </ChatBubbleMessage>
                   </ChatBubble>

@@ -45,8 +45,8 @@ try {
       email: 'error@example.com',
       handle: '@error',
       bio: 'Configuration file could not be loaded',
-      avatar: '/profile.svg',
-      fallbackAvatar: '/profile.svg'
+      avatar: '/avatar.png',
+      fallbackAvatar: '/avatar.png'
     },
     education: {
       current: {
@@ -94,7 +94,8 @@ try {
       fileType: '',
       lastUpdated: '',
       fileSize: '',
-      downloadUrl: ''
+      downloadUrl: '',
+      pdfUrl: ''
     },
     chatbot: {
       name: '',

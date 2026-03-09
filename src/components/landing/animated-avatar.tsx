@@ -1,9 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 interface AnimatedAvatarProps {
@@ -17,139 +16,55 @@ interface AnimatedAvatarProps {
 const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
   src,
   fallbackSrc,
-
   size = 120,
   className,
   showGlow = true,
 }) => {
   const [hasImageError, setHasImageError] = useState(false);
 
-  // Flash animation variants
-  const flashVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8,
-      filter: "blur(10px)",
-    },
-    flash: {
-      opacity: 1,
-      scale: 1.1,
-      filter: "blur(0px) drop-shadow(0 0 30px var(--apple-glow))",
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-    stable: {
-      opacity: 1,
-      scale: 1,
-      filter: showGlow 
-        ? "blur(0px) drop-shadow(0 0 20px var(--apple-glow))" 
-        : "blur(0px)",
-      transition: {
-        duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.2,
-      },
-    },
-  };
-
-  // Continuous glow animation
-  const glowVariants = {
-    glow: {
-      filter: [
-        "drop-shadow(0 0 20px var(--apple-glow))",
-        "drop-shadow(0 0 25px var(--apple-glow))",
-        "drop-shadow(0 0 20px var(--apple-glow))",
-      ],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
-
   return (
     <motion.div
       className={cn("relative", className)}
-      initial="hidden"
-      animate={["flash", "stable"]}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       style={{
         width: size,
         height: size,
       }}
     >
-      <motion.div
-        variants={flashVariants}
-        className="relative"
-      >
-        <div 
-          className={cn(
-            "relative overflow-hidden rounded-full apple-avatar-glow border-2 border-white/20",
-            showGlow && "apple-glow"
-          )}
-          style={{
-            width: size,
-            height: size,
-          }}
-        >
-          {!hasImageError ? (
-            <Image
-              src={src}
-              alt="Edison Xu"
-              width={size * 3}
-              height={size * 3}
-              className="object-cover"
-              style={{
-                width: size,
-                height: size,
-                imageRendering: 'auto' as const
-              } as React.CSSProperties}
-              priority={true}
-              quality={95}
-              sizes={`${size}px`}
-              onError={() => setHasImageError(true)}
-            />
-          ) : null}
-          {/* Fallback Avatar for error cases */}
-          <Avatar 
-            className={cn(
-              'absolute inset-0 transition-opacity duration-200',
-              hasImageError ? 'opacity-100' : 'opacity-0'
-            )}
-            style={{ width: size, height: size }}
-          >
-            {fallbackSrc ? (
-              <AvatarImage src={fallbackSrc} alt="Edison Xu" className="object-cover" />
-            ) : null}
-            <AvatarFallback className="bg-linear-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold">
-              EX
-            </AvatarFallback>
-          </Avatar>
-        </div>
-        
-        {showGlow && (
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            variants={glowVariants}
-            animate="glow"
-            style={{
-              background: "radial-gradient(circle, var(--apple-glow) 0%, transparent 70%)",
-              zIndex: -1,
-            }}
-          />
+      <div
+        className={cn(
+          "relative h-full w-full overflow-hidden rounded-4xl border border-border bg-card transition-all duration-300",
+          showGlow && "shadow-[0_20px_60px_rgba(15,15,15,0.06)] hover:shadow-[0_24px_72px_rgba(15,15,15,0.1)] hover:scale-[1.02]"
         )}
-      </motion.div>
-      
-      {/* Status indicator */}
-      <motion.div
-        className="absolute -bottom-1 -right-1 apple-status-dot rounded-full"
-        style={{ width: 12, height: 12 }}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, duration: 0.3 }}
-      />
+      >
+        <Image
+          src={hasImageError ? fallbackSrc || src : src}
+          alt="Edison Xu"
+          width={size * 2}
+          height={size * 2}
+          className="h-full w-full object-cover object-center"
+          priority
+          sizes={`${size}px`}
+          onError={() => {
+            if (!hasImageError && fallbackSrc) {
+              setHasImageError(true);
+            }
+          }}
+        />
+      </div>
+
+      {/* Subtle glow ring */}
+      {showGlow && (
+        <div
+          className="pointer-events-none absolute -inset-1 -z-10 rounded-[2rem] opacity-40"
+          style={{
+            background: 'var(--ai-gradient)',
+            filter: 'blur(20px)',
+          }}
+        />
+      )}
     </motion.div>
   );
 };

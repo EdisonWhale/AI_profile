@@ -1,65 +1,72 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
 import { contactInfo } from '@/lib/config-loader';
+import { Button } from '@/components/ui/button';
 
 export function Contact() {
   return (
-    <div className="mx-auto mt-8 w-full">
-      <div className="bg-white/70 backdrop-blur-xl border border-white/30 shadow-lg shadow-black/5 w-full overflow-hidden rounded-3xl px-6 py-8 font-sans sm:px-10 md:px-16 md:py-12 hover:bg-white/80 transition-all duration-300">
-        {/* Header Section */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-foreground text-3xl font-semibold md:text-4xl">
-            Contacts
-          </h2>
-          <span className="mt-2 sm:mt-0">
-            {contactInfo.handle}
-          </span>
+    <div className="glass-card card-hover p-6 md:p-8">
+      <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr]">
+        <div className="space-y-5">
+          <p className="section-eyebrow">Let&apos;s connect</p>
+          <h3 className="section-heading text-3xl tracking-[-0.02em] md:text-4xl">
+            Interested in AI systems, product engineering, or a team that ships ambitious work well?
+          </h3>
+          <p className="section-body max-w-2xl text-base leading-7">
+            I&apos;m always happy to talk about thoughtful engineering, product-minded AI work,
+            and the kinds of technical challenges that benefit from both system design and
+            user empathy.
+          </p>
         </div>
 
-        {/* Email Section */}
-        <div className="mt-8 flex flex-col md:mt-10">
-          <a
-            className="group mb-5 inline-block"
-            href={`mailto:${contactInfo.email}`}
-          >
-            <div className="flex items-center gap-1">
-              <span className="text-base font-medium text-blue-500 hover:underline sm:text-lg">
-                {contactInfo.email}
-              </span>
-              <ChevronRight className="h-5 w-5 text-blue-500 transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </a>
-
-          {/* Phone Section */}
-          {contactInfo.phone && (
+        <div className="space-y-8">
+          <div className="space-y-3">
+            <p className="section-eyebrow">
+              Direct
+            </p>
             <a
-              className="group mb-5 inline-block"
-              href={`tel:${contactInfo.phone}`}
+              className="text-(--panel-body-strong) block text-lg font-medium transition-colors hover:text-brand"
+              href={`mailto:${contactInfo.email}`}
             >
-              <div className="flex items-center gap-1">
-                <span className="text-base font-medium text-green-500 hover:underline sm:text-lg">
-                  {contactInfo.phone}
-                </span>
-                <ChevronRight className="h-5 w-5 text-green-500 transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
+              {contactInfo.email}
             </a>
-          )}
-
-          {/* Social Links */}
-          <div className="flex flex-wrap gap-x-6 gap-y-5 sm:gap-x-8">
-            {contactInfo.socials.map((social) => (
+            {contactInfo.phone ? (
               <a
-                key={social.name}
-                className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition-colors"
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={social.name}
+                className="section-body hover:text-(--panel-body-strong) block text-base transition-colors"
+                href={`tel:${contactInfo.phone}`}
               >
-                {social.name}
+                {contactInfo.phone}
               </a>
-            ))}
+            ) : null}
+            <p className="section-body text-sm">{contactInfo.handle}</p>
+          </div>
+
+          <div className="section-divider space-y-3 border-t pt-6">
+            <p className="section-eyebrow">
+              Social
+            </p>
+            <div className="flex flex-wrap gap-4">
+              {contactInfo.socials.map((social) => (
+                <a
+                  key={social.name}
+                  className="section-body text-sm transition-colors hover:text-brand"
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {social.name}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild className="solid-ai-btn sm:flex-1 rounded-xl">
+              <a href={`mailto:${contactInfo.email}`}>Email me</a>
+            </Button>
+            <Button asChild className="glass-btn sm:flex-1 rounded-xl">
+              <a href="/resume">View resume</a>
+            </Button>
           </div>
         </div>
       </div>

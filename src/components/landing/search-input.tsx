@@ -1,23 +1,24 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { motion } from 'framer-motion';
-import { Search, ArrowRight } from 'lucide-react';
+import { FormEvent, useState } from 'react';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface SearchInputProps {
   onSubmit: (query: string) => void;
   placeholder?: string;
   className?: string;
+  variant?: 'default' | 'hero';
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
   onSubmit,
   placeholder = "Ask me anything...",
   className,
+  variant = 'default',
 }) => {
   const [query, setQuery] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -26,117 +27,56 @@ const SearchInput: React.FC<SearchInputProps> = ({
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.8, // After avatar animation
-      },
-    },
-  };
-
-  const inputVariants = {
-    rest: {
-      borderColor: "rgba(255, 255, 255, 0.2)",
-      boxShadow: "0 8px 32px var(--apple-shadow)",
-    },
-    focused: {
-      borderColor: "var(--apple-tech-blue)",
-      boxShadow: [
-        "0 8px 32px var(--apple-shadow)",
-        "0 0 0 3px rgba(0, 122, 255, 0.15)",
-        "0 8px 32px var(--apple-shadow)",
-      ],
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
-      },
-    },
-  };
+  const isHero = variant === 'hero';
 
   return (
-    <motion.div
-      className={cn("w-full max-w-md", className)}
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <form onSubmit={handleSubmit}>
-        <motion.div
-          className="relative"
-          animate={isFocused ? "focused" : "rest"}
-          variants={inputVariants}
-        >
-          {/* Glass morphism container */}
-          <div className="apple-glass relative overflow-hidden rounded-2xl">
-            {/* Search icon */}
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-              <Search className="h-5 w-5 text-muted-foreground" />
-            </div>
-
-            {/* Input field */}
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              placeholder={placeholder}
-              className={cn(
-                "w-full bg-transparent pl-12 pr-12 py-4",
-                "text-foreground placeholder:text-muted-foreground",
-                "border-none outline-none",
-                "text-base font-medium",
-                "transition-all duration-200"
-              )}
-              autoComplete="off"
-              autoCapitalize="off"
-              autoCorrect="off"
-              spellCheck={false}
-            />
-
-            {/* Submit button */}
-            <motion.button
-              type="submit"
-              className={cn(
-                "absolute right-2 top-1/2 -translate-y-1/2",
-                "p-2 rounded-xl",
-                "bg-linear-to-r from-blue-500 to-blue-600 text-white",
-                "shadow-lg shadow-blue-500/25",
-                "transition-all duration-200",
-                "disabled:opacity-50 disabled:cursor-not-allowed",
-                query.trim() ? "opacity-100" : "opacity-30"
-              )}
-              disabled={!query.trim()}
-              whileHover={query.trim() ? { scale: 1.05 } : {}}
-              whileTap={query.trim() ? { scale: 0.95 } : {}}
-            >
-              <ArrowRight className="h-4 w-4" />
-            </motion.button>
-          </div>
-
-          {/* Focus glow effect */}
-          <motion.div
-            className="absolute inset-0 rounded-2xl pointer-events-none"
-            animate={{
-              opacity: isFocused ? 1 : 0,
-              scale: isFocused ? 1 : 0.95,
-            }}
-            transition={{ duration: 0.2 }}
-            style={{
-              background: "linear-gradient(45deg, transparent 30%, rgba(0, 122, 255, 0.1) 50%, transparent 70%)",
-              filter: "blur(1px)",
-            }}
+    <div className={cn("w-full max-w-3xl", className)}>
+      <form
+        onSubmit={handleSubmit}
+        className={cn(
+          "flex flex-col gap-3 rounded-2xl p-1.5 sm:flex-row sm:items-center",
+          isHero
+            ? "hero-search"
+            : "ai-input-glow border border-input bg-card"
+        )}
+      >
+        <label className="sr-only" htmlFor="ai-portfolio-search">
+          Ask AI Edison a question
+        </label>
+        <div className="relative flex-1">
+          <Sparkles className={cn(
+            "absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2",
+            isHero ? "text-(--hero-muted)" : "text-brand/50"
+          )} />
+          <input
+            id="ai-portfolio-search"
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={placeholder}
+            className={cn(
+              "w-full rounded-xl bg-transparent pl-10 pr-4 text-base focus:outline-none",
+              isHero ? "h-14 text-(--hero-text)" : "h-12 text-foreground placeholder:text-muted-foreground"
+            )}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
           />
-        </motion.div>
+        </div>
+        <Button
+          type="submit"
+          className={cn(
+            "shrink-0 rounded-xl px-6",
+            isHero ? "solid-ai-btn h-12" : "h-12"
+          )}
+          disabled={!query.trim()}
+        >
+          Ask AI
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Button>
       </form>
-
-
-    </motion.div>
+    </div>
   );
 };
 

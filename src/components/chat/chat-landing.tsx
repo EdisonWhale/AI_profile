@@ -1,125 +1,133 @@
-'use client';
+"use client"
 
-import { motion } from 'framer-motion';
-import { Award, Code, Mail, MessageSquare, Briefcase } from 'lucide-react';
-import React from 'react';
-
-
+import { CSSProperties, useState } from "react"
+import { motion } from "framer-motion"
+import { MessageSquare, Sparkles, ArrowRight, Code, Brain, Rocket } from "lucide-react"
 
 interface ChatLandingProps {
-  submitQuery: (query: string) => void;
+  submitQuery: (message: string) => void
 }
 
+const suggestedQuestions = [
+  {
+    icon: <Code className="w-5 h-5" />,
+    title: "Technical deep dive",
+    description: "What's the architecture behind your AI projects?",
+    query: "Can you explain the architecture and tech stack of your most complex AI project?",
+    accent: "#60a5fa",
+    accentSoft: "#22d3ee",
+    iconColor: "text-blue-400",
+  },
+  {
+    icon: <Brain className="w-5 h-5" />,
+    title: "AI & ML Experience",
+    description: "Tell me about your LLM implementation experience",
+    query: "What is your experience with fine-tuning LLMs and developing RAG applications?",
+    accent: "#a78bfa",
+    accentSoft: "#f472b6",
+    iconColor: "text-purple-400",
+  },
+  {
+    icon: <Rocket className="w-5 h-5" />,
+    title: "Project execution",
+    description: "How do you handle feature delivery from end to end?",
+    query: "Can you walk me through how you take a feature from concept to production?",
+    accent: "#34d399",
+    accentSoft: "#2dd4bf",
+    iconColor: "text-emerald-400",
+  },
+  {
+    icon: <Sparkles className="w-5 h-5" />,
+    title: "Quick summary",
+    description: "What are your core strengths and background?",
+    query: "Give me a quick 30-second summary of your background, core technical skills, and what you're looking for.",
+    accent: "#fbbf24",
+    accentSoft: "#fb923c",
+    iconColor: "text-amber-400",
+  },
+]
+
 const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
-
-  // Suggested questions that the user can click on
-  const suggestedQuestions = [
-    {
-      icon: <MessageSquare className="h-4 w-4" />,
-      text: 'Who are you?',
-    },
-    {
-      icon: <Code className="h-4 w-4" />,
-      text: 'What projects are you most proud of?',
-    },
-    {
-      icon: <Award className="h-4 w-4" />,
-      text: 'What are your skills?',
-    },
-    {
-      icon: <Briefcase className="h-4 w-4" />,
-      text: 'Am I available for opportunities?',
-    },
-    {
-      icon: <Mail className="h-4 w-4" />,
-      text: 'How can I reach you?',
-    },
-  ];
-
-  const handleQuestionClick = (questionText: string) => {
-    // Default to AI response for all questions
-    submitQuery(questionText);
-  };
-
-  // Animation variants for staggered animation
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
-      },
-    },
-  };
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <motion.div
-      className="flex w-full flex-col items-center px-4 py-6"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      {/* Welcome message */}
-      <motion.div className="mb-8 text-center" variants={itemVariants}>
-        <h2 className="mb-3 text-2xl font-semibold">
-            I&apos;m Edison&apos;s AI twin, feel free to ask me anything!
-        </h2>
-        <p className="text-muted-foreground mx-auto max-w-md">
-          Begin your interview with my AI twin.
+    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 max-w-4xl mx-auto w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-12 flex flex-col items-center"
+      >
+        <div className="section-eyebrow mb-6">
+          <Sparkles className="w-4 h-4 text-primary shrink-0" />
+          <span>AI-Powered Interactive Resume</span>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-foreground">
+          Chat with my <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">Digital Twin</span>
+        </h1>
+        <p className="section-body mx-auto max-w-2xl text-lg">
+          Ask anything about my experience, technical skills, projects, or background. I'm an AI assistant trained on EdisonWhale's professional profile.
         </p>
       </motion.div>
 
-      {/* Available for Opportunities Button */}
-      <motion.div className="mb-8" variants={itemVariants}>
-        <motion.button
-          onClick={() => handleQuestionClick('Am I available for opportunities?')}
-          className="apple-glass apple-glow-hover rounded-full px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 transition-all duration-300 ease-out hover:scale-[1.02] flex items-center gap-2 mx-auto"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{background: 'var(--apple-system-green)'}}></span>
-            <span className="relative inline-flex h-2 w-2 rounded-full apple-status-dot"></span>
-          </span>
-          Available for Opportunities
-        </motion.button>
-      </motion.div>
-
-      {/* Suggested questions */}
-      <motion.div
-        className="w-full max-w-md space-y-3"
-        variants={containerVariants}
-      >
-        {suggestedQuestions.map((question, index) => (
-                  <motion.button
-          key={index}
-          className="apple-glass apple-glow-hover flex w-full items-center rounded-xl px-4 py-3 transition-all duration-300 ease-out"
-          onClick={() => handleQuestionClick(question.text)}
-          variants={itemVariants}
-          whileHover={{ scale: 1.02, y: -2 }}
-          whileTap={{ scale: 0.98, y: 0 }}
-        >
-            <span className="bg-background mr-3 rounded-full p-2">
-              {question.icon}
-            </span>
-            <span className="text-left">{question.text}</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        {suggestedQuestions.map((item, index) => (
+          <motion.button
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => submitQuery(item.query)}
+            className="surface-card chat-suggestion-card group relative flex w-full items-start gap-4 overflow-hidden p-6 text-left"
+            style={
+              {
+                "--chat-suggestion-accent": item.accent,
+                "--chat-suggestion-accent-soft": item.accentSoft,
+              } as CSSProperties
+            }
+          >
+            {/* Background gradient effect on hover */}
+            <div
+              className="chat-suggestion-overlay pointer-events-none absolute inset-px rounded-[calc(1.75rem-1px)]"
+            />
+            
+            <div className={`surface-panel relative z-10 rounded-xl p-3 shadow-inner ${item.iconColor} shrink-0`}>
+                {item.icon}
+            </div>
+            
+            <div className="relative z-10 flex-1">
+              <h3 className="section-heading mb-1 text-lg transition-colors group-hover:text-primary">
+                {item.title}
+              </h3>
+              <p className="section-body text-sm transition-colors group-hover:text-foreground/80">
+                {item.description}
+              </p>
+            </div>
+            
+            <div className={`relative z-10 mt-2 transform transition-all duration-300 ${
+              hoveredIndex === index ? "translate-x-0 opacity-100 text-primary" : "-translate-x-4 text-(--hero-muted) opacity-0"
+            }`}>
+              <ArrowRight className="w-5 h-5" />
+            </div>
           </motion.button>
         ))}
+      </div>
+      
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="mt-12 text-center"
+      >
+        <p className="section-body flex items-center justify-center gap-2 text-sm">
+          <MessageSquare className="w-4 h-4" />
+          Or just type your own question in the input box below
+        </p>
       </motion.div>
-    </motion.div>
-  );
-};
+    </div>
+  )
+}
 
 export default ChatLanding;

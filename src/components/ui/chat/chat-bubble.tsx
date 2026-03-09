@@ -81,13 +81,13 @@ const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
   </Avatar>
 );
 
-// ChatBubbleMessage
 const chatBubbleMessageVariants = cva("", {
   variants: {
     variant: {
       received:
-        "text-secondary-foreground rounded-lg py-2",
-      sent: "p-2 px-5 bg-linear-to-r from-blue-500/80 to-cyan-500/80 backdrop-blur-sm border border-white/20 shadow-lg shadow-blue-500/10 text-white rounded-3xl",
+        "chat-bubble-received rounded-2xl rounded-tl-sm border px-5 py-4 text-[var(--hero-text)] shadow-sm backdrop-blur-md",
+      sent:
+        "chat-bubble-sent relative isolate overflow-hidden rounded-2xl rounded-tr-sm border px-5 py-3.5 text-[var(--chat-user-bubble-text)] shadow-sm backdrop-blur-xl",
     },
     layout: {
       default: "",
@@ -117,7 +117,7 @@ const ChatBubbleMessage = React.forwardRef<
     <div
       className={cn(
         chatBubbleMessageVariants({ variant, layout, className }),
-        "break-words max-w-full whitespace-pre-wrap"
+        "wrap-break-word max-w-full whitespace-pre-wrap"
       )}
       ref={ref}
       {...props}
