@@ -1,13 +1,13 @@
 {
-  "name": "Portfolio Builder - Create Professional Portfolios in Minutes",
-  "short_name": "Portfolio Builder",
-  "description": "Revolutionary AI-powered portfolio builder that requires zero coding. Edit one JSON file and get a complete interactive portfolio with AI chatbot.",
+  "name": "Edison Xu | Software Engineer, Generative AI",
+  "short_name": "Edison Xu",
+  "description": "Experience, projects, and resume for Edison Xu.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#667eea",
+  "background_color": "#f7f8fa",
+  "theme_color": "#121417",
   "orientation": "portrait-primary",
-  "categories": ["productivity", "developer tools", "portfolio"],
+  "categories": ["portfolio", "developer tools"],
   "lang": "en",
   "dir": "ltr",
   "icons": [
@@ -16,30 +16,10 @@
       "sizes": "any",
       "type": "image/x-icon",
       "purpose": "any"
-    },
-    {
-      "src": "/avatar.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/avatar.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/portfolio.png",
-      "sizes": "1200x630",
-      "type": "image/png",
-      "form_factor": "wide"
     }
   ],
   "scope": "/",
-  "id": "portfolio-builder",
+  "id": "edison-xu-portfolio",
   "related_applications": [],
   "prefer_related_applications": false
 }
