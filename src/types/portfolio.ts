@@ -36,7 +36,9 @@ export interface Experience {
   position: string;
   type: string;
   duration: string;
+  location?: string;
   description: string;
+  highlights?: string[];
   technologies: string[];
 }
 
