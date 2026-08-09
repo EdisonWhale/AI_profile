@@ -12,6 +12,7 @@ import HelperBoost from "@/components/chat/HelperBoost";
 import { SimplifiedChatView } from "@/components/chat/simple-chat-view";
 import { SiteNav } from "@/components/site/site-nav";
 import { ChatBubble, ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
+import { getTrackingSessionId } from "@/components/tracking/session-id";
 
 export default function Chat() {
   const searchParams = useSearchParams();
@@ -24,6 +25,10 @@ export default function Chat() {
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
+        body: {
+          trackingSessionId: getTrackingSessionId(),
+          trackingPathname: "/chat",
+        },
       }),
     [],
   );
