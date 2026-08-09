@@ -14,11 +14,11 @@
       ],
       "timezone": "EST (UTC-5)"
     },
-    "title": "Software Engineer & AI/ML Engineer",
+    "title": "Software Engineer, AI/ML",
     "email": "edisonapply@gmail.com",
     "phone": "626-552-1696",
     "handle": "@EdisonWhale",
-    "bio": "I'm Edison, a software engineer building AI-powered products at the intersection of full-stack engineering, retrieval, and agent systems.\n\nAt Highmark Health, I've worked on real-time AI training platforms, planner–executor–critic multi-agent research workflows, and document intelligence tools on top of Vertex AI Search. My focus is designing systems where LLMs, retrieval, and infrastructure work together to produce grounded, auditable, and reliable behavior in production.",
+    "bio": "I'm Edison, a software engineer on Highmark's AI/ML team. I build production AI systems for real-time training, agent evaluation, and enterprise knowledge retrieval.\n\nMy work spans React, FastAPI, WebSockets, distributed agent runtimes, RAG pipelines, and the evaluation and observability systems needed to ship reliable AI products.",
     "avatar": "/avatar.png",
     "fallbackAvatar": "/avatar.png",
     "workAuthorization": {
@@ -47,35 +47,50 @@
   },
   "experience": [
     {
-      "company": "Highmark Health",
-      "position": "Software Engineer (Generative AI team)",
+      "company": "Highmark Inc.",
+      "position": "Software Engineer (AI/ML team)",
       "type": "Full-time",
-      "duration": "Feb 2025 - Present",
-      "location": "Pittsburgh, PA",
-      "description": "Built production-grade internal AI systems spanning real-time interaction, multi-agent research, and enterprise retrieval workflows. Shipped a real-time call-center training platform, a citation-backed Planner–Executor–Critic deep research system, and an enterprise document Q&A workspace using grounded retrieval, reranking, and Vertex AI Search—while contributing to CI/CD, Cloud Run deployments, and observability for reliability at scale.",
+      "duration": "Aug 2024 - Present",
+      "location": "Remote, USA",
+      "description": "Build production AI systems spanning real-time training, agent lifecycle management, evaluation, and enterprise retrieval.",
+      "highlights": [
+        "Shipped a real-time AI call-center training platform with configurable voice roleplays, reducing new-hire ramp-up time by 28%.",
+        "Designed an LLM-as-judge system calibrated on human-scored transcripts for reliable coaching feedback.",
+        "Built an AI-agent lifecycle control plane with versioned registry metadata, policy gates, durable evaluation runs, GitLab promotion, and production observability.",
+        "Architected a planner-executor-judge evaluation harness with holdout suites for quality, safety, latency, and cost regressions.",
+        "Engineered a Vertex AI Search workspace with metadata-filtered retrieval, configurable chunking, and citation-linked answers for private datastores."
+      ],
       "technologies": [
-        "Real-time AI",
-        "Multi-Agent Systems",
-        "Retrieval / RAG",
+        "React",
+        "FastAPI",
+        "WebSockets",
+        "LLM-as-Judge",
+        "Multi-Agent Evaluation",
+        "RAG",
         "Vertex AI Search",
-        "Cloud Run",
-        "CI/CD"
+        "GitLab"
       ]
     },
     {
-      "company": "Highmark Health",
-      "position": "Software Engineer Intern (Generative AI team)",
+      "company": "Highmark Inc.",
+      "position": "Software Engineer Intern (AI/ML team)",
       "type": "Internship",
-      "duration": "May 2024 - Dec 2024",
-      "location": "Pittsburgh, PA",
-      "description": "Contributed to core AI platform and retrieval capabilities across internal tools, model integrations, and source-grounded workflows. Built a multi-modal platform on Vertex AI, a RAG-based policy assistant for grounded summarization, and a centralized Gemini proxy service—while improving reliability with Pytest coverage above 90%.",
+      "duration": "May 2024 - Aug 2024",
+      "location": "Remote, USA",
+      "description": "Built retrieval, model access, and multimodal capabilities for internal enterprise AI products.",
+      "highlights": [
+        "Developed a Flask RAG system with embeddings and Gemini for source-grounded policy answers and document summaries, cutting search time by 70%.",
+        "Engineered a fault-tolerant internal LLM API gateway with automatic retries and structured request logging.",
+        "Built a multimodal React and FastAPI assistant on Vertex AI for text, PDF, image, and voice workflows on a platform handling 6M+ annual prompts."
+      ],
       "technologies": [
+        "React",
+        "FastAPI",
+        "Flask",
         "Vertex AI",
-        "Retrieval / RAG",
-        "Gemini API",
-        "AI Platform",
-        "Policy Q&A",
-        "Testing"
+        "Gemini",
+        "RAG",
+        "Embedding Models"
       ]
     }
   ],
@@ -136,55 +151,71 @@
   },
   "projects": [
     {
-      "title": "FigBrain: Figma Multi-Agent Plugin",
-      "category": "AI/Plugin Development",
-      "description": "Built a Figma AI agent at the Microsoft AI Hackathon, enabling natural-language prompts to generate and populate FigJam components via the Model Context Protocol (MCP) and automated Figma API/plugin flows. Designed a supervisor multi-agent system using LangGraph, where a master orchestrator routed tasks to planner, executor, and verifier agents with Chain-of-Thought prompts and ReAct loops, validated at ~85% first-try accuracy. Cut API costs ~28% and lowered latency through long/short-term memory mechanism, plan/result caching, and dynamic model switching between lightweight and advanced LLMs.",
-      "techStack": [
-        "Figma API",
-        "LangGraph",
-        "Multi-Agent Systems",
-        "Model Context Protocol",
-        "Chain-of-Thought",
-        "ReAct Loops"
-      ],
-      "date": "2025",
-      "status": "Completed",
-      "featured": true
-    },
-    {
-      "title": "Golang-based High-Efficiency Search Engine",
-      "category": "Backend Development",
-      "description": "Developed a Go-based search engine with text and vector search capabilities, using gRPC for microservices architecture. Implemented a distributed web crawler with Kafka cluster integration for efficient data collection and processing. Enhanced search relevance using TF-IDF and BM25 ranking algorithms, with Trie trees for optimized query suggestions.",
+      "title": "Conductor: Distributed Multi-Agent Workflow Runtime",
+      "category": "Distributed AI Systems",
+      "description": "A Kubernetes-native Go runtime for crash-resumable, multi-agent LLM workflows with durable execution, distributed scheduling, and event-sourced observability.",
       "techStack": [
         "Go",
-        "gRPC",
+        "Kubernetes",
         "Kafka",
-        "TF-IDF",
-        "BM25",
-        "Trie Trees",
-        "Microservices",
-        "Distributed Systems"
+        "Event Sourcing",
+        "DAG Orchestration",
+        "Multi-Agent Systems"
       ],
-      "date": "2024",
+      "date": "Apr 2026 - Jun 2026",
       "status": "Completed",
-      "featured": true
+      "featured": true,
+      "achievements": [
+        "Added per-step checkpoints so long-running workflows can resume after crashes without duplicating tool calls or model spend.",
+        "Scheduled DAG-based workflows across a scalable Kafka-backed worker pool with per-task retries.",
+        "Captured every model and tool call through event-sourced tracing, audit logs, and real-time workflow monitoring."
+      ]
     },
     {
-      "title": "CloudBin: Cloud-Based Distributed File Storage System",
-      "category": "Full-stack Development",
-      "description": "Designed a storage system using Spring Boot, Vue3 and AWS S3, featuring chunk-based file uploads for reliability. Leveraged Redis with a Bloom Filter to prevent cache penetration, boosting cache hit rate and reducing database load. Integrated ElasticSearch for efficient fuzzy file name searches, reducing search time and improving accuracy.",
+      "title": "Engram: Cross-Session Memory MCP for AI Coding Agents",
+      "category": "Agent Memory and Evaluation",
+      "description": "A Python MCP memory harness that carries decisions, project facts, and preferences across AI coding sessions while detecting stale or conflicting context.",
       "techStack": [
-        "Spring Boot",
-        "Vue3",
-        "AWS S3",
-        "Redis",
-        "Bloom Filter",
-        "ElasticSearch",
-        "Chunk-based Uploads"
+        "Python",
+        "MCP",
+        "Event-Driven Architecture",
+        "Agent Memory",
+        "BM25",
+        "Evaluation"
       ],
-      "date": "2023",
+      "date": "Jan 2026 - Mar 2026",
       "status": "Completed",
-      "featured": true
+      "featured": true,
+      "achievements": [
+        "Reduced repeated context tokens by approximately 40% through cross-session state handoffs.",
+        "Consolidated raw sessions into durable short- and long-term memory with stale-memory cleanup and conflict detection.",
+        "Validated retrieval reliability with Recall@5, MRR, and traces for ranking regressions and injected context."
+      ],
+      "metrics": [
+        "~40% fewer repeated context tokens",
+        "Recall@5 and MRR evaluation"
+      ]
+    },
+    {
+      "title": "FigBrain: Figma Multi-Agent Plugin",
+      "category": "Multi-Agent Plugin",
+      "description": "An MCP-powered Figma agent built for the Microsoft AI Hackathon, using a LangGraph supervisor and ReAct tool loops to turn natural-language prompts into FigJam components.",
+      "techStack": [
+        "Python",
+        "TypeScript",
+        "LangGraph",
+        "MCP",
+        "Figma API",
+        "PostgreSQL"
+      ],
+      "date": "Apr 2025 - May 2025",
+      "status": "Completed",
+      "featured": true,
+      "achievements": [
+        "Converted natural-language prompts into FigJam components at approximately 85% first-try accuracy.",
+        "Reduced API costs by approximately 28% and lowered latency with PostgreSQL-backed memory, caching, and model routing."
+      ],
+      "metrics": ["~85% first-try accuracy", "~28% lower API costs"]
     },
     {
       "title": "AI Recognition in Edge Computing & Cloud Native",
@@ -327,10 +358,10 @@
   },
   "resume": {
     "title": "Edison Xu - Resume",
-    "description": "Software Engineer (Generative AI) | MS CSE Georgia Tech | Highmark Health",
+    "description": "Software Engineer (AI/ML) | Production AI Systems | MS CSE Georgia Tech | Highmark Inc.",
     "fileType": "PDF",
-    "lastUpdated": "February 2026",
-    "fileSize": "149 KB",
+    "lastUpdated": "August 2026",
+    "fileSize": "146 KB",
     "downloadUrl": "/resume",
     "pdfUrl": "/Edison-resume-2026.pdf"
   },
@@ -386,7 +417,7 @@
   },
   "meta": {
     "configVersion": "1.0",
-    "lastUpdated": "2026-02-26",
+    "lastUpdated": "2026-08-09",
     "generatedBy": "Edison Xu",
     "description": "Complete portfolio configuration for AI-powered portfolio website"
   }
