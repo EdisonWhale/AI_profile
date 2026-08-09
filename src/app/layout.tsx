@@ -5,34 +5,21 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Edison Xu | Software Engineer and AI Systems Builder",
+    default: "Edison Xu | Software Engineer, Generative AI",
     template: "%s | Edison Xu",
   },
   description:
-    "Portfolio of Edison Xu, a software engineer building production AI systems, full-stack applications, and enterprise-ready developer tools.",
+    "Portfolio of Edison Xu, a software engineer building real-time AI training, agent evaluation, and enterprise retrieval systems.",
   keywords: [
     "Edison Xu",
     "Software Engineer",
     "Full-stack Developer",
     "AI Engineer",
-    "AI Systems",
-    "Portfolio",
-    "Machine Learning",
-    "Web Development",
-    "Next.js",
-    "React",
-    "FastAPI",
-    "LLM",
-    "Automation",
-    "LangChain",
-    "AI Hackathon",
-    "LangGraph",
-    "AI Chatbot",
-    "Developer Portfolio",
-    "Tech Portfolio",
     "Generative AI",
     "Multi-Agent Systems",
-    "API Development",
+    "LLM Evaluation",
+    "RAG",
+    "Distributed Systems",
   ],
   authors: [
     {
@@ -57,41 +44,27 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://edisonwhale.com/",
-    title: "Edison Xu | Software Engineer and AI Systems Builder",
+    title: "Edison Xu | Software Engineer, Generative AI",
     description:
-      "A warm, editorial portfolio showcasing AI systems, full-stack engineering, and production-minded product work.",
+      "Production AI experience and projects spanning agent runtimes, evaluation, memory, and enterprise retrieval.",
     siteName: "Edison Xu",
-    images: [
-      {
-        url: "https://edisonwhale.com/portfolio.png",
-        width: 1200,
-        height: 630,
-        alt: "Edison Xu portfolio",
-        type: "image/png",
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Edison Xu | Software Engineer and AI Systems Builder",
+    card: "summary",
+    title: "Edison Xu | Software Engineer, Generative AI",
     description:
-      "AI systems, full-stack engineering, and enterprise product work by Edison Xu.",
+      "Production AI experience and projects spanning agent runtimes, evaluation, memory, and enterprise retrieval.",
     creator: "@edisonwhale",
     site: "@edisonwhale",
-    images: [{
-      url: "https://edisonwhale.com/portfolio.png",
-      alt: "Edison Xu portfolio",
-    }],
   },
   icons: {
     icon: [
       {
         url: "/favicon.ico",
         type: "image/x-icon",
-      }
+      },
     ],
     shortcut: "/favicon.ico",
-    apple: "/avatar.png",
   },
   manifest: "/manifest.json",
   alternates: {
@@ -99,9 +72,6 @@ export const metadata: Metadata = {
   },
   category: "technology",
   classification: "Portfolio Website",
-  other: {
-    "google-site-verification": "your-google-verification-code-here",
-  },
 };
 
 export default function RootLayout({
@@ -121,32 +91,32 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Edison Xu",
-              "jobTitle": "Software Engineer",
-              "url": "https://edisonwhale.com/",
-              "image": "https://edisonwhale.com/avatar.png",
-              "sameAs": [
+              name: "Edison Xu",
+              jobTitle: "Software Engineer",
+              url: "https://edisonwhale.com/",
+              sameAs: [
                 "https://github.com/edisonwhale",
                 "https://linkedin.com/in/edisonwhale",
               ],
-              "worksFor": {
+              worksFor: {
                 "@type": "Organization",
-                "name": "Freelance"
+                name: "Highmark Health",
               },
-              "alumniOf": {
+              alumniOf: {
                 "@type": "Organization",
-                "name": "SATI"
+                name: "Georgia Institute of Technology",
               },
-              "knowsAbout": [
+              knowsAbout: [
                 "Python Development",
                 "AI Engineering",
                 "Machine Learning",
                 "Web Development",
                 "Automation",
-                "Full Stack Development"
+                "Full Stack Development",
               ],
-              "description": "Software engineer building production AI systems, full-stack applications, and developer-focused tools."
-            })
+              description:
+                "Software engineer building real-time AI training, agent evaluation, and enterprise retrieval systems.",
+            }),
           }}
         />
       </head>
@@ -158,9 +128,7 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="portfolio-theme"
         >
-          <main className="flex min-h-screen flex-col">
-            {children}
-          </main>
+          <main className="flex min-h-screen flex-col">{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>

@@ -60,7 +60,7 @@ export default function ToolRenderer({
   toolInvocations,
 }: ToolRendererProps) {
   return (
-    <div className="w-full transition-all duration-300">
+    <div className="w-full">
       {toolInvocations.map((tool) => {
         const toolCallId = tool.toolCallId;
         const toolName = getToolOrDynamicToolName(tool);
@@ -204,11 +204,11 @@ export default function ToolRenderer({
             return (
               <div
                 key={toolCallId}
-                className="bg-secondary/10 w-full rounded-lg p-4"
+                className="w-full border border-border bg-card p-4"
               >
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="text-lg font-medium">{toolName}</h3>
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
+                  <span className="text-xs text-muted-foreground">
                     Tool Result
                   </span>
                 </div>
