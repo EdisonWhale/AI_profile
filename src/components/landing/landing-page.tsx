@@ -1,320 +1,268 @@
 "use client";
 
+import { FormEvent, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import SearchInput from "./search-input";
-import FloatingAiButton from "./floating-ai-button";
 import { getConfig } from "@/lib/config-loader";
-import { SectionShell } from "@/components/site/section-shell";
 import { SiteNav } from "@/components/site/site-nav";
-import Presentation from "@/components/presentation";
-import Skills from "@/components/skills";
-import Contact from "@/components/contact";
-import AllProjects from "@/components/projects/AllProjects";
-import { Sparkles, ChevronDown } from "lucide-react";
-import { motion } from "framer-motion";
 
-interface LandingPageProps {
-  className?: string;
-}
+const prompts = [
+  "What did you build at Highmark?",
+  "How does Conductor recover failed workflows?",
+  "How does Engram evaluate memory retrieval?",
+];
 
-const LandingPage: React.FC<LandingPageProps> = () => {
+export default function LandingPage() {
   const router = useRouter();
+  const [query, setQuery] = useState("");
   const config = getConfig();
-  const previousEducation = (
-    config.education as typeof config.education & {
-      previous?: {
-        degree: string;
-        institution: string;
-        duration: string;
-        graduationDate?: string;
-      };
-    }
-  ).previous;
+  const highmarkExperience = config.experience.filter((experience) =>
+    experience.company.startsWith("Highmark"),
+  );
+  const featuredProjects = config.projects.filter(
+    (project) => project.featured,
+  );
+  const [conductor, engram, figBrain] = featuredProjects;
+  const recruitmentMeta = [
+    config.personal.location.relocation
+      ? "Open to relocation nationwide"
+      : null,
+    config.personal.workAuthorization?.status
+      ?.replace(/^US\s+Citizen$/i, "U.S. citizen")
+      .trim(),
+    config.personal.workAuthorization?.requiresSponsorship === false
+      ? "No sponsorship required"
+      : null,
+  ]
+    .filter((item): item is string => Boolean(item))
+    .join(" · ");
 
-  const handleSearchSubmit = (query: string) => {
-    const encodedQuery = encodeURIComponent(query);
-    router.push(`/chat?q=${encodedQuery}`);
+  const submitQuery = (value: string) => {
+    const trimmedQuery = value.trim();
+    if (!trimmedQuery) return;
+    router.push(`/chat?q=${encodeURIComponent(trimmedQuery)}`);
   };
 
-  const quickQuestions = [
-    "Who are you?",
-    "What projects are you most proud of?",
-    "What are your skills?",
-    "How can I reach you?",
-  ];
-
-  const proofItems = [
-    "Georgia Tech MS CSE",
-    "Highmark Health · Generative AI",
-    "U.S. work authorized",
-    "Open to remote / relocation",
-  ];
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    submitQuery(query);
+  };
 
   return (
-    <div className="min-h-screen bg-(--hero-bg) text-foreground">
+    <div className="quiet-page">
       <SiteNav />
-
-      <main>
-        {/* ═══════════════════════════════════════
-            IMMERSIVE AI HERO — Dark gradient zone
-            ═══════════════════════════════════════ */}
-        <section className="hero-zone">
-          {/* Animated mesh background */}
-          <div className="hero-mesh" aria-hidden="true" />
-          <div className="hero-grid" aria-hidden="true" />
-
-          {/* Hero content — centered, AI-first */}
-          <div className="hero-content flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-28 md:px-8 md:pb-28 md:pt-36">
-            <motion.div
-              className="mx-auto w-full max-w-3xl text-center"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              {/* Eyebrow */}
-              <p className="hero-eyebrow mb-6 text-[0.7rem] font-medium uppercase tracking-[0.28em]">
-                Software Engineer | Generative AI | Full-Stack Systems
-              </p>
-
-              {/* Name */}
-              <h1 className="hero-headline text-5xl font-bold tracking-[-0.04em] sm:text-6xl md:text-7xl">
-                {config.personal.name.split(" ")[0]}{" "}
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{ backgroundImage: "var(--ai-gradient)" }}
-                >
-                  {config.personal.name.split(" ").slice(1).join(" ")}
-                </span>
-              </h1>
-
-              {/* Headline */}
-              <p className="hero-subtext mx-auto mt-5 max-w-3xl text-lg leading-8 md:text-xl">
-                Building AI products, web applications, and AI agent systems
-                end-to-end.
-              </p>
-            </motion.div>
-
-            {/* AI Search Input — THE CENTERPIECE */}
-            <motion.div
-              className="mx-auto mt-10 w-full max-w-2xl md:mt-12"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-            >
-              <SearchInput
-                onSubmit={handleSearchSubmit}
-                placeholder="Ask AI about my projects, experience, skills..."
-                variant="hero"
-                className="w-full"
-              />
-            </motion.div>
-
-            {/* Quick question pills */}
-            <motion.div
-              className="mx-auto mt-6 flex max-w-2xl flex-wrap justify-center gap-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              {quickQuestions.map((question) => (
-                <button
-                  key={question}
-                  onClick={() => handleSearchSubmit(question)}
-                  className="hero-pill px-4 py-2 text-sm"
-                >
-                  <Sparkles className="mr-1.5 inline-block h-3 w-3 opacity-50" />
-                  {question}
-                </button>
-              ))}
-            </motion.div>
-
-            {/* Proof badges — subtle */}
-            <motion.div
-              className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
-            >
-              {proofItems.map((item) => (
-                <span key={item} className="hero-badge">
-                  {item}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* Scroll indicator */}
-            <motion.div
-              className="absolute bottom-8 left-1/2 -translate-x-1/2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <button
-                onClick={() =>
-                  document
-                    .getElementById("about")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="scroll-indicator flex flex-col items-center gap-1 text-(--scroll-indicator) text-xs transition-colors hover:text-(--scroll-indicator-hover)"
+      <main className="quiet-shell">
+        <section className="quiet-hero" aria-labelledby="hero-title">
+          <aside className="quiet-profile-rail" aria-label="Edison Xu profile">
+            <Image
+              className="quiet-hero-avatar"
+              src={config.personal.avatar}
+              alt="Edison Xu"
+              width={224}
+              height={224}
+              priority
+            />
+            <h1 id="hero-title">Edison Xu</h1>
+            <div className="quiet-profile-credentials">
+              <p>Software Engineer, AI/ML</p>
+              <p>M.S. CSE, Georgia Tech</p>
+            </div>
+            {recruitmentMeta ? (
+              <p className="quiet-profile-recruiting">{recruitmentMeta}</p>
+            ) : null}
+            <div className="quiet-profile-links">
+              <a
+                href={config.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                scroll to explore
-                <ChevronDown className="h-4 w-4" />
-              </button>
-            </motion.div>
-          </div>
+                GitHub
+              </a>
+              <a
+                href={config.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <Link href="/resume">Resume</Link>
+            </div>
+          </aside>
+
+          <section
+            id="about"
+            className="quiet-biography"
+            aria-labelledby="biography-title"
+          >
+            <h2 id="biography-title">About</h2>
+            <p>
+              I&apos;m a software engineer on Highmark&apos;s AI/ML team. I
+              build production AI systems for real-time training, agent
+              evaluation, and enterprise knowledge retrieval.
+            </p>
+            <p>
+              My work spans React, FastAPI, WebSockets, distributed Go runtimes,
+              RAG pipelines, and the observability needed to ship reliable AI
+              products.
+            </p>
+
+            <section className="quiet-ask-panel" aria-labelledby="ask-title">
+              <h3 id="ask-title">Ask about my work</h3>
+              <p id="profile-question-help" className="quiet-ask-help">
+                Ask a specific question about my experience or projects.
+              </p>
+              <form onSubmit={handleSubmit} className="quiet-ask-form">
+                <label htmlFor="profile-question">Question</label>
+                <input
+                  id="profile-question"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Ask about Highmark, Conductor, or Engram"
+                  aria-describedby="profile-question-help"
+                />
+                <button type="submit">Ask</button>
+              </form>
+              <div
+                className="quiet-prompt-list"
+                aria-label="Suggested questions"
+              >
+                {prompts.map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    onClick={() => submitQuery(prompt)}
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            </section>
+          </section>
         </section>
 
-        {/* ───── About ───── */}
-        <SectionShell
-          id="about"
-          eyebrow="About"
-          title="I build production-grade AI products people actually use."
-          description="A software engineer focused on generative AI, full-stack product development, and intelligent systems."
-        >
-          <Presentation embedded />
-        </SectionShell>
-
-        {/* ───── Experience ───── */}
-        <SectionShell
+        <section
           id="experience"
-          eyebrow="Background"
-          title="Experience and education"
-          description="The work I’ve done, the systems I’ve owned, and the foundation behind how I build."
+          className="quiet-experience-section"
+          aria-labelledby="experience-title"
         >
-          <div className="grid gap-12 xl:grid-cols-[1.15fr_0.85fr]">
-            <div className="space-y-5">
-              {config.experience.map((experience) => (
-                <article
-                  key={`${experience.company}-${experience.position}`}
-                  className="timeline-card space-y-5 p-6 md:p-7"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div className="space-y-2">
-                      <p className="section-eyebrow timeline-company">
-                        {experience.company}
-                      </p>
-                      <h3 className="section-heading text-xl md:text-2xl">
-                        {experience.position}
-                      </h3>
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        <span className="timeline-detail-chip">
-                          {experience.type}
-                        </span>
-                      </div>
-                    </div>
-                    <span className="timeline-badge text-sm font-medium">
-                      {experience.duration}
-                    </span>
-                  </div>
-                  <p className="section-body max-w-3xl text-base leading-7">
-                    {experience.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {experience.technologies.slice(0, 10).map((technology) => (
-                      <span
-                        key={`${experience.company}-${technology}`}
-                        className="surface-chip px-3 py-1.5 text-xs font-medium"
-                      >
-                        {technology}
-                      </span>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="space-y-6">
-              <div className="support-card support-card-education p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <p className="section-eyebrow">Education</p>
-                  <span className="support-chip">Academic foundation</span>
-                </div>
-                <div className="mt-5 space-y-5">
-                  <div>
-                    <h3 className="section-heading text-lg">
-                      {config.education.current.degree}
-                    </h3>
-                    <p className="section-body mt-1 text-sm leading-6">
-                      {config.education.current.institution} ·{" "}
-                      {config.education.current.duration}
-                    </p>
-                    <p className="text-(--panel-body-strong) mt-2 text-sm leading-6">
-                      Graduated {config.education.current.graduationDate}
-                    </p>
-                  </div>
-                  {previousEducation ? (
-                    <div className="section-divider border-t pt-5">
-                      <h3 className="section-heading text-lg">
-                        {previousEducation.degree}
-                      </h3>
-                      <p className="section-body mt-1 text-sm leading-6">
-                        {previousEducation.institution} ·{" "}
-                        {previousEducation.duration}
-                      </p>
-                      {previousEducation.graduationDate ? (
-                        <p className="text-(--panel-body-strong) mt-2 text-sm leading-6">
-                          Graduated {previousEducation.graduationDate}
-                        </p>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="support-card support-card-signals p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <p className="section-eyebrow">What I bring</p>
-                  <span className="support-chip">Highlights</span>
-                </div>
-                <div className="mt-5 space-y-4">
-                  {[
-                    "End-to-end ownership across product, backend, and applied AI workflows",
-                    "Experience taking AI ideas from prototype to production-ready systems",
-                    "Strong focus on retrieval, multi AI agent systems, and real-world usability",
-                    "Product-minded engineering approach focused on reliability, clarity, and adoption",
-                  ].map((item) => (
-                    <div key={item} className="support-item">
-                      <span className="support-item-dot" aria-hidden="true" />
-                      <p className="section-body text-sm leading-6">{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="quiet-experience-side">
+            <h2 id="experience-title">Experience</h2>
+            <p>Highmark Inc.</p>
+            <span>AI/ML team, 2024-present</span>
           </div>
-        </SectionShell>
-
-        {/* ───── Projects ───── */}
-        <SectionShell
-          id="work"
-          eyebrow="Projects"
-          title="Selected work"
-          description="A few representative projects across AI systems, distributed backend work, and product-facing engineering."
-        >
-          <AllProjects featuredOnly limit={3} showHeading={false} />
-        </SectionShell>
-
-        {/* ───── Skills ───── */}
-        <SectionShell
-          id="skills"
-          eyebrow="Capabilities"
-          title="Broad enough to ship, focused enough to specialize."
-          description="I care less about listing every tool and more about showing the systems and outcomes I can reliably deliver."
-        >
-          <Skills />
-        </SectionShell>
-
-        {/* ───── Contact ───── */}
-        <section id="contact" className="pb-24 pt-6 md:pb-32">
-          <div className="content-width">
-            <Contact />
+          <div className="quiet-role-list">
+            {highmarkExperience.map((experience) => (
+              <article
+                key={`${experience.company}-${experience.position}`}
+                className="quiet-role"
+              >
+                <div>
+                  <h3>
+                    {experience.position.replace(" (", ", ").replace(")", "")}
+                  </h3>
+                  <p className="quiet-meta">
+                    {experience.duration} /{" "}
+                    {experience.location ?? experience.type}
+                  </p>
+                </div>
+                <p>{experience.description}</p>
+                {experience.highlights?.length ? (
+                  <ul className="quiet-role-highlights">
+                    {experience.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                <span>{experience.technologies.slice(0, 5).join(", ")}</span>
+              </article>
+            ))}
           </div>
         </section>
-      </main>
 
-      <FloatingAiButton />
+        <section
+          id="projects"
+          className="quiet-work-section"
+          aria-labelledby="projects-title"
+        >
+          <header className="quiet-section-intro">
+            <h2 id="projects-title">Selected projects</h2>
+            <p>
+              Durable agent infrastructure, memory systems, and AI-native design
+              tools.
+            </p>
+          </header>
+
+          {conductor ? (
+            <article className="quiet-feature-work">
+              <div className="quiet-feature-lead">
+                <p className="quiet-meta">{conductor.date}</p>
+                <h3>{conductor.title.split(":")[0]}</h3>
+                <p className="quiet-tech">
+                  {conductor.techStack.slice(0, 5).join(", ")}
+                </p>
+              </div>
+              <div className="quiet-feature-details">
+                {(conductor.achievements ?? [conductor.description]).map(
+                  (detail) => (
+                    <p key={detail}>{detail}</p>
+                  ),
+                )}
+              </div>
+            </article>
+          ) : null}
+
+          <div className="quiet-secondary-work">
+            {engram ? (
+              <article>
+                <p className="quiet-meta">{engram.date}</p>
+                <h3>{engram.title.split(":")[0]}</h3>
+                <p>{engram.description}</p>
+                {engram.metrics?.[0] ? (
+                  <p className="quiet-project-result">{engram.metrics[0]}</p>
+                ) : null}
+                <span>{engram.techStack.slice(0, 5).join(", ")}</span>
+              </article>
+            ) : null}
+            {figBrain ? (
+              <article>
+                <p className="quiet-meta">{figBrain.date}</p>
+                <h3>{figBrain.title.split(":")[0]}</h3>
+                <p>{figBrain.description}</p>
+                {figBrain.metrics?.length ? (
+                  <p className="quiet-project-result">
+                    {figBrain.metrics.join(" / ")}
+                  </p>
+                ) : null}
+                <span>{figBrain.techStack.slice(0, 5).join(", ")}</span>
+              </article>
+            ) : null}
+          </div>
+        </section>
+
+        <footer id="contact" className="quiet-footer">
+          <a href={`mailto:${config.personal.email}`}>
+            {config.personal.email}
+          </a>
+          <div>
+            <a
+              href={config.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={config.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+            <Link href="/resume">Resume</Link>
+          </div>
+        </footer>
+      </main>
     </div>
   );
-};
-
-export default LandingPage;
+}

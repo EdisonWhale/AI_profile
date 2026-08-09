@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const portfolioConfigSchema = z
   .object({
@@ -50,10 +50,12 @@ export const portfolioConfigSchema = z
           position: z.string(),
           type: z.string(),
           duration: z.string(),
+          location: z.string().optional(),
           description: z.string(),
+          highlights: z.array(z.string()).optional(),
           technologies: z.array(z.string()),
         })
-        .passthrough()
+        .passthrough(),
     ),
     skills: z
       .object({
@@ -85,7 +87,7 @@ export const portfolioConfigSchema = z
                   name: z.string(),
                   url: z.string(),
                 })
-                .passthrough()
+                .passthrough(),
             )
             .optional(),
           images: z
@@ -95,11 +97,11 @@ export const portfolioConfigSchema = z
                   src: z.string(),
                   alt: z.string(),
                 })
-                .passthrough()
+                .passthrough(),
             )
             .optional(),
         })
-        .passthrough()
+        .passthrough(),
     ),
     social: z
       .object({

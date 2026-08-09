@@ -2,7 +2,6 @@
 
 import { ChatRequestOptions, isToolOrDynamicToolUIPart } from 'ai';
 import { UIMessage } from '@ai-sdk/react';
-import { motion } from 'framer-motion';
 import ChatMessageContent from './chat-message-content';
 import ToolRenderer from './tool-renderer';
 
@@ -14,16 +13,6 @@ interface SimplifiedChatViewProps {
   ) => Promise<void>;
   addToolResult?: <TOOL extends string>({ tool, toolCallId, output, }: { tool: TOOL; toolCallId: string; output: unknown; }) => Promise<void>;
 }
-
-const MOTION_CONFIG = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 },
-  transition: {
-    duration: 0.3,
-    ease: 'easeOut',
-  },
-};
 
 export function SimplifiedChatView({
   message,
@@ -56,7 +45,7 @@ export function SimplifiedChatView({
   const showTextContent = hasTextContent;
 
   return (
-    <motion.div {...MOTION_CONFIG} className="flex h-full w-full flex-col px-4">
+    <div className="flex h-full w-full flex-col px-4">
       {/* Single scrollable container for both tool and text content */}
       <div className="custom-scrollbar flex h-full w-full flex-col overflow-y-auto">
         {/* Tool invocation result - displayed at the top */}
@@ -86,6 +75,6 @@ export function SimplifiedChatView({
         {/* Add some padding at the bottom for better scrolling experience */}
         <div className="pb-4"></div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -60,3 +60,8 @@ Thumbs.db
 
 # landing page repo (separate repository)
 /landing-page/
+
+# planning-with-files artifacts (transient agent session notes)
+/task_plan.md
+/findings.md
+/progress.md

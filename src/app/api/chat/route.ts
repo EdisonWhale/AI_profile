@@ -1,14 +1,21 @@
-import { createOpenAI } from '@ai-sdk/openai';
-import { streamText, convertToModelMessages, stepCountIs } from 'ai';
-import { z } from 'zod';
+import { createOpenAI } from "@ai-sdk/openai";
+import {
+  createUIMessageStream,
+  createUIMessageStreamResponse,
+  streamText,
+  convertToModelMessages,
+  stepCountIs,
+} from "ai";
+import { z } from "zod";
 
-import { systemPrompt } from '@/lib/config-loader';
-import { getContact } from './tools/getContact';
-import { getEntryLevel } from './tools/getEntryLevel';
-import { getPresentation } from './tools/getPresentation';
-import { getProjects } from './tools/getProjects';
-import { getResume } from './tools/getResume';
-import { getSkills } from './tools/getSkills';
+import { systemPrompt } from "@/lib/config-loader";
+import { getFallbackAnswer } from "./fallback";
+import { getContact } from "./tools/getContact";
+import { getEntryLevel } from "./tools/getEntryLevel";
+import { getPresentation } from "./tools/getPresentation";
+import { getProjects } from "./tools/getProjects";
+import { getResume } from "./tools/getResume";
+import { getSkills } from "./tools/getSkills";
 
 export const maxDuration = 30;
 
@@ -25,7 +32,7 @@ const chatRequestSchema = z.object({
       z
         .object({
           id: z.string().optional(),
-          role: z.enum(['system', 'user', 'assistant']),
+          role: z.enum(["system", "user", "assistant"]),
           parts: z
             .array(
               z
@@ -33,11 +40,11 @@ const chatRequestSchema = z.object({
                   type: z.string(),
                   text: z.string().optional(),
                 })
-                .passthrough()
+                .passthrough(),
             )
             .default([]),
         })
-        .passthrough()
+        .passthrough(),
     )
     .min(1)
     .max(MAX_MESSAGES),
@@ -45,25 +52,22 @@ const chatRequestSchema = z.object({
 
 const openrouter = createOpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
+  baseURL: "https://openrouter.ai/api/v1",
   headers: {
-    'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
-    'X-Title': 'Edison AI Portfolio',
+    "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    "X-Title": "Edison AI Portfolio",
   },
 });
 
-const openrouterModel = process.env.OPENROUTER_MODEL || 'minimax/minimax-m2.5';
+const openrouterModel = process.env.OPENROUTER_MODEL || "minimax/minimax-m2.5";
 
 function getClientIdentifier(req: Request) {
-  const forwardedFor = req.headers.get('x-forwarded-for');
-  const realIp = req.headers.get('x-real-ip');
-  const cfConnectingIp = req.headers.get('cf-connecting-ip');
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  const realIp = req.headers.get("x-real-ip");
+  const cfConnectingIp = req.headers.get("cf-connecting-ip");
 
   return (
-    forwardedFor?.split(',')[0]?.trim() ||
-    realIp ||
-    cfConnectingIp ||
-    'unknown'
+    forwardedFor?.split(",")[0]?.trim() || realIp || cfConnectingIp || "unknown"
   );
 }
 
@@ -85,10 +89,12 @@ function isRateLimited(clientId: string) {
   return current.count > RATE_LIMIT_MAX_REQUESTS;
 }
 
-function getTotalTextLength(messages: z.infer<typeof chatRequestSchema>['messages']) {
+function getTotalTextLength(
+  messages: z.infer<typeof chatRequestSchema>["messages"],
+) {
   return messages.reduce((total, message) => {
     const messageText = message.parts.reduce((partTotal, part) => {
-      if (part.type !== 'text' || !part.text) {
+      if (part.type !== "text" || !part.text) {
         return partTotal;
       }
 
@@ -99,16 +105,47 @@ function getTotalTextLength(messages: z.infer<typeof chatRequestSchema>['message
   }, 0);
 }
 
+function getLastUserText(
+  messages: z.infer<typeof chatRequestSchema>["messages"],
+) {
+  const lastUserMessage = messages.findLast(
+    (message) => message.role === "user",
+  );
+
+  return (
+    lastUserMessage?.parts
+      .filter(
+        (part): part is typeof part & { text: string } =>
+          part.type === "text" && typeof part.text === "string",
+      )
+      .map((part) => part.text)
+      .join("\n") ?? ""
+  );
+}
+
+function createFallbackResponse(question: string) {
+  const answer = getFallbackAnswer(question);
+  const textPartId = "fallback-answer";
+  const stream = createUIMessageStream({
+    execute: ({ writer }) => {
+      writer.write({ type: "start" });
+      writer.write({ type: "start-step" });
+      writer.write({ type: "text-start", id: textPartId });
+      writer.write({ type: "text-delta", id: textPartId, delta: answer });
+      writer.write({ type: "text-end", id: textPartId });
+      writer.write({ type: "finish-step" });
+      writer.write({ type: "finish", finishReason: "stop" });
+    },
+  });
+
+  return createUIMessageStreamResponse({ stream });
+}
+
 export async function POST(req: Request) {
   try {
-    if (!process.env.OPENROUTER_API_KEY) {
-      console.error('[CHAT-API] Missing OPENROUTER_API_KEY environment variable');
-      return new Response('Missing API key', { status: 500 });
-    }
-
     const clientId = getClientIdentifier(req);
     if (isRateLimited(clientId)) {
-      return new Response('Too many requests. Please try again in a minute.', {
+      return new Response("Too many requests. Please try again in a minute.", {
         status: 429,
       });
     }
@@ -117,19 +154,31 @@ export async function POST(req: Request) {
     const parsedBody = chatRequestSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return new Response('Invalid chat request payload.', { status: 400 });
+      return new Response("Invalid chat request payload.", { status: 400 });
     }
 
     const { messages } = parsedBody.data;
     const totalTextLength = getTotalTextLength(messages);
 
     if (totalTextLength > MAX_TEXT_CHARS) {
-      return new Response('Chat request is too large. Please shorten your message.', {
-        status: 413,
-      });
+      return new Response(
+        "Chat request is too large. Please shorten your message.",
+        {
+          status: 413,
+        },
+      );
     }
 
-    console.info('[CHAT-API] Request accepted', {
+    if (!process.env.OPENROUTER_API_KEY) {
+      console.info("[CHAT-API] Using local portfolio fallback", {
+        clientId,
+        messageCount: messages.length,
+        totalTextLength,
+      });
+      return createFallbackResponse(getLastUserText(messages));
+    }
+
+    console.info("[CHAT-API] Request accepted", {
       clientId,
       messageCount: messages.length,
       totalTextLength,
@@ -149,7 +198,7 @@ export async function POST(req: Request) {
     const baseConfig = {
       system: systemPrompt,
       messages: convertToModelMessages(
-        messages as Parameters<typeof convertToModelMessages>[0]
+        messages as Parameters<typeof convertToModelMessages>[0],
       ),
       tools,
       stopWhen: stepCountIs(5),
@@ -162,14 +211,20 @@ export async function POST(req: Request) {
 
     return result.toUIMessageStreamResponse();
   } catch (error) {
-    console.error('Chat API error:', error);
-    console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
+    console.error("Chat API error:", error);
+    console.error(
+      "Error details:",
+      error instanceof Error ? error.message : "Unknown error",
+    );
 
-    if (error instanceof Error && error.message?.includes('network')) {
-      return new Response('Network error. Please check your connection and try again.', { status: 503 });
+    if (error instanceof Error && error.message?.includes("network")) {
+      return new Response(
+        "Network error. Please check your connection and try again.",
+        { status: 503 },
+      );
     }
 
-    return new Response('Internal Server Error. Please try again later.', {
+    return new Response("Internal Server Error. Please try again later.", {
       status: 500,
     });
   }
