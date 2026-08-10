@@ -64,7 +64,8 @@ const openrouter = createOpenAI({
   },
 });
 
-const openrouterModel = process.env.OPENROUTER_MODEL || "minimax/minimax-m2.5";
+const openrouterModel =
+  process.env.OPENROUTER_MODEL || "openai/gpt-5.6-luna";
 
 function getClientIdentifier(req: Request) {
   if (process.env.TRACKING_TRUST_PROXY !== "true") return null;
@@ -217,6 +218,11 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openrouter.chat(openrouterModel),
       ...baseConfig,
+      providerOptions: {
+        openai: {
+          reasoningEffort: "medium",
+        },
+      },
     });
 
     return result.toUIMessageStreamResponse();

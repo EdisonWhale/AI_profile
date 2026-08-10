@@ -88,6 +88,25 @@ try {
       workingStyle: '',
       motivation: ''
     },
+    aiProfile: {
+      positioning: '',
+      voice: {
+        traits: [],
+        defaultLength: '',
+        technicalDepth: '',
+        conversationStyle: '',
+        avoid: []
+      },
+      responseModes: [],
+      naturalLanguageHabits: [],
+      signatureBeliefs: [],
+      unknownAnswerStyle: '',
+      answerPrinciples: [],
+      evidenceBoundaries: [],
+      featuredQuestions: [],
+      followUpQuestions: [],
+      frequentlyAskedQuestions: []
+    },
     resume: {
       title: '',
       description: '',

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { getConfig } from '@/lib/config-loader';
 
 export const getEntryLevel = tool({
-  description: 'Provides comprehensive information about current professional experience, career preferences, and professional availability for recruiters and HR professionals.',
+  description: 'Provides documented information about Edison\'s current role, target work, availability, location, and work authorization.',
   inputSchema: z.object({}),
   execute: async () => {
     const config = getConfig();
@@ -16,16 +16,18 @@ export const getEntryLevel = tool({
       availability: config.entryLevel.availability,
       preferences: {
         roleTypes: config.entryLevel.focusAreas,
-        industries: ["Technology", "AI/ML", "Healthcare Technology", "Web Development"],
-        workMode: "Remote/Hybrid preferred",
-        location: config.personal.location.current
+        remote: config.personal.location.remote,
+        relocation: config.personal.location.relocation,
+        preferredLocations: config.personal.location.preferredLocations,
+        currentLocation: config.personal.location.current
       },
+      workAuthorization: config.personal.workAuthorization,
       experience: {
         currentPosition: currentExperience 
           ? `${currentExperience.position} at ${currentExperience.company} (${currentExperience.duration})`
           : "Currently employed in software engineering role",
-        currentResponsibilities: currentExperience?.description || "Developing AI and ML solutions for enterprise applications",
-        projectExperience: "Led multiple end-to-end projects including web full stack development, AI agent development, and ML models"
+        currentResponsibilities: currentExperience?.description || '',
+        documentedHighlights: currentExperience?.highlights || []
       },
       skills: {
         technical: [
@@ -39,11 +41,9 @@ export const getEntryLevel = tool({
       },
       achievements: config.education.achievements || [],
       lookingFor: {
-        growthOpportunities: "Advanced technical challenges and leadership opportunities",
-        mentorship: "Collaborating with senior developers and architects on complex projects",
-        impactfulWork: config.personality.motivation,
-        technicalChallenges: "Cutting-edge technologies and innovative solutions",
-        collaboration: "Collaborative, innovative environments where I can contribute meaningfully"
+        focusAreas: config.entryLevel.focusAreas,
+        goals: config.entryLevel.goals,
+        motivation: config.personality.motivation
       },
       contact: {
         email: config.personal.email,

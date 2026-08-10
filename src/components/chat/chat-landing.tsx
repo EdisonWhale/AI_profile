@@ -1,14 +1,12 @@
 "use client";
 
+import { getConfig } from "@/lib/config-loader";
+
 interface ChatLandingProps {
   submitQuery: (message: string) => void;
 }
 
-const suggestedQuestions = [
-  "What did you build at Highmark Health?",
-  "How does Conductor recover failed workflows?",
-  "How does Engram evaluate memory retrieval?",
-];
+const suggestedQuestions = getConfig().aiProfile.featuredQuestions;
 
 export default function ChatLanding({ submitQuery }: ChatLandingProps) {
   return (

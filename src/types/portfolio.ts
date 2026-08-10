@@ -65,6 +65,8 @@ export interface ProjectImage {
 export interface Project {
   title: string;
   category: string;
+  track: "ai-ml" | "full-stack";
+  summary: string;
   description: string;
   techStack: string[];
   date: string;
@@ -96,6 +98,35 @@ export interface Personality {
   funFacts: string[];
   workingStyle: string;
   motivation: string;
+}
+
+export interface AIProfileFAQ {
+  question: string;
+  matchTerms: string[];
+  answer: string;
+}
+
+export interface AIProfile {
+  positioning: string;
+  voice: {
+    traits: string[];
+    defaultLength: string;
+    technicalDepth: string;
+    conversationStyle: string;
+    avoid: string[];
+  };
+  responseModes: Array<{
+    audience: string;
+    guidance: string;
+  }>;
+  naturalLanguageHabits: string[];
+  signatureBeliefs: string[];
+  unknownAnswerStyle: string;
+  answerPrinciples: string[];
+  evidenceBoundaries: string[];
+  featuredQuestions: string[];
+  followUpQuestions: string[];
+  frequentlyAskedQuestions: AIProfileFAQ[];
 }
 
 export interface Resume {
@@ -142,6 +173,7 @@ export interface PortfolioConfig {
   social: Social;
   entryLevel: EntryLevel;
   personality: Personality;
+  aiProfile: AIProfile;
   resume: Resume;
   chatbot: Chatbot;
   presetQuestions: PresetQuestions;
