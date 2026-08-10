@@ -7,6 +7,7 @@ import {
   stepCountIs,
 } from "ai";
 import { z } from "zod";
+import { createHash } from "node:crypto";
 
 import { systemPrompt } from "@/lib/config-loader";
 import { getFallbackAnswer } from "./fallback";
@@ -16,6 +17,8 @@ import { getPresentation } from "./tools/getPresentation";
 import { getProjects } from "./tools/getProjects";
 import { getResume } from "./tools/getResume";
 import { getSkills } from "./tools/getSkills";
+import { getTrustedClientIp } from "@/lib/tracking/client-ip";
+import { recordChatPrompt } from "@/lib/tracking/service";
 
 export const maxDuration = 30;
 
@@ -48,6 +51,8 @@ const chatRequestSchema = z.object({
     )
     .min(1)
     .max(MAX_MESSAGES),
+  trackingSessionId: z.string().uuid().optional(),
+  trackingPathname: z.string().regex(/^\/[a-zA-Z0-9/_-]*$/).max(160).optional(),
 });
 
 const openrouter = createOpenAI({
@@ -59,19 +64,18 @@ const openrouter = createOpenAI({
   },
 });
 
-const openrouterModel = process.env.OPENROUTER_MODEL || "minimax/minimax-m2.5";
+const openrouterModel =
+  process.env.OPENROUTER_MODEL || "openai/gpt-5.6-luna";
 
 function getClientIdentifier(req: Request) {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  const realIp = req.headers.get("x-real-ip");
-  const cfConnectingIp = req.headers.get("cf-connecting-ip");
-
-  return (
-    forwardedFor?.split(",")[0]?.trim() || realIp || cfConnectingIp || "unknown"
-  );
+  if (process.env.TRACKING_TRUST_PROXY !== "true") return null;
+  return createHash("sha256")
+    .update(getTrustedClientIp(req))
+    .digest("hex");
 }
 
-function isRateLimited(clientId: string) {
+function isRateLimited(clientId: string | null) {
+  if (!clientId) return false;
   const now = Date.now();
   const current = rateLimitStore.get(clientId);
 
@@ -157,7 +161,7 @@ export async function POST(req: Request) {
       return new Response("Invalid chat request payload.", { status: 400 });
     }
 
-    const { messages } = parsedBody.data;
+    const { messages, trackingSessionId, trackingPathname } = parsedBody.data;
     const totalTextLength = getTotalTextLength(messages);
 
     if (totalTextLength > MAX_TEXT_CHARS) {
@@ -169,17 +173,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const lastUserText = getLastUserText(messages).trim();
+    if (trackingSessionId && lastUserText) {
+      recordChatPrompt(req, {
+        sessionId: trackingSessionId,
+        pathname: trackingPathname ?? "/chat",
+        prompt: lastUserText,
+      });
+    }
+
     if (!process.env.OPENROUTER_API_KEY) {
       console.info("[CHAT-API] Using local portfolio fallback", {
-        clientId,
         messageCount: messages.length,
         totalTextLength,
       });
-      return createFallbackResponse(getLastUserText(messages));
+      return createFallbackResponse(lastUserText);
     }
 
     console.info("[CHAT-API] Request accepted", {
-      clientId,
       messageCount: messages.length,
       totalTextLength,
       model: openrouterModel,
@@ -207,15 +218,16 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openrouter.chat(openrouterModel),
       ...baseConfig,
+      providerOptions: {
+        openai: {
+          reasoningEffort: "medium",
+        },
+      },
     });
 
     return result.toUIMessageStreamResponse();
   } catch (error) {
-    console.error("Chat API error:", error);
-    console.error(
-      "Error details:",
-      error instanceof Error ? error.message : "Unknown error",
-    );
+    console.error("[CHAT-API] Request failed");
 
     if (error instanceof Error && error.message?.includes("network")) {
       return new Response(

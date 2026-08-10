@@ -96,16 +96,9 @@ export default function LandingPage() {
             aria-labelledby="biography-title"
           >
             <h2 id="biography-title">About</h2>
-            <p>
-              I&apos;m a software engineer on Highmark&apos;s AI/ML team. I
-              build production AI systems for real-time training, agent
-              evaluation, and enterprise knowledge retrieval.
-            </p>
-            <p>
-              My work spans React, FastAPI, WebSockets, distributed Go runtimes,
-              RAG pipelines, and the observability needed to ship reliable AI
-              products.
-            </p>
+            {config.personal.bio.split("\n\n").map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
 
             <section className="quiet-ask-panel" aria-labelledby="ask-title">
               <h3 id="ask-title">Ask about my work</h3>
@@ -238,6 +231,9 @@ export default function LandingPage() {
               </article>
             ) : null}
           </div>
+          <Link className="quiet-projects-cta" href="/projects">
+            View all projects
+          </Link>
         </section>
 
         <footer id="contact" className="quiet-footer">

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { PageViewTracker } from "@/components/tracking/page-view-tracker";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -129,6 +131,9 @@ export default function RootLayout({
           storageKey="portfolio-theme"
         >
           <main className="flex min-h-screen flex-col">{children}</main>
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
           <Toaster />
         </ThemeProvider>
       </body>

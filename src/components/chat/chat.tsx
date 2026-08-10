@@ -12,6 +12,10 @@ import HelperBoost from "@/components/chat/HelperBoost";
 import { SimplifiedChatView } from "@/components/chat/simple-chat-view";
 import { SiteNav } from "@/components/site/site-nav";
 import { ChatBubble, ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
+import { getTrackingSessionId } from "@/components/tracking/session-id";
+
+const SCROLL_BOTTOM_THRESHOLD = 80;
+const SCROLL_UP_TOLERANCE = 1;
 
 export default function Chat() {
   const searchParams = useSearchParams();
@@ -19,11 +23,18 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const initialQuerySent = useRef(false);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
+  const shouldFollowRef = useRef(true);
+  const lastScrollTopRef = useRef(0);
 
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
+        body: {
+          trackingSessionId: getTrackingSessionId(),
+          trackingPathname: "/chat",
+        },
       }),
     [],
   );
@@ -35,6 +46,14 @@ export default function Chat() {
   const isLoading = status === "submitted" || status === "streaming";
   const lastAssistantMessageIndex = useMemo(
     () => messages.findLastIndex((message) => message.role === "assistant"),
+    [messages],
+  );
+  const followUpQuestionOffset = useMemo(
+    () =>
+      Math.max(
+        0,
+        messages.filter((message) => message.role === "assistant").length - 1,
+      ) * 3,
     [messages],
   );
   const isToolInProgress = useMemo(
@@ -56,6 +75,7 @@ export default function Chat() {
       const text = query.trim();
       if (!text || isLoading || isToolInProgress) return;
       setErrorMessage(null);
+      shouldFollowRef.current = true;
       sendMessage({ text });
     },
     [isLoading, isToolInProgress, sendMessage],
@@ -78,11 +98,51 @@ export default function Chat() {
     setInput(event.target.value);
   };
 
+  const handleChatScroll = () => {
+    const container = chatScrollRef.current;
+    if (!container) return;
+
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+    if (distanceFromBottom <= SCROLL_BOTTOM_THRESHOLD) {
+      shouldFollowRef.current = true;
+    } else if (
+      container.scrollTop < lastScrollTopRef.current - SCROLL_UP_TOLERANCE
+    ) {
+      shouldFollowRef.current = false;
+    }
+
+    lastScrollTopRef.current = container.scrollTop;
+  };
+
+  useEffect(() => {
+    if (
+      !shouldFollowRef.current ||
+      (messages.length === 0 && !isLoading && !errorMessage)
+    ) {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      const container = chatScrollRef.current;
+      if (container && shouldFollowRef.current) {
+        container.scrollTop = container.scrollHeight;
+      }
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [messages, status, isLoading, errorMessage]);
+
   return (
     <div className="quiet-page quiet-chat-page">
       <SiteNav />
       <main className="quiet-chat-main">
-        <div className="quiet-chat-scroll" aria-live="polite">
+        <div
+          ref={chatScrollRef}
+          className="quiet-chat-scroll"
+          aria-live="polite"
+          onScroll={handleChatScroll}
+        >
           {messages.length === 0 && !isLoading ? (
             <ChatLanding submitQuery={submitQuery} />
           ) : (
@@ -123,7 +183,12 @@ export default function Chat() {
                   </div>
                 </div>
               ) : null}
-              {!isLoading ? <HelperBoost submitQuery={submitQuery} /> : null}
+              {!isLoading ? (
+                <HelperBoost
+                  submitQuery={submitQuery}
+                  questionOffset={followUpQuestionOffset}
+                />
+              ) : null}
             </div>
           )}
         </div>

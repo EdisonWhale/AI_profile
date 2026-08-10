@@ -1,6 +1,7 @@
 import { Download } from "lucide-react";
 import { getConfig } from "@/lib/config-loader";
 import { SiteNav } from "@/components/site/site-nav";
+import { ResumeDownloadLink } from "@/components/tracking/resume-download-link";
 
 type EducationWithPrevious = {
   previous?: {
@@ -30,14 +31,14 @@ export default function ResumePage() {
             <h1>{config.personal.name}</h1>
             <p>{config.personal.title}</p>
           </div>
-          <a
+          <ResumeDownloadLink
             className="quiet-primary-link"
             href={resumePdfUrl}
             download="Edison-resume-2026.pdf"
           >
             <Download aria-hidden="true" />
             Download PDF
-          </a>
+          </ResumeDownloadLink>
         </header>
 
         <div className="quiet-resume-contact">

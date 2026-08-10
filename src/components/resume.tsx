@@ -3,6 +3,7 @@
 import { Download, ExternalLink } from "lucide-react";
 import { useMemo, useState } from "react";
 import { getConfig } from "@/lib/config-loader";
+import { ResumeDownloadLink } from "@/components/tracking/resume-download-link";
 
 interface ResumeProps {
   embedded?: boolean;
@@ -28,9 +29,9 @@ export function Resume({ embedded = false }: ResumeProps) {
           <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
             Open PDF <ExternalLink aria-hidden="true" />
           </a>
-          <a href={pdfUrl} download="Edison-resume-2026.pdf">
+          <ResumeDownloadLink href={pdfUrl} download="Edison-resume-2026.pdf">
             Download <Download aria-hidden="true" />
-          </a>
+          </ResumeDownloadLink>
         </div>
       </header>
       {previewUrl && !previewUnavailable ? (

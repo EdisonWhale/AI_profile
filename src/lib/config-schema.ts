@@ -73,6 +73,8 @@ export const portfolioConfigSchema = z
         .object({
           title: z.string(),
           category: z.string(),
+          track: z.enum(["ai-ml", "full-stack"]),
+          summary: z.string(),
           description: z.string(),
           techStack: z.array(z.string()),
           date: z.string(),
@@ -126,6 +128,38 @@ export const portfolioConfigSchema = z
         funFacts: z.array(z.string()),
         workingStyle: z.string(),
         motivation: z.string(),
+      })
+      .passthrough(),
+    aiProfile: z
+      .object({
+        positioning: z.string(),
+        voice: z.object({
+          traits: z.array(z.string()),
+          defaultLength: z.string(),
+          technicalDepth: z.string(),
+          conversationStyle: z.string(),
+          avoid: z.array(z.string()),
+        }),
+        responseModes: z.array(
+          z.object({
+            audience: z.string(),
+            guidance: z.string(),
+          }),
+        ),
+        naturalLanguageHabits: z.array(z.string()),
+        signatureBeliefs: z.array(z.string()),
+        unknownAnswerStyle: z.string(),
+        answerPrinciples: z.array(z.string()),
+        evidenceBoundaries: z.array(z.string()),
+        featuredQuestions: z.array(z.string()),
+        followUpQuestions: z.array(z.string()),
+        frequentlyAskedQuestions: z.array(
+          z.object({
+            question: z.string(),
+            matchTerms: z.array(z.string()),
+            answer: z.string(),
+          }),
+        ),
       })
       .passthrough(),
     resume: z
